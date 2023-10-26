@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import DynamicMainPage from "../DynamicMainPage/DynamicMainPage";
 import AboutUs from "../AboutUs/AboutUs";
 import FeaturedJobs from "../FeaturedJobs/FeaturedJobs";
 import Footer from "../Footer/Footer";
 
 function HomePage() {
+  const [featuredjobsProps, setfeaturedjobsProps] = useState({
+    heading: "Recent & Featured jobs",
+    title1: "Featured Jobs",
+    title2: "Recent Jobs",
+  });
+
   return (
     <div>
       <DynamicMainPage
@@ -16,8 +22,12 @@ function HomePage() {
         showbtn={true}
       />
       <AboutUs />
-      <FeaturedJobs />
-      <Footer />
+      <FeaturedJobs
+        heading={featuredjobsProps?.heading}
+        title1={featuredjobsProps?.title1}
+        title2={featuredjobsProps?.title2}
+      />
+      {/* <Footer /> */}
     </div>
   );
 }

@@ -121,58 +121,15 @@ function Signup() {
           {/** Sign Up Form Code */}
           <form className="sign-up-form">
             <h2 className="titile">Sign up</h2>
-            {/* <div className="input-field">
-              <TextField
-                style={{ width: "100%" }}
-                id="outlined-basic"
-                label="Username"
-                variant="outlined"
-                type="text"
-                placeholder="Username"
-                size="small"
-              />
-            </div> */}
-            <input type="text" placeholder="Username" className="textfield" />
+            <input type="text" placeholder="First Name" className="textfield" />
+            <input type="text" placeholder="Last Name" className="textfield" />
             <input type="text" placeholder="Email" className="textfield" />
             <input
               type="password"
               placeholder="Password"
               className="textfield"
             />
-            {/* <div className="input-field">
-              <TextField
-                style={{ width: "100%" }}
-                id="outlined-basic"
-                label="Email"
-                variant="outlined"
-                type="email"
-                placeholder="Email"
-                size="small"
-              />
-            </div>
-            <div className="input-field">
-              <TextField
-                style={{ width: "100%" }}
-                id="outlined-basic"
-                label="Password"
-                variant="outlined"
-                type="password"
-                placeholder="Password"
-                size="small"
-              />
-            </div> */}
             {signUpAsEmployee === "2" && (
-              //   <div className="input-field">
-              //     <TextField
-              //       style={{ width: "100%" }}
-              //       id="outlined-basic"
-              //       label="for Emplyer"
-              //       variant="outlined"
-              //       type="password"
-              //       placeholder="Password"
-              //       size="small"
-              //     />
-              //   </div>
               <input
                 type="password"
                 placeholder="Password"

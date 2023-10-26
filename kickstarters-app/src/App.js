@@ -4,6 +4,7 @@ import Navbar from "./Components/Navbar/Navbar";
 import Signup from "./Components/SignUp/Signup";
 import React, { Fragment } from "react";
 import JobLists from "./Components/JobLists/JobLists";
+import Footer from "./Components/Footer/Footer";
 
 function App() {
   const pathname = window.location.pathname;
@@ -16,6 +17,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/jobs" element={<JobLists />} />
         </Routes>
+        {pathname !== "/signup" && <Footer />}
       </Fragment>
     </div>
   );
