@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -46,6 +47,7 @@ public class UserEntity implements UserDetails{
     private String userLastName;
     
     @Column(name = "user_email", nullable=false)
+    @Email
     private String userEmail;
     
     @Column(name = "user_password", nullable=false)
@@ -54,6 +56,9 @@ public class UserEntity implements UserDetails{
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role", nullable=false)
     private Role userRole;
+    
+    @Column(name = "user_status", nullable=false)
+    private boolean userStatus = Boolean.FALSE;
 
 	public Long getUserId() {
 		return userId;
@@ -103,6 +108,14 @@ public class UserEntity implements UserDetails{
 		this.userRole = userRole;
 	}
 
+	public boolean getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(boolean userStatus) {
+		this.userStatus = userStatus;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority(userRole.name()));
@@ -135,7 +148,7 @@ public class UserEntity implements UserDetails{
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return userStatus;
 	}
     
 }

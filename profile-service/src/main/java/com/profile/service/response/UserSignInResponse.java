@@ -1,4 +1,4 @@
-package com.profile.service.controller;
+package com.profile.service.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
