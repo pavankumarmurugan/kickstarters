@@ -56,6 +56,14 @@ public class JwtService {
 				.parseClaimsJws(token)
 				.getBody();
 	}
+	
+	public void validateToken(final String token) {
+		Jwts
+		.parserBuilder()
+		.setSigningKey(getSignInKey())
+		.build()
+		.parseClaimsJws(token);
+	}
 
 	private Key getSignInKey() {
 		byte[] keyByte = Decoders.BASE64.decode(SECRET_KEY);

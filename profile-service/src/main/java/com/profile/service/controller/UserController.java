@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.profile.service.request.GenerateTokenRequest;
 import com.profile.service.request.UserRegisterRequest;
 import com.profile.service.request.UserSignInRequest;
 import com.profile.service.response.UserRegisterResponse;
@@ -39,7 +40,7 @@ public class UserController {
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> userSignin(
-			@RequestBody UserSignInRequest userSignInRequest) {
+			@Valid @RequestBody UserSignInRequest userSignInRequest) {
 		UserSignInResponse userSignInResponse = new UserSignInResponse();
 		try {
 			userSignInResponse = userService.userSignIn(userSignInRequest);
@@ -53,4 +54,10 @@ public class UserController {
 	public ResponseEntity<?> confirm(@RequestParam("token") String token) {
 		return ResponseEntity.ok(userService.confirmToken(token));
 	}
+	
+	@GetMapping("/validateToken")
+	public String validateToken(@RequestParam("token") String token) {
+		userService.validateToken(token);
+		return "Token is valid";
+	} 
 }

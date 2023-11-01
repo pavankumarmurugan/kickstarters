@@ -1,7 +1,6 @@
 package com.profile.service.service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,10 @@ import com.profile.service.entity.Role;
 import com.profile.service.entity.UserEntity;
 import com.profile.service.repository.EmailConfirmationRepository;
 import com.profile.service.repository.UserRepository;
+import com.profile.service.request.GenerateTokenRequest;
 import com.profile.service.request.UserRegisterRequest;
 import com.profile.service.request.UserSignInRequest;
+import com.profile.service.response.GenerateTokenResponse;
 import com.profile.service.response.UserRegisterResponse;
 import com.profile.service.response.UserSignInResponse;
 
@@ -197,5 +198,10 @@ public class UserServiceImpl implements UserService {
         userRepository.enableUserEntity(emailConfirmationEntity.getUserId().getUserEmail());
         return "Confirmed";
     }
+	
+	@Override
+	public void validateToken(String token) {
+		jwtService.validateToken(token);
+	}
 	
 }
