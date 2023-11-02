@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.profile.service.request.GenerateTokenRequest;
 import com.profile.service.request.UserRegisterRequest;
 import com.profile.service.request.UserSignInRequest;
 import com.profile.service.response.UserRegisterResponse;
