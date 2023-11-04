@@ -90,7 +90,7 @@ function Signup() {
       return;
     }
     const response = await fetch(
-      "http://localhost:8082/api/v1/auth/registerUser",
+      "http://localhost:8080/api/v1/auth/registerUser",
       {
         method: "POST",
         // mode: "no-cors",
@@ -214,6 +214,7 @@ function Signup() {
   };
 
   const loginFunction = async () => {
+    debugger;
     const obj = {
       userEmail: formData.loginEmail,
       userPassword: formData.loginPassword,
