@@ -8,16 +8,17 @@ import Footer from "./Components/Footer/Footer";
 
 function App() {
   const pathname = window.location.pathname;
+  console.log(pathname, "pathname");
   return (
     <div className="App">
       <Fragment>
-        {pathname !== "/signup" && <Navbar />}
+        {/* {pathname !== "/signup" && <Navbar />} */}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/jobs" element={<JobLists />} />
         </Routes>
-        {pathname !== "/signup" && <Footer />}
+        {/* {pathname !== "/signup" && <Footer />} */}
       </Fragment>
     </div>
   );

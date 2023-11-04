@@ -36,6 +36,12 @@
     width: 48.5%;
 }
 
+
+.jobtitle-salary{
+    display: flex;
+    justify-content: space-between;
+}
+
 /** styling card images */
 .t-image{
     height: 200px;
