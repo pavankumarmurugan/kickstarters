@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   FormControl,
@@ -17,8 +17,29 @@ import {
   showToastError,
   showToastMessage,
 } from "../GenericToaster/GenericToaster";
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
+import { styled } from "@mui/material/styles";
+import GenericModals from "../GenericModal/GenericModal";
 
 function Signup() {
+  const BootstrapTooltip = styled(({ className, ...props }) => (
+    <Tooltip
+      {...props}
+      arrow
+      classes={{ popper: className }}
+      placement="right"
+    />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: "red",
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: "red",
+      fontSize: "15px",
+    },
+    [`& .${tooltipClasses.tooltipPlacementRight}`]: {},
+  }));
+
   {
     /** useStates */
   }
@@ -42,12 +63,29 @@ function Signup() {
     loginPassword: false,
   });
 
+  const [openModal, setOpenModal] = useState(false);
   {
     /** useStates */
   }
 
   const handleSignUp = async () => {
     debugger;
+
+    if (formData.userFirstName.trim() === "") {
+      setValidationField((prev) => ({
+        ...prev,
+        signUpFName: true,
+      }));
+      showToastError("First Name can not be empty.");
+      return;
+    } else if (formData.userLastName.trim() === "") {
+      setValidationField((prev) => ({
+        ...prev,
+        signUpLName: true,
+      }));
+      showToastError("Last Name can not be empty.");
+      return;
+    }
 
     // axios
     //   .post("http://localhost:8080/api/v1/auth/registerUser", {
@@ -115,6 +153,11 @@ function Signup() {
         ...prevState,
         [name]: value,
       }));
+      setValidationField((prev) => ({
+        ...prev,
+        signUpFName: false,
+        signUpLName: false,
+      }));
     }
   };
 
@@ -123,43 +166,62 @@ function Signup() {
     const name = e.target.name;
     const value = e.target.value;
 
-    if (
-      name === "userEmail" &&
-      value !== "" &&
-      value !== null &&
-      value !== undefined
-    ) {
-      if (!emailRegex.test(value.toLowerCase())) {
-        setValidationField((prev) => ({
-          ...prev,
-          signUpEmail: true,
-        }));
-        showToastError("Invalid Email Address");
-      } else {
-        setValidationField((prev) => ({
-          ...prev,
-          signUpEmail: false,
-        }));
-      }
-    } else if (
-      name === "userPassword" &&
-      value !== "" &&
-      value !== null &&
-      value !== undefined
-    ) {
-      if (!passwordRegex.test(value)) {
-        showToastError(
-          "Password must contain 1 upper and lower character and 1 special character."
-        );
+    if (value !== "" && value !== null && value !== undefined) {
+      if (name === "userEmail") {
+        if (!emailRegex.test(value.toLowerCase())) {
+          setValidationField((prev) => ({
+            ...prev,
+            signUpEmail: true,
+          }));
+          showToastError("Invalid Email Address");
+        } else {
+          setValidationField((prev) => ({
+            ...prev,
+            signUpEmail: false,
+          }));
+        }
+      } else if (name === "userPassword") {
+        if (!passwordRegex.test(value)) {
+          setValidationField((prev) => ({
+            ...prev,
+            signUpPassword: true,
+          }));
+          showToastError(
+            "Password must contain 1 upper and lower character and 1 special character."
+          );
+        } else {
+          setValidationField((prev) => ({
+            ...prev,
+            signUpPassword: false,
+          }));
+        }
       }
     }
   };
 
   /** Radio button Onchange function */
 
+  /** modal functions */
+
+  const closeModalFunction = () => {
+    setOpenModal(false);
+  };
+
+  /** modal functions */
+
   return (
     <>
       <ToastContainer />
+
+      {openModal && (
+        <GenericModals
+          isShowModel={openModal}
+          closeModal={closeModalFunction}
+          title="asd"
+          message="asdasd"
+          btn="1"
+        />
+      )}
 
       <div className={`container ${isSignUpMode ? "sign-up-mode" : ""}`}>
         <div className="forms-container">
@@ -167,35 +229,12 @@ function Signup() {
             {/** Sign In Form Code */}
             <form className="sign-in-form">
               <h2 className="titile">Sign in</h2>
-              {/* <div className="input-field"> */}
-              {/* <TextField
-                style={{ width: "100%" }}
-                id="outlined-basic"
-                label="Username"
-                variant="outlined"
-                type="text"
-                placeholder="Username"
-                size="small"
-              /> */}
               <input type="text" placeholder="Username" className="textfield" />
               <input
                 type="password"
                 placeholder="Password"
                 className="textfield"
               />
-              {/* </div> */}
-              {/* <div className="input-field">
-              <TextField
-                style={{ width: "100%" }}
-                id="outlined-basic"
-                label="Password"
-                variant="outlined"
-                type="password"
-                placeholder="password"
-                size="small"
-              />
-            </div> */}
-              {/* <button className="signupbtn">Loginaaa</button> */}
               <input type="button" className="custombtndark" value="Login" />
               <p className="social-text">Or Sign in with social platform</p>
               <div className="social-media">
@@ -283,25 +322,40 @@ function Signup() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {/* <div>
-                <span className="passwordError">
-                  Password must contain 8 characters including 1 upper case, 1
-                  lower case and 1 special character.
-                </span>
-              </div> */}
-              <input
-                type="button"
-                className="custombtndark"
-                value="Sign Up"
-                onClick={handleSignUp}
-              />
-              {/* <button
-            className="signupbtn"
-            // value={"Sign up"}
-            onClick={handleSignUp}
-            >
-              Sign Up
-            </button> */}
+              {validationField.signUpFName ||
+              validationField.signUpLName ||
+              validationField.loginEmail ||
+              validationField.loginPassword ? (
+                <BootstrapTooltip title="One or more fields have errors.">
+                  <input
+                    type="button"
+                    className={`${
+                      validationField.signUpFName ||
+                      validationField.signUpLName ||
+                      validationField.loginEmail ||
+                      validationField.loginPassword
+                        ? "errorbtn"
+                        : "custombtndark"
+                    }`}
+                    value="Sign Up"
+                    onClick={handleSignUp}
+                  />
+                </BootstrapTooltip>
+              ) : (
+                <input
+                  type="button"
+                  className={`${
+                    validationField.signUpFName ||
+                    validationField.signUpLName ||
+                    validationField.loginEmail ||
+                    validationField.loginPassword
+                      ? "errorbtn"
+                      : "custombtndark"
+                  }`}
+                  value="Sign Up"
+                  onClick={handleSignUp}
+                />
+              )}
               <p className="social-text">Or Sign up with social platform</p>
               <div className="social-media">
                 <a href="" className="social-icon">
