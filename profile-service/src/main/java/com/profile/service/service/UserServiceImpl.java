@@ -1,6 +1,7 @@
 package com.profile.service.service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,8 @@ import com.profile.service.entity.Role;
 import com.profile.service.entity.UserEntity;
 import com.profile.service.repository.EmailConfirmationRepository;
 import com.profile.service.repository.UserRepository;
-import com.profile.service.request.GenerateTokenRequest;
 import com.profile.service.request.UserRegisterRequest;
 import com.profile.service.request.UserSignInRequest;
-import com.profile.service.response.GenerateTokenResponse;
 import com.profile.service.response.UserRegisterResponse;
 import com.profile.service.response.UserSignInResponse;
 
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService {
 	public UserRegisterResponse registerUser(UserRegisterRequest userRegisterRequest) {
 
 		if (Boolean.TRUE.equals(userRepository.existsByUserEmail(userRegisterRequest.getUserEmail()))) {
-		    throw new IllegalArgumentException("Error: Email is already in use!");
+		    throw new IllegalArgumentException("Email is already in use!");
 		}
         
 		UserEntity user = new UserEntity();
@@ -104,6 +103,8 @@ public class UserServiceImpl implements UserService {
 		UserSignInResponse userSignInResponse = new UserSignInResponse();
 		userSignInResponse.setToken(jwtToken);
 		userSignInResponse.setMessage("Login Successfull!!");
+		userSignInResponse.setUserRole(user.getUserRole().toString());
+		userSignInResponse.setUserEmail(user.getUserEmail());
 		return userSignInResponse;
 	}
 	
@@ -179,29 +180,92 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
     public String confirmToken(String token) {
-		EmailConfirmationEntity emailConfirmationEntity = emailConfirmationRepository.findByEmailConfirmationToken(token)
-                .orElseThrow(() ->
-                        new IllegalStateException("Token not found"));
+		Optional<EmailConfirmationEntity> emailConfirmationEntity = emailConfirmationRepository.findByEmailConfirmationToken(token);
+        
+		if(emailConfirmationEntity.isEmpty()) {
+			return "User not found";
+		}
+		
+		EmailConfirmationEntity emailConfirmation = emailConfirmationEntity.get();
 
-        if (emailConfirmationEntity.getEmailConfirmationConfirmedAt() != null) {
-            throw new IllegalStateException("Email already confirmed");
+        if (emailConfirmation.getEmailConfirmationConfirmedAt() != null) {
+            return "Email already confirmed";
         }
 
-        LocalDateTime expiredAt = emailConfirmationEntity.getEmailConfirmationExpiresAt();
+        LocalDateTime expiredAt = emailConfirmation.getEmailConfirmationExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Token expired");
+            return "Activation expired";
         }
 
         emailConfirmationRepository.updateEmailConfirmationConfirmedAt(token, LocalDateTime.now());
         
-        userRepository.enableUserEntity(emailConfirmationEntity.getUserId().getUserEmail());
-        return "Confirmed";
+        userRepository.enableUserEntity(emailConfirmation.getUserId().getUserEmail());
+        return buildAccountConfirmationEmail();
     }
 	
 	@Override
 	public void validateToken(String token) {
 		jwtService.validateToken(token);
+	}
+	
+	public String buildAccountConfirmationEmail() {
+		return "<!DOCTYPE html>\n"
+        		+ "<html>\n"
+        		+ "<head>\n"
+        		+ "    <meta charset=\"UTF-8\">\n"
+        		+ "    <title>Email Confirmation</title>\n"
+        		+ "    <style>\n"
+        		+ "        /* Add some basic styling to your email */\n"
+        		+ "        body {\n"
+        		+ "            font-family: Arial, sans-serif;\n"
+        		+ "        }\n"
+        		+ "\n"
+        		+ "        .container {\n"
+        		+ "            width: 100%;\n"
+        		+ "            max-width: 600px;\n"
+        		+ "            margin: 0 auto;\n"
+        		+ "            padding: 20px;\n"
+        		+ "        }\n"
+        		+ "\n"
+        		+ "        .header {\n"
+        		+ "            background-color: #007BFF;\n"
+        		+ "            color: #fff;\n"
+        		+ "            text-align: center;\n"
+        		+ "            padding: 20px;\n"
+        		+ "        }\n"
+        		+ "\n"
+        		+ "        .content {\n"
+        		+ "            padding: 20px;\n"
+        		+ "        }\n"
+        		+ "\n"
+        		+ "        .button {\n"
+        		+ "            display: inline-block;\n"
+        		+ "            background-color: #007BFF;\n"
+        		+ "            color: #fff;\n"
+        		+ "            padding: 10px 20px;\n"
+        		+ "            text-decoration: none;\n"
+        		+ "            border-radius: 5px;\n"
+        		+ "        }\n"
+        		+ "    </style>\n"
+        		+ "</head>\n"
+        		+ "<body>\n"
+        		+ "    <div class=\"container\">\n"
+        		+ "        <div class=\"header\">\n"
+        		+ "            <h1>Email Confirmation Successful</h1>\n"
+        		+ "        </div>\n"
+        		+ "        <div class=\"content\">\n"
+        		+ "            <p>Your email has been successfully confirmed. You can now start using our services.</p>\n"
+        		+ "            <p>If you have any questions or need assistance, please don't hesitate to contact us.</p>\n"
+        		+ "            <p>Thank you for choosing our service!</p>\n"
+        		+ "        </div>\n"
+        		+ "        <div style=\"text-align: center;\">\n"
+        		+ "            <a class=\"button\" href=\"http://localhost:3000/signup\">Go to Website</a>\n"
+        		+ "        </div>\n"
+        		+ "    </div>\n"
+        		+ "</body>\n"
+        		+ "</html>\n"
+        		+ "";
 	}
 	
 }
