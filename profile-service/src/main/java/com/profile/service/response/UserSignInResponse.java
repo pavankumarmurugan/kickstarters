@@ -14,6 +14,10 @@ public class UserSignInResponse {
 	private String message;
 	
 	private String token;
+	
+	private String userRole;
+	
+	private String userEmail;
 
 	public String getMessage() {
 		return message;
@@ -29,6 +33,22 @@ public class UserSignInResponse {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 
 }
