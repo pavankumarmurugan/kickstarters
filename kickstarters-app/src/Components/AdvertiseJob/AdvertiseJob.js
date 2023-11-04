@@ -1,8 +1,9 @@
 import { Button, Modal } from "antd";
 import { useRef, useState } from "react";
 import Draggable from "react-draggable";
+import "./AdvertiseJob.css";
 
-function GenericModals(props) {
+function AdvertiseJobsModal(props) {
   const [disabled, setDisabled] = useState(true);
   const [bounds, setBounds] = useState({
     left: 0,
@@ -52,43 +53,29 @@ function GenericModals(props) {
             onFocus={() => {}}
             onBlur={() => {}}
           >
-            {props?.title}
+            Post Jobs
           </div>
         }
+        style={{ top: 20 }}
         open={props.isShowModel}
         onOk={handleOk}
+        width="70%"
         onCancel={handleCancel}
-        // footer={[
-        //   <Button key="ok" type="primary" onClick={handleOk}>
-        //     OK
-        //   </Button>,
-        // ]}
         footer={[
-          props?.btn === "1" ? (
+          <>
             <input
               type="button"
-              value={props?.btn1Name}
+              value="Post Job"
               className="custombtndark"
               onClick={handleOk}
             />
-          ) : (
-            <>
-              <input
-                type="button"
-                value={props?.btn1Name}
-                className="custombtndark"
-                onClick={handleOk}
-              />
-              ,
-              <input
-                type="button"
-                value="Cancel"
-                className="custombtndark"
-                onClick={handleCancel}
-              />
-              ,
-            </>
-          ),
+            <input
+              type="button"
+              value="Cancel"
+              className="custombtndark"
+              onClick={handleCancel}
+            />
+          </>,
         ]}
         modalRender={(modal) => (
           <Draggable
@@ -101,9 +88,52 @@ function GenericModals(props) {
           </Draggable>
         )}
       >
-        <p style={{ textAlign: "center" }}>{props?.message}</p>
+        <div className="postjobs">
+          <h3>Title:</h3>
+          <input
+            style={{ width: "100%" }}
+            type="password"
+            placeholder="Password"
+            className="textfield"
+            name="loginPassword"
+            // value={formData.loginPassword}
+            // onChange={handleChangeLogin}
+          />
+          <h3>Company Intro:</h3>
+          <textarea
+            style={{ width: "100%", paddingTop: "13px", minHeight: "48px" }}
+            type="password"
+            placeholder="Password"
+            className="textArea"
+            name="loginPassword"
+          />
+          <h3>Job position description:</h3>
+          <textarea
+            style={{ width: "100%", paddingTop: "13px", minHeight: "48px" }}
+            type="password"
+            placeholder="Password"
+            className="textArea"
+            name="loginPassword"
+          />
+          <h3>Top benefits or perks:</h3>
+          <textarea
+            style={{ width: "100%", paddingTop: "13px", minHeight: "48px" }}
+            type="password"
+            placeholder="Password"
+            className="textArea"
+            name="loginPassword"
+          />
+          <h3>Location</h3>
+          <textarea
+            style={{ width: "100%", paddingTop: "13px", minHeight: "48px" }}
+            type="password"
+            placeholder="Password"
+            className="textArea"
+            name="loginPassword"
+          />
+        </div>
       </Modal>
     </>
   );
 }
-export default GenericModals;
+export default AdvertiseJobsModal;

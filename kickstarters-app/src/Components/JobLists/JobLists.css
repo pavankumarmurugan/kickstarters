@@ -4,7 +4,7 @@
     height: 100%;
     position: relative;
     text-align: center;
-    padding-bottom: 3%;
+    /* padding-bottom: 3%; */
 }
 
 .joblist-search{
@@ -50,6 +50,7 @@
     background-color: #fff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    margin-bottom: 2%;
     overflow: hidden;
     padding: 3% 3% 3% 3%;
 }
