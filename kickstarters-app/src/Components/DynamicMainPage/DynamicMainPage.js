@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./DynamicMainPage.css";
 import AdvertiseJobsModal from "../AdvertiseJob/AdvertiseJob";
+import { userSpecificToken } from "../GenericCode/GenericCode";
 
 function DynamicMainPage(props) {
   /** usestates */
   const [openModal, setOpenModal] = useState(false);
+  const [user, setUser] = useState(false);
   /** usestates */
   /** modal functions */
   const openAdvertiseModal = () => {
@@ -19,6 +21,18 @@ function DynamicMainPage(props) {
   };
   /** modal functions */
 
+  /** useEffects */
+  useEffect(() => {
+    debugger;
+    let userDetails = userSpecificToken();
+    if (userDetails?.userRole === "JOBSEEKER") {
+      setUser(true);
+    } else {
+      setUser(false);
+    }
+  }, []);
+  /** useEffects */
+
   return (
     <div className={props?.cName}>
       {/** advertise job modal */}
@@ -30,29 +44,35 @@ function DynamicMainPage(props) {
         />
       )}
       {/** advertise job modal */}
-
       {/** home main screen image and job search field section */}
       <img src={props?.image} alt="heroImg" />
       <div className="dynamicMain-text">
-        {/** this section is for users home page */}
-        {/* <h1>{props?.title}</h1>
-        <p>{props?.text}</p>
-        {props?.showbtn && (
+        {user ? (
           <>
-            <input
-              type="text"
-              placeholder="Search"
-              className="search_textfield"
-            />
-            <button className={props?.btnClass}>Search</button>
+            {/** this section is for users home page */}
+            <h1>{props?.title}</h1>
+            <p>{props?.text}</p>
+            {props?.showbtn && (
+              <>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="search_textfield"
+                />
+                <button className={props?.btnClass}>Search</button>
+              </>
+            )}
+            {/** this section is for users home page */}
           </>
-        )} */}
-        {/** this section is for users home page */}
-        {/** this section is for Recruiter home page */}
-        <button className={props?.btnClass} onClick={openAdvertiseModal}>
-          Advertise job now
-        </button>
-        {/** this section is for Recruiter home page */}
+        ) : (
+          <>
+            {/** this section is for Recruiter home page */}
+            <button className={props?.btnClass} onClick={openAdvertiseModal}>
+              Advertise job now
+            </button>
+            {/** this section is for Recruiter home page */}
+          </>
+        )}
         {/** home main screen image and job search field section */}
       </div>
     </div>
