@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   showToastError,
   showToastMessage,
+  showToastSuccess,
 } from "../GenericToaster/GenericToaster";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
@@ -52,6 +53,8 @@ function Signup() {
     userEmail: "",
     userPassword: "",
     userRole: "JOBSEEKER",
+    loginEmail: "",
+    loginPassword: "",
   });
 
   const [validationField, setValidationField] = useState({
@@ -86,18 +89,6 @@ function Signup() {
       showToastError("Last Name can not be empty.");
       return;
     }
-
-    // axios
-    //   .post("http://localhost:8080/api/v1/auth/registerUser", {
-    //     userFirstName: formData.userFirstName,
-    //     userLastName: formData.userLastName,
-    //     userEmail: formData.userEmail,
-    //     userPassword: formData.userPassword,
-    //     userRole: formData.userRole,
-    //   })
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err));
-
     const response = await fetch(
       "http://localhost:8080/api/v1/auth/registerUser",
       {
@@ -111,8 +102,15 @@ function Signup() {
         body: JSON.stringify(formData),
       }
     )
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        if (res.status === 200) {
+          setOpenModal(true);
+        }
+      })
+      .catch((err) => {
+        showToastError(err);
+        console.log(err);
+      });
 
     // setSignUpMode(true);
     // setSignInMode(false);
@@ -201,10 +199,60 @@ function Signup() {
 
   /** Radio button Onchange function */
 
+  /** login form */
+
+  const handleChangeLogin = (e) => {
+    debugger;
+    const name = e.target.name;
+    const value = e.target.value;
+    if (value !== null && value !== undefined) {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
+  };
+
+  const loginFunction = async () => {
+    debugger;
+    const obj = {
+      userEmail: formData.loginEmail,
+      userPassword: formData.loginPassword,
+    };
+
+    const response = await fetch("http://localhost:8080/api/v1/auth/signin", {
+      method: "POST",
+      // mode: "no-cors",
+
+      headers: {
+        "Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(obj),
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          showToastSuccess("Success");
+          setOpenModal(true);
+        }
+      })
+      .catch((err) => {
+        showToastError(err);
+        console.log(err);
+      });
+  };
+
+  /** login form */
+
   /** modal functions */
 
   const closeModalFunction = () => {
     setOpenModal(false);
+  };
+
+  const okModalFunction = () => {
+    setOpenModal(false);
+    window.location.reload(false);
   };
 
   /** modal functions */
@@ -217,9 +265,11 @@ function Signup() {
         <GenericModals
           isShowModel={openModal}
           closeModal={closeModalFunction}
-          title="asd"
-          message="asdasd"
+          okModalFunction={okModalFunction}
+          title="Email COnfirmation"
+          message="Email Confirmation has been sent to your mail. Please confirm it within 15 minutes."
           btn="1"
+          btn1Name="Login"
         />
       )}
 
@@ -229,13 +279,28 @@ function Signup() {
             {/** Sign In Form Code */}
             <form className="sign-in-form">
               <h2 className="titile">Sign in</h2>
-              <input type="text" placeholder="Username" className="textfield" />
+              <input
+                type="text"
+                placeholder="Username"
+                className="textfield"
+                name="loginEmail"
+                value={formData.loginEmail}
+                onChange={handleChangeLogin}
+              />
               <input
                 type="password"
                 placeholder="Password"
                 className="textfield"
+                name="loginPassword"
+                value={formData.loginPassword}
+                onChange={handleChangeLogin}
               />
-              <input type="button" className="custombtndark" value="Login" />
+              <input
+                type="button"
+                className="custombtndark"
+                value="Login"
+                onClick={loginFunction}
+              />
               <p className="social-text">Or Sign in with social platform</p>
               <div className="social-media">
                 <a href="" className="social-icon">

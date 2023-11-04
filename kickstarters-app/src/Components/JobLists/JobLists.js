@@ -1,10 +1,13 @@
 import React from "react";
 import "./JobLists.css";
 import FeaturedData from "../FeaturedJobs/FeaturedJobsData";
+import Navbar from "../Navbar/Navbar";
+import Footer from "../Footer/Footer";
 
 function JobLists() {
   return (
     <>
+      <Navbar />
       <div className="joblists-main">
         <div className="joblist-search"></div>
         <div className="joblist-maincard">
@@ -60,7 +63,7 @@ function JobLists() {
             />
           </div>
         </div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </>
   );
