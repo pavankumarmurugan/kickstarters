@@ -23,7 +23,7 @@ public class HomepageResponse {
 
     private String jobDesc;
 
-    private Long salary;
+    private Long jobSalary;
 
 	public Long getJobId() {
 		return jobId;
@@ -49,11 +49,11 @@ public class HomepageResponse {
 		this.jobDesc = jobDesc;
 	}
 
-	public Long getSalary() {
-		return salary;
+	public Long getJobSalary() {
+		return jobSalary;
 	}
 
-	public void setSalary(Long salary) {
-		this.salary = salary;
+	public void setJobSalary(Long jobSalary) {
+		this.jobSalary = jobSalary;
 	}
 }

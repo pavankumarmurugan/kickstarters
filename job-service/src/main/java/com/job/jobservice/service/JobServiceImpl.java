@@ -63,7 +63,7 @@ public class JobServiceImpl implements JobService{
 			homepageResponse.setJobId(jobEntity.getJobId());
 			homepageResponse.setJobTitle(jobEntity.getJobTitle());
 			homepageResponse.setJobDesc(jobEntity.getJobDesc());
-			homepageResponse.setSalary(jobEntity.getJobSalary());
+			homepageResponse.setJobSalary(jobEntity.getJobSalary());
 			homepageResponseList.add(homepageResponse);
 		}
 		return homepageResponseList;
@@ -171,7 +171,7 @@ public class JobServiceImpl implements JobService{
 			homepageResponse.setJobId(jobEntity.getJobId());
 			homepageResponse.setJobTitle(jobEntity.getJobTitle());
 			homepageResponse.setJobDesc(jobEntity.getJobDesc());
-			homepageResponse.setSalary(jobEntity.getJobSalary());
+			homepageResponse.setJobSalary(jobEntity.getJobSalary());
 			homepageResponseList.add(homepageResponse);
 		}
 		return homepageResponseList;
