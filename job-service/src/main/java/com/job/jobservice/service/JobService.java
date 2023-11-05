@@ -20,4 +20,6 @@ public interface JobService {
 	public List<HomepageResponse> getAllPostedJobsByUser(String userEmail);
 	
 	JobDetailsResponse getJobDetailsByUser(String userEmail, Long jobId);
+
+	Object getJobDetailsByJobSeeker(String userEmail, Long jobId);
 }

@@ -14,7 +14,7 @@ public class PostJobRequest {
 
 	private String jobSkill;
 
-	private String jobWorkExperice;
+	private String jobWorkExperience;
 
 	public String getJobTitle() {
 		return jobTitle;
@@ -64,12 +64,12 @@ public class PostJobRequest {
 		this.jobSkill = jobSkill;
 	}
 
-	public String getJobWorkExperice() {
-		return jobWorkExperice;
+	public String getJobWorkExperience() {
+		return jobWorkExperience;
 	}
 
-	public void setJobWorkExperice(String jobWorkExperice) {
-		this.jobWorkExperice = jobWorkExperice;
+	public void setJobWorkExperience(String jobWorkExperience) {
+		this.jobWorkExperience = jobWorkExperience;
 	}
 
 }

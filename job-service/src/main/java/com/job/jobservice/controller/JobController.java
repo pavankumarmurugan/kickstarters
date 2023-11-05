@@ -48,4 +48,9 @@ public class JobController {
 	public ResponseEntity<?> jobDetailsUser(@RequestHeader("loggedInUser") String userEmail, @RequestParam("jobId") Long jobId) {
 		return ResponseEntity.ok(jobService.getJobDetailsByUser(userEmail,jobId));
 	}
+
+	@PostMapping("/jobDetailsJobSeeker")
+	public ResponseEntity<?> jobDetailsJobSeeker(@RequestHeader("loggedInUser") String userEmail,@RequestParam("jobId") Long jobId){
+		return ResponseEntity.ok(jobService.getJobDetailsByJobSeeker(userEmail,jobId));
+	}
 }
