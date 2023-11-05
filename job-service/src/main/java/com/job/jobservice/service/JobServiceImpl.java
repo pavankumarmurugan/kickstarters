@@ -18,7 +18,6 @@ import com.job.jobservice.repository.UserRepository;
 import com.job.jobservice.request.PostJobRequest;
 import com.job.jobservice.request.UpdateJobRequest;
 import com.job.jobservice.response.HomepageResponse;
-import com.job.jobservice.response.JobDetailsResponse;
 
 @Service
 public class JobServiceImpl implements JobService{

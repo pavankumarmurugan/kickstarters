@@ -6,7 +6,6 @@ import java.util.Map;
 import com.job.jobservice.request.PostJobRequest;
 import com.job.jobservice.request.UpdateJobRequest;
 import com.job.jobservice.response.HomepageResponse;
-import com.job.jobservice.response.JobDetailsResponse;
 
 public interface JobService {
 	List<HomepageResponse> getAllJobs();
