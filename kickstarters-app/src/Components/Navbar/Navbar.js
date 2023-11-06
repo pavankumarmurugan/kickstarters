@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { userSpecificToken } from "../GenericCode/GenericCode";
+import Profile from "../Profile/Profile";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export default function Navbar() {
   /** useStates */
   const [showHideHamburgerIcon, setShowHideHamburgerIcon] = useState(true);
   const [user, setUser] = useState({});
+  const [openProfile, setOpenProfile] = useState(false);
   const [userDropdownTitle, setUserDropdownTitle] = useState("");
 
   /** useStates */
@@ -45,14 +47,15 @@ export default function Navbar() {
       return;
     }
     navigate("/signup");
-    console.log("click left button", e);
   };
   const handleMenuClick = (e) => {
     debugger;
     if (e.key === "3") {
-      // profile
+      setOpenProfile(true);
+    } else if (e.key === "4") {
+      localStorage.setItem("token", {});
+      navigate("signup");
     }
-    console.log("click", e);
   };
 
   const registerMenuProps = {
@@ -75,8 +78,23 @@ export default function Navbar() {
   const isUser = true;
   /** onclick functions */
 
+  /** profile modal functions */
+  const closeProfileModal = () => {
+    setOpenProfile(false);
+  };
+  /** profile modal functions */
+
   return (
     <div>
+      {/** profile modal */}
+      <Profile
+        isShowModel={openProfile}
+        closeModal={closeProfileModal}
+        // okModalFunction={okModalFunction}
+        from="NewPost"
+        data={null}
+      />
+      {/** profile modal */}
       <nav className="NavbarItems">
         <h1 className="navbar-logo">KickStarters</h1>
         <div className="menu-icons" onClick={handleHamburger}>
