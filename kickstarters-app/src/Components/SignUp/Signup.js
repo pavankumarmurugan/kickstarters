@@ -21,8 +21,10 @@ import {
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import GenericModals from "../GenericModal/GenericModal";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
   const BootstrapTooltip = styled(({ className, ...props }) => (
     <Tooltip
       {...props}
@@ -93,8 +95,6 @@ function Signup() {
       "http://localhost:8080/api/v1/auth/registerUser",
       {
         method: "POST",
-        // mode: "no-cors",
-
         headers: {
           "Control-Allow-Origin": "*",
           "Content-Type": "application/json",
@@ -102,9 +102,15 @@ function Signup() {
         body: JSON.stringify(formData),
       }
     )
-      .then((res) => {
-        if (res.status === 200) {
-          setOpenModal(true);
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.message === "User registered successfully!") {
+          showToastSuccess(data?.message);
+          setTimeout(() => {
+            setOpenModal(true);
+          }, 1000);
+        } else {
+          showToastError(data?.message);
         }
       })
       .catch((err) => {
@@ -210,6 +216,11 @@ function Signup() {
         ...prevState,
         [name]: value,
       }));
+      setValidationField((prev) => ({
+        ...prev,
+        loginEmail: false,
+        loginPassword: false,
+      }));
     }
   };
 
@@ -222,18 +233,27 @@ function Signup() {
 
     const response = await fetch("http://localhost:8080/api/v1/auth/signin", {
       method: "POST",
-      // mode: "no-cors",
-
       headers: {
         "Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(obj),
     })
-      .then((res) => {
-        if (res.status === 200) {
-          showToastSuccess("Success");
-          setOpenModal(true);
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === "Login Successfull!!") {
+          showToastSuccess(data.message);
+          setTimeout(() => {
+            localStorage.setItem("token", JSON.stringify([data]));
+            navigate("/");
+          }, 1000);
+        } else {
+          showToastError(data.message);
+          setValidationField((prev) => ({
+            ...prev,
+            loginEmail: true,
+            loginPassword: true,
+          }));
         }
       })
       .catch((err) => {
@@ -282,25 +302,53 @@ function Signup() {
               <input
                 type="text"
                 placeholder="Username"
-                className="textfield"
                 name="loginEmail"
+                className={`${
+                  validationField.loginEmail
+                    ? "errorTextfield textfield"
+                    : "textfield"
+                }`}
                 value={formData.loginEmail}
                 onChange={handleChangeLogin}
               />
               <input
                 type="password"
                 placeholder="Password"
-                className="textfield"
                 name="loginPassword"
+                className={`${
+                  validationField.loginEmail
+                    ? "errorTextfield textfield"
+                    : "textfield"
+                }`}
                 value={formData.loginPassword}
                 onChange={handleChangeLogin}
               />
-              <input
-                type="button"
-                className="custombtndark"
-                value="Login"
-                onClick={loginFunction}
-              />
+              {validationField.loginEmail || validationField.loginPassword ? (
+                <BootstrapTooltip title="One or more fields have errors.">
+                  <input
+                    type="button"
+                    className={`${
+                      validationField.loginEmail ||
+                      validationField.loginPassword
+                        ? "errorbtn"
+                        : "custombtndark"
+                    }`}
+                    value="Login"
+                    onClick={loginFunction}
+                  />
+                </BootstrapTooltip>
+              ) : (
+                <input
+                  type="button"
+                  className={`${
+                    validationField.loginEmail || validationField.loginPassword
+                      ? "errorbtn"
+                      : "custombtndark"
+                  }`}
+                  value="Login"
+                  onClick={loginFunction}
+                />
+              )}
               <p className="social-text">Or Sign in with social platform</p>
               <div className="social-media">
                 <a href="" className="social-icon">
@@ -474,7 +522,7 @@ function Signup() {
                       label="Employee"
                     />
                     <FormControlLabel
-                      value="Recruiter"
+                      value="EMPLOYER"
                       control={<Radio />}
                       label="Employer"
                     />

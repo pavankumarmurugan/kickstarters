@@ -30,6 +30,8 @@
     cursor: pointer;
     padding: 1rem;
     margin-bottom: 20px;
+    max-height: 250px;
+    word-wrap: break-word;
 }
 
 .joblist-maincard .t-card{
@@ -82,6 +84,7 @@
     .t-card{
         width: 100%;
         margin-bottom: 1.5rem;
+        max-height: 300px;
     }
     .joblist-maincard .t-card{
         width: 100%;

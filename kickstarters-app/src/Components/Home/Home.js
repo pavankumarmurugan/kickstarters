@@ -1,16 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DynamicMainPage from "../DynamicMainPage/DynamicMainPage";
 import AboutUs from "../AboutUs/AboutUs";
 import FeaturedJobs from "../FeaturedJobs/FeaturedJobs";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
+import { async } from "q";
+import { userSpecificToken } from "../GenericCode/GenericCode";
+import {
+  showToastError,
+  showToastSuccess,
+} from "../GenericToaster/GenericToaster";
 
 function HomePage() {
-  const [featuredjobsProps, setfeaturedjobsProps] = useState({
-    heading: "Jobs",
-    title1: "Featured Jobs",
-    title2: "Recent Jobs",
-  });
+  let getToken = userSpecificToken();
+  const [homepageJobsData, setHomepageJobsData] = useState([]);
+  const [featuredjobsHeading, setFeaturedjobsHeading] = useState();
+
+  /** home data api */
+  useEffect(() => {
+    debugger;
+    if (getToken?.userRole === "JOBSEEKER") {
+      setFeaturedjobsHeading("Recent Jobs");
+    } else {
+      setFeaturedjobsHeading("Posted Jobs");
+    }
+    callHomeApi();
+  }, []);
+
+  const callHomeApi = async () => {
+    debugger;
+    let url = "";
+    if (getToken?.userRole === "JOBSEEKER") {
+      url = "http://localhost:8080/api/v1/job/service/allJobsForHomepage";
+    } else {
+      url = "http://localhost:8080/api/v1/job/service/allPostedJobUser";
+    }
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `${"Bearer "}${getToken?.token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.length) {
+          setHomepageJobsData(data);
+        } else {
+          showToastError(data?.message);
+        }
+      })
+      .catch((err) => {
+        showToastError(err);
+        console.log(err);
+      });
+  };
 
   return (
     <div>
@@ -23,11 +65,9 @@ function HomePage() {
         btnClass="search-btn"
         showbtn={true}
       />
-      <FeaturedJobs
-        heading={featuredjobsProps?.heading}
-        title1={featuredjobsProps?.title1}
-        title2={featuredjobsProps?.title2}
-      />
+      {homepageJobsData?.length > 0 && (
+        <FeaturedJobs data={homepageJobsData} heading={featuredjobsHeading} />
+      )}
       <AboutUs />
       <Footer />
     </div>

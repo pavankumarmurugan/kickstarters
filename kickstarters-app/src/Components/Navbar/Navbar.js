@@ -1,28 +1,61 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuItems, profileItems, registerItems } from "./ManuItems";
 import "./Navbar.css";
 import { Dropdown, Space } from "antd";
 import { Link } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { userSpecificToken } from "../GenericCode/GenericCode";
+import Profile from "../Profile/Profile";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  /** useStates */
-  const [showHideHamburgerIcon, setShowHideHamburgerIcon] = useState(true);
+
+  /** token */
+  let getToken = userSpecificToken();
+  /** token */
 
   /** useStates */
+  const [showHideHamburgerIcon, setShowHideHamburgerIcon] = useState(true);
+  const [user, setUser] = useState({});
+  const [openProfile, setOpenProfile] = useState(false);
+  const [userDropdownTitle, setUserDropdownTitle] = useState("");
+
+  /** useStates */
+
+  /**useEffects */
+
+  useEffect(() => {
+    debugger;
+    let userDetails = getToken;
+    setUser(userDetails);
+    if (userDetails?.userRole === "JOBSEEKER") {
+      setUserDropdownTitle(userDetails.userEmail.charAt(0).toLocaleUpperCase());
+    } else if (userDetails?.userRole === "EMPLOYER") {
+      setUserDropdownTitle(userDetails.userEmail.charAt(0).toLocaleUpperCase());
+    } else {
+      setUserDropdownTitle("Register");
+    }
+  }, []);
+
+  /**useEffects */
 
   /** register and profile dropdown */
 
   const handleButtonClick = (e) => {
-    // message.info("Click on left button.");
+    if (getToken) {
+      return;
+    }
     navigate("/signup");
-    console.log("click left button", e);
   };
   const handleMenuClick = (e) => {
-    // message.info("Click on menu item.");
-    console.log("click", e);
+    debugger;
+    if (e.key === "3") {
+      setOpenProfile(true);
+    } else if (e.key === "4") {
+      localStorage.setItem("token", {});
+      navigate("signup");
+    }
   };
 
   const registerMenuProps = {
@@ -45,8 +78,23 @@ export default function Navbar() {
   const isUser = true;
   /** onclick functions */
 
+  /** profile modal functions */
+  const closeProfileModal = () => {
+    setOpenProfile(false);
+  };
+  /** profile modal functions */
+
   return (
     <div>
+      {/** profile modal */}
+      <Profile
+        isShowModel={openProfile}
+        closeModal={closeProfileModal}
+        // okModalFunction={okModalFunction}
+        from="NewPost"
+        data={null}
+      />
+      {/** profile modal */}
       <nav className="NavbarItems">
         <h1 className="navbar-logo">KickStarters</h1>
         <div className="menu-icons" onClick={handleHamburger}>
@@ -65,24 +113,23 @@ export default function Navbar() {
               </li>
             );
           })}
-          {/* <button className="signupbtn">Sign Up</button> */}
-          {isUser ? (
-            <Dropdown.Button
-              menu={registerMenuProps}
-              placement="bottom"
-              onClick={handleButtonClick}
-              icon={<UserOutlined />}
-            >
-              Register
-            </Dropdown.Button>
-          ) : (
+          {user ? (
             <Dropdown.Button
               menu={profileMenuProps}
               placement="bottom"
               onClick={handleButtonClick}
               icon={<UserOutlined />}
             >
-              Profile
+              {userDropdownTitle}
+            </Dropdown.Button>
+          ) : (
+            <Dropdown.Button
+              menu={registerMenuProps}
+              placement="bottom"
+              onClick={handleButtonClick}
+              icon={<UserOutlined />}
+            >
+              {userDropdownTitle}
             </Dropdown.Button>
           )}
         </ul>

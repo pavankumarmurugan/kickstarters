@@ -38,11 +38,11 @@ export const registerItems = [
 
 export const profileItems = [
   {
-    label: "Edit Profile",
-    key: "1",
+    label: "Profile",
+    key: "3",
   },
   {
     label: "Logout",
-    key: "2",
+    key: "4",
   },
 ];
