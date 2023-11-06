@@ -20,7 +20,7 @@ function HomePage() {
   useEffect(() => {
     debugger;
     if (getToken?.userRole === "JOBSEEKER") {
-      setFeaturedjobsHeading("Recent Jobs");
+      setFeaturedjobsHeading("Jobs");
     } else {
       setFeaturedjobsHeading("Posted Jobs");
     }
@@ -30,16 +30,22 @@ function HomePage() {
   const callHomeApi = async () => {
     debugger;
     let url = "";
-    if (getToken?.userRole === "JOBSEEKER") {
+    let headerObj = {};
+    if (
+      getToken?.userRole === "JOBSEEKER" ||
+      getToken?.userRole === undefined
+    ) {
       url = "http://localhost:8080/api/v1/job/service/allJobsForHomepage";
+      headerObj = {};
     } else {
+      headerObj = {
+        headers: {
+          Authorization: `${"Bearer "}${getToken?.token}`,
+        },
+      };
       url = "http://localhost:8080/api/v1/job/service/allPostedJobUser";
     }
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `${"Bearer "}${getToken?.token}`,
-      },
-    })
+    const response = await fetch(url, headerObj)
       .then((response) => response.json())
       .then((data) => {
         if (data?.length) {
