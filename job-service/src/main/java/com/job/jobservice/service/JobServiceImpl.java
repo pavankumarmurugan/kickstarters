@@ -18,7 +18,6 @@ import com.job.jobservice.repository.UserRepository;
 import com.job.jobservice.request.PostJobRequest;
 import com.job.jobservice.request.UpdateJobRequest;
 import com.job.jobservice.response.HomepageResponse;
-import com.job.jobservice.response.JobDetailsResponse;
 
 @Service
 public class JobServiceImpl implements JobService{
@@ -63,7 +62,19 @@ public class JobServiceImpl implements JobService{
 			homepageResponse.setJobId(jobEntity.getJobId());
 			homepageResponse.setJobTitle(jobEntity.getJobTitle());
 			homepageResponse.setJobDesc(jobEntity.getJobDesc());
-			homepageResponse.setSalary(jobEntity.getJobSalary());
+			homepageResponse.setJobDuration(jobEntity.getJobDuration());
+			homepageResponse.setJobLocation(jobEntity.getJobLocation());
+			homepageResponse.setJobPostedBy(jobEntity.getJobPostedBy().getUserEmail());
+			homepageResponse.setJobPostTime(jobEntity.getJobPostTime());
+			homepageResponse.setJobSalary(jobEntity.getJobSalary());
+			homepageResponse.setJobSkill(jobEntity.getJobSkill());
+			if(Boolean.TRUE.equals(jobEntity.getJobStatus())) {
+				homepageResponse.setJobStatus("Open");
+			} else {
+				homepageResponse.setJobStatus("Closed");
+			}
+			homepageResponse.setJobUpdateTime(jobEntity.getJobUpdateTime());
+			homepageResponse.setJobWorkExperience(jobEntity.getJobWorkExperience());
 			homepageResponseList.add(homepageResponse);
 		}
 		return homepageResponseList;
@@ -82,7 +93,7 @@ public class JobServiceImpl implements JobService{
 		jobEntity.setJobLocation(postJobRequest.getJobLocation());
 		jobEntity.setJobSalary(postJobRequest.getJobSalary());
 		jobEntity.setJobSkill(postJobRequest.getJobSkill());
-		jobEntity.setJobWorkExperice(postJobRequest.getJobWorkExperice());
+		jobEntity.setJobWorkExperience(postJobRequest.getJobWorkExperience());
 		jobEntity.setJobPostedBy(userEntity.get());
 		jobEntity.setJobPostTime(LocalDateTime.now());
 		jobEntity.setJobStatus(Boolean.TRUE);
@@ -117,7 +128,7 @@ public class JobServiceImpl implements JobService{
 		jobEntity.setJobLocation(updateJobRequest.getJobLocation());
 		jobEntity.setJobSalary(updateJobRequest.getJobSalary());
 		jobEntity.setJobSkill(updateJobRequest.getJobSkill());
-		jobEntity.setJobWorkExperice(updateJobRequest.getJobWorkExperice());
+		jobEntity.setJobWorkExperience(updateJobRequest.getJobWorkExperience());
 		jobEntity.setJobUpdateTime(LocalDateTime.now());
 
 		jobRepository.save(jobEntity);
@@ -171,46 +182,96 @@ public class JobServiceImpl implements JobService{
 			homepageResponse.setJobId(jobEntity.getJobId());
 			homepageResponse.setJobTitle(jobEntity.getJobTitle());
 			homepageResponse.setJobDesc(jobEntity.getJobDesc());
-			homepageResponse.setSalary(jobEntity.getJobSalary());
+			homepageResponse.setJobDuration(jobEntity.getJobDuration());
+			homepageResponse.setJobLocation(jobEntity.getJobLocation());
+			homepageResponse.setJobPostedBy(jobEntity.getJobPostedBy().getUserEmail());
+			homepageResponse.setJobPostTime(jobEntity.getJobPostTime());
+			homepageResponse.setJobSalary(jobEntity.getJobSalary());
+			homepageResponse.setJobSkill(jobEntity.getJobSkill());
+			if(Boolean.TRUE.equals(jobEntity.getJobStatus())) {
+				homepageResponse.setJobStatus("Open");
+			} else {
+				homepageResponse.setJobStatus("Closed");
+			}
+			homepageResponse.setJobUpdateTime(jobEntity.getJobUpdateTime());
+			homepageResponse.setJobWorkExperience(jobEntity.getJobWorkExperience());
 			homepageResponseList.add(homepageResponse);
 		}
 		return homepageResponseList;
 	}
 	
-	public JobDetailsResponse getJobDetailsByUser(String userEmail, Long jobId) {
-		JobDetailsResponse jobDetailsResponse = new JobDetailsResponse();
-		
-		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobId(jobId);
+//	public JobDetailsResponse getJobDetailsByUser(String userEmail, Long jobId) {
+//		JobDetailsResponse jobDetailsResponse = new JobDetailsResponse();
+//		
+//		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobId(jobId);
+//
+//		if(jobEntityOpt.isEmpty()) {
+//			throw new IllegalArgumentException("Job not found");
+//		}
+//		
+//		JobEntity jobEntity = jobEntityOpt.get();
+//		
+//		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
+//
+//		if(userEntity.isEmpty() || !userEmail.equals(jobEntity.getJobPostedBy().getUserEmail())) {
+//			throw new IllegalArgumentException("Not valid user to fetch job details");
+//		}
+//		
+//		jobDetailsResponse.setJobId(jobEntity.getJobId());
+//		jobDetailsResponse.setJobTitle(jobEntity.getJobTitle());
+//		jobDetailsResponse.setJobDesc(jobEntity.getJobDesc());
+//		jobDetailsResponse.setJobDuration(jobEntity.getJobDuration());
+//		jobDetailsResponse.setJobLocation(jobEntity.getJobLocation());
+//		jobDetailsResponse.setJobPostedBy(userEmail);
+//		jobDetailsResponse.setJobPostTime(jobEntity.getJobPostTime());
+//		jobDetailsResponse.setJobSalary(jobEntity.getJobSalary());
+//		jobDetailsResponse.setJobSkill(jobEntity.getJobSkill());
+//		if(Boolean.TRUE.equals(jobEntity.getJobStatus())) {
+//			jobDetailsResponse.setJobStatus("Open");
+//		} else {
+//			jobDetailsResponse.setJobStatus("Closed");
+//		}
+//		jobDetailsResponse.setJobUpdateTime(jobEntity.getJobUpdateTime());
+//		jobDetailsResponse.setJobWorkExperience(jobEntity.getJobWorkExperience());
+//
+//		return jobDetailsResponse;
+//	}
 
-		if(jobEntityOpt.isEmpty()) {
-			throw new IllegalArgumentException("Job not found");
-		}
-		
-		JobEntity jobEntity = jobEntityOpt.get();
-		
-		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
-
-		if(userEntity.isEmpty() || !userEmail.equals(jobEntity.getJobPostedBy().getUserEmail())) {
-			throw new IllegalArgumentException("Not valid user to fetch job details");
-		}
-		
-		jobDetailsResponse.setJobId(jobEntity.getJobId());
-		jobDetailsResponse.setJobTitle(jobEntity.getJobTitle());
-		jobDetailsResponse.setJobDesc(jobEntity.getJobDesc());
-		jobDetailsResponse.setJobDuration(jobEntity.getJobDuration());
-		jobDetailsResponse.setJobLocation(jobEntity.getJobLocation());
-		jobDetailsResponse.setJobPostedBy(userEmail);
-		jobDetailsResponse.setJobPostTime(jobEntity.getJobPostTime());
-		jobDetailsResponse.setJobSalary(jobEntity.getJobSalary());
-		jobDetailsResponse.setJobSkill(jobEntity.getJobSkill());
-		if(Boolean.TRUE.equals(jobEntity.getJobStatus())) {
-			jobDetailsResponse.setJobStatus("Open");
-		} else {
-			jobDetailsResponse.setJobStatus("Closed");
-		}
-		jobDetailsResponse.setJobUpdateTime(jobEntity.getJobUpdateTime());
-		jobDetailsResponse.setJobWorkExperice(jobEntity.getJobWorkExperice());
-
-		return jobDetailsResponse;
-	}
+//	@Override
+//	public Object getJobDetailsByJobSeeker(String userEmail, Long jobId) {
+//		JobDetailsResponse jobDetailsResponse = new JobDetailsResponse();
+//
+//		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobId(jobId);
+//
+//		if(jobEntityOpt.isEmpty()) {
+//			throw new IllegalArgumentException("Job not found");
+//		}
+//
+//		JobEntity jobEntity = jobEntityOpt.get();
+//
+//		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.JOBSEEKER);
+//
+//		if(userEntity.isEmpty() || !userEmail.equals(userEntity.get().getUserEmail())) {
+//			throw new IllegalArgumentException("Not valid user to fetch job details");
+//		}
+//
+//		jobDetailsResponse.setJobId(jobEntity.getJobId());
+//		jobDetailsResponse.setJobTitle(jobEntity.getJobTitle());
+//		jobDetailsResponse.setJobDesc(jobEntity.getJobDesc());
+//		jobDetailsResponse.setJobDuration(jobEntity.getJobDuration());
+//		jobDetailsResponse.setJobLocation(jobEntity.getJobLocation());
+//		jobDetailsResponse.setJobPostedBy(userEmail);
+//		jobDetailsResponse.setJobPostTime(jobEntity.getJobPostTime());
+//		jobDetailsResponse.setJobSalary(jobEntity.getJobSalary());
+//		jobDetailsResponse.setJobSkill(jobEntity.getJobSkill());
+//		if(Boolean.TRUE.equals(jobEntity.getJobStatus())) {
+//			jobDetailsResponse.setJobStatus("Open");
+//		} else {
+//			jobDetailsResponse.setJobStatus("Closed");
+//		}
+//		jobDetailsResponse.setJobUpdateTime(jobEntity.getJobUpdateTime());
+//		jobDetailsResponse.setJobWorkExperience(jobEntity.getJobWorkExperience());
+//
+//		return jobDetailsResponse;
+//	}
 }

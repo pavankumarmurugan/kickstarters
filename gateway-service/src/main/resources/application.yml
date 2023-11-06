@@ -13,6 +13,8 @@ spring:
           uri: lb://PROFILE-SERVICE
           predicates:
             - Path=/api/v1/auth/**
+          filters:
+            - AuthenticationFilter
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       globalcors:

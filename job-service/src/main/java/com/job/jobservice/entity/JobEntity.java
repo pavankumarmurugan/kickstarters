@@ -50,8 +50,8 @@ public class JobEntity {
     @Column(name = "skill", nullable=false)
     private String jobSkill;
 
-    @Column(name = "job_workExperice")
-    private String jobWorkExperice;
+    @Column(name = "job_workExperience")
+    private String jobWorkExperience;
 
     @ManyToOne
     @JoinColumn(
@@ -126,12 +126,12 @@ public class JobEntity {
 		this.jobSkill = jobSkill;
 	}
 
-	public String getJobWorkExperice() {
-		return jobWorkExperice;
+	public String getJobWorkExperience() {
+		return jobWorkExperience;
 	}
 
-	public void setJobWorkExperice(String jobWorkExperice) {
-		this.jobWorkExperice = jobWorkExperice;
+	public void setJobWorkExperience(String jobWorkExperience) {
+		this.jobWorkExperience = jobWorkExperience;
 	}
 
 	public UserEntity getJobPostedBy() {

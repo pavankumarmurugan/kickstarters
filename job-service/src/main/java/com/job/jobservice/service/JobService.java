@@ -6,7 +6,6 @@ import java.util.Map;
 import com.job.jobservice.request.PostJobRequest;
 import com.job.jobservice.request.UpdateJobRequest;
 import com.job.jobservice.response.HomepageResponse;
-import com.job.jobservice.response.JobDetailsResponse;
 
 public interface JobService {
 	List<HomepageResponse> getAllJobs();
@@ -19,5 +18,7 @@ public interface JobService {
 	
 	public List<HomepageResponse> getAllPostedJobsByUser(String userEmail);
 	
-	JobDetailsResponse getJobDetailsByUser(String userEmail, Long jobId);
+//	JobDetailsResponse getJobDetailsByUser(String userEmail, Long jobId);
+
+//	Object getJobDetailsByJobSeeker(String userEmail, Long jobId);
 }
