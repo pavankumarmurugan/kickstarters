@@ -7,7 +7,7 @@ import {
   showToastSuccess,
 } from "../GenericToaster/GenericToaster";
 
-function FeaturedData({ data }) {
+function FeaturedData({ wholeData, data }) {
   let getToken = userSpecificToken();
   const [openModal, setOpenModal] = useState(false);
   const [updateApiData, setUpdateApiData] = useState({});
@@ -17,31 +17,10 @@ function FeaturedData({ data }) {
   };
   const handleDetailPost = async (e) => {
     debugger;
-    let jobId = Number(e.target.id);
-    const response = await fetch(
-      `http://localhost:8080/api/v1/job/service/jobDetailsUser?jobId=${jobId}`,
-      {
-        headers: {
-          Authorization: `${"Bearer "}${getToken?.token}`,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        if (data !== null && data !== undefined) {
-          showToastSuccess("Api Called Successfully.");
-          setUpdateApiData(data);
-          setTimeout(() => {
-            setOpenModal(true);
-          }, [1000]);
-        } else {
-          showToastError(data?.message);
-        }
-      })
-      .catch((err) => {
-        showToastError(err);
-        console.log(err);
-      });
+    console.log(wholeData);
+    const filterData = wholeData.filter((x) => x.jobId === Number(e.target.id));
+    setUpdateApiData(filterData[0]);
+    setOpenModal(true);
   };
   /** detail modal open and functions */
 
@@ -97,11 +76,11 @@ function FeaturedData({ data }) {
       <div className="t-card">
         <div className="jobtitle-salary">
           <h4>{data?.jobTitle}</h4>
-          <p>€{data?.salary}</p>{" "}
+          <p>€{data?.jobSalary}</p>{" "}
           {/** need to change this variable into jobSalary from backend  */}
         </div>
         <p>{data?.jobDesc}</p>
-        {getToken?.userRole === "JOBSEEKER" ? (
+        {/* {getToken?.userRole === "JOBSEEKER" ? ( // will work on this for jobseeker
           <div>
             <input
               style={{ float: "right" }}
@@ -112,7 +91,8 @@ function FeaturedData({ data }) {
               onClick={handleDetailPost}
             />
           </div>
-        ) : (
+        ) : ( */}
+        {getToken?.userRole === "EMPLOYER" && data?.jobStatus === "Open" ? (
           <div>
             <input
               style={{ float: "right" }}
@@ -123,6 +103,11 @@ function FeaturedData({ data }) {
               onClick={handleDetailPost}
             />
           </div>
+        ) : getToken?.userRole === "EMPLOYER" &&
+          data?.jobStatus === "Closed" ? (
+          <h4 style={{ float: "right" }}>Job Closed</h4>
+        ) : (
+          <></>
         )}
       </div>
     </>

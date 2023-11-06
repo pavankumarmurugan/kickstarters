@@ -91,6 +91,8 @@ function Signup() {
       showToastError("Last Name can not be empty.");
       return;
     }
+    delete formData["loginEmail"];
+    delete formData["loginPassword"];
     const response = await fetch(
       "http://localhost:8080/api/v1/auth/registerUser",
       {

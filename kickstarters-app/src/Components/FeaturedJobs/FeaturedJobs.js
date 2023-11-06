@@ -9,7 +9,7 @@ function FeaturedJobs(props) {
       <h1>{props?.heading}</h1>
       <div className="featuredjobscard">
         {props.data.map((item, index) => (
-          <FeaturedData key={index} data={item} />
+          <FeaturedData wholeData={props?.data} key={index} data={item} />
         ))}
       </div>
     </div>

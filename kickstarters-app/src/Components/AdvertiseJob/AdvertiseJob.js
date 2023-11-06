@@ -203,11 +203,11 @@ function AdvertiseJobsModal(props) {
               onChange={handleChange}
             />
             <h3>Job Description:</h3>
-            <input
+            <textarea
               style={{ width: "100%" }}
               type="text"
               placeholder="Description"
-              className="textfield"
+              className="textArea"
               maxLength={10000}
               name="jobDesc"
               value={postFormData.jobDesc}

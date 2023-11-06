@@ -17,7 +17,6 @@ export default function Navbar() {
 
   /** useStates */
   const [showHideHamburgerIcon, setShowHideHamburgerIcon] = useState(true);
-  const [user, setUser] = useState({});
   const [openProfile, setOpenProfile] = useState(false);
   const [userDropdownTitle, setUserDropdownTitle] = useState("");
 
@@ -28,7 +27,6 @@ export default function Navbar() {
   useEffect(() => {
     debugger;
     let userDetails = getToken;
-    setUser(userDetails);
     if (userDetails?.userRole === "JOBSEEKER") {
       setUserDropdownTitle(userDetails.userEmail.charAt(0).toLocaleUpperCase());
     } else if (userDetails?.userRole === "EMPLOYER") {
@@ -41,7 +39,9 @@ export default function Navbar() {
   /**useEffects */
 
   /** register and profile dropdown */
-
+  const handleSignUp = () => {
+    navigate("/signup");
+  };
   const handleButtonClick = (e) => {
     if (getToken) {
       return;
@@ -113,7 +113,7 @@ export default function Navbar() {
               </li>
             );
           })}
-          {user ? (
+          {userDropdownTitle !== "Register" ? (
             <Dropdown.Button
               menu={profileMenuProps}
               placement="bottom"
@@ -123,14 +123,12 @@ export default function Navbar() {
               {userDropdownTitle}
             </Dropdown.Button>
           ) : (
-            <Dropdown.Button
-              menu={registerMenuProps}
-              placement="bottom"
-              onClick={handleButtonClick}
-              icon={<UserOutlined />}
-            >
-              {userDropdownTitle}
-            </Dropdown.Button>
+            <input
+              type="button"
+              className="custombtndark"
+              value="Login"
+              onClick={handleSignUp}
+            />
           )}
         </ul>
       </nav>
