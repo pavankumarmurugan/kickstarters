@@ -19,7 +19,10 @@ function HomePage() {
   /** home data api */
   useEffect(() => {
     debugger;
-    if (getToken?.userRole === "JOBSEEKER") {
+    if (
+      getToken?.userRole === "JOBSEEKER" ||
+      getToken?.userRole === undefined
+    ) {
       setFeaturedjobsHeading("Jobs");
     } else {
       setFeaturedjobsHeading("Posted Jobs");
