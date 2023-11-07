@@ -23,9 +23,26 @@ export const MenuItems = [
     cName: "nav-links",
     icon: "fas fa-address-book margin-icons",
   },
+];
+
+export const registerItems = [
   {
-    title: "SignUp",
-    url: "/signUp",
-    cName: "nav-links-mobile margin-icons",
+    label: "Login",
+    key: "1",
+  },
+  {
+    label: "Signup",
+    key: "2",
+  },
+];
+
+export const profileItems = [
+  {
+    label: "Profile",
+    key: "3",
+  },
+  {
+    label: "Logout",
+    key: "4",
   },
 ];

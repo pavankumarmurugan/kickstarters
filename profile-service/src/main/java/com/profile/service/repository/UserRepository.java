@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.profile.service.entity.Role;
 import com.profile.service.entity.UserEntity;
 
 @Repository
@@ -15,6 +16,8 @@ import com.profile.service.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	
 	Optional<UserEntity> findByUserEmail(String userEmail);
+	
+	Optional<UserEntity> findByUserEmailAndUserRole(String userEmail, Role role);
 	
 	Boolean existsByUserEmail(String email);
 	

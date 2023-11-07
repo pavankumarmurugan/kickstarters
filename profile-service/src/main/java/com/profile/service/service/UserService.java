@@ -13,4 +13,6 @@ public interface UserService {
 	
 	String confirmToken(String token);
 	
+	void validateToken(String token);
+	
 }

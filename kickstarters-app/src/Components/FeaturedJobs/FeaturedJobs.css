@@ -16,7 +16,8 @@
     
     margin-top: 3rem;
     display: flex !important;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    flex-wrap: wrap;
 }
 
 /** now styling card*/
@@ -28,6 +29,19 @@
     border-radius: 7px;
     cursor: pointer;
     padding: 1rem;
+    margin-bottom: 20px;
+    max-height: 250px;
+    word-wrap: break-word;
+}
+
+.joblist-maincard .t-card{
+    width: 48.5%;
+}
+
+
+.jobtitle-salary{
+    display: flex;
+    justify-content: space-between;
 }
 
 /** styling card images */
@@ -68,6 +82,11 @@
         flex-direction: column;
     }
     .t-card{
+        width: 100%;
+        margin-bottom: 1.5rem;
+        max-height: 300px;
+    }
+    .joblist-maincard .t-card{
         width: 100%;
         margin-bottom: 1.5rem;
     }

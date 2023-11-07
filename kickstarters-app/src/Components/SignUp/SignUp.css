@@ -37,6 +37,38 @@ input {
   z-index: 5;
 }
 
+.custombtndark{
+  background-color:#F0F0F0;
+  color: #151516;
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.6s ease-in-out;
+  margin-left: 8px;
+}
+
+.custombtndark:hover{
+  background-color: #151516;
+  color: #fff;
+}
+
+.errorbtn{
+  background-color:red;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.6s ease-in-out;
+}
+
 form {
   display: flex;
   align-items: center;
@@ -75,39 +107,26 @@ form.sign-in-form {
   border: 1px solid #2a2a2a;
 }
 
-/* .input-field {
-  max-width: 380px;
-  width: 100%;
-  margin: 10px 0;
-  height: 55px;
-  border-radius: 55px;
-  grid-template-columns: 15% 85%;
-  padding: 0 0.4rem;
-  position: relative;
+.errorTextfield{
+  border: 1px solid red !important;
+  color: red !important;
 }
-
-.input-field i {
-  text-align: center;
-  line-height: 55px;
-  color: #acacac;
-  transition: 0.5s;
-  font-size: 1.1rem;
-} */
-
-/* .input-field input {
-  background: none;
-  outline: none;
-  border: none;
-  line-height: 1;
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: #333;
-} */
-
-/* .input-field input::placeholder {
-  color: #aaa;
-  font-weight: 500;
-} */
+.errorTextfield:hover{
+  border: 1px solid red !important;
+  color: red !important;
+}
+.errorTextfield:focus{
+  border: 1px solid red !important;
+  color: red !important;
+}
+.errorTextfield:target{
+  border: 1px solid red !important;
+  color: red !important;
+}
+.errorTextfield:focus-within{
+  border: 1px solid red !important;
+  color: red !important;
+}
 
 .social-text {
   padding: 0.7rem 0;
@@ -256,6 +275,14 @@ form.sign-in-form {
 .container.sign-up-mode .right-panel {
   pointer-events: all;
 }
+
+.passwordError{
+  display: flex;
+  line-height: 1 !important;
+  text-align: left;
+}
+
+/** media queries for small screens*/
 
 @media (max-width: 870px) {
   .container {

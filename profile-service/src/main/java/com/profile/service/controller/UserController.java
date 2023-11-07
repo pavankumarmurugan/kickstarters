@@ -27,25 +27,16 @@ public class UserController {
 	@PostMapping("/registerUser")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
 		UserRegisterResponse userRegisterResponse = new UserRegisterResponse();
-		try {
-			userRegisterResponse = userService.registerUser(userRegisterRequest);
-		} catch(Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-
+		userRegisterResponse = userService.registerUser(userRegisterRequest);
 		return ResponseEntity.ok(userRegisterResponse);
 
 	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> userSignin(
-			@RequestBody UserSignInRequest userSignInRequest) {
+			@Valid @RequestBody UserSignInRequest userSignInRequest) {
 		UserSignInResponse userSignInResponse = new UserSignInResponse();
-		try {
-			userSignInResponse = userService.userSignIn(userSignInRequest);
-		} catch(Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		userSignInResponse = userService.userSignIn(userSignInRequest);
 		return ResponseEntity.ok(userSignInResponse);
 	}
 
@@ -53,4 +44,10 @@ public class UserController {
 	public ResponseEntity<?> confirm(@RequestParam("token") String token) {
 		return ResponseEntity.ok(userService.confirmToken(token));
 	}
+	
+	@GetMapping("/validateToken")
+	public String validateToken(@RequestParam("token") String token) {
+		userService.validateToken(token);
+		return "Token is valid";
+	} 
 }

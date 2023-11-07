@@ -1,0 +1,77 @@
+.joblists-main{
+    background-color: #01959a;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-align: center;
+    /* padding-bottom: 3%; */
+}
+
+.joblist-search{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding-top: 140px;
+}
+
+.joblist-search{
+    width: 100%;
+}
+
+.joblist-maincard .search_textfield{
+    background-color: #01959a;
+    border: 1px solid black;
+    color: #fff;
+}
+.joblist-maincard .search-btn{
+    background-color: #01959a;
+    border: 1px solid black;
+    color: #fff;
+}
+.joblist-maincard .search-btn:hover{
+    background-color: #01959a;
+    color: black;
+}
+
+.cards{
+    margin-top: 1.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+}
+
+.joblist-maincard{
+    justify-content: center;
+    align-items: baseline;
+    padding-top: 140px;
+    width: 95%;
+    margin-left: 50%;
+    transform: translate(-50%);
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 2%;
+    overflow: hidden;
+    padding: 3% 3% 3% 3%;
+}
+
+.joblists-main input::placeholder {
+    color: #fff !important;
+}
+
+
+/** media queries */
+
+@media screen and (max-width: 850px){
+    .joblists-main{
+        height: 100%;
+        /* padding-bottom: 3%; */
+    }
+    .cards{
+        flex-direction: column;
+    }
+    .joblist-maincard{
+        padding-bottom: 3%;
+    }
+}
+
