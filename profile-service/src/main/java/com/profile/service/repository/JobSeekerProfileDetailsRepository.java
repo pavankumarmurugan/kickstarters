@@ -13,4 +13,6 @@ public interface JobSeekerProfileDetailsRepository extends JpaRepository<JobSeek
 
 
     Optional<JobSeekerProfileEntity> findByUserId(UserEntity userEntity);
+
+
 }
