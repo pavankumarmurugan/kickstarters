@@ -40,4 +40,44 @@ public class JobSeekerSkillEntity {
             name = "user_id"
     )
     private UserEntity userId;
+
+    public Long getSkillId() {
+        return skillId;
+    }
+
+    public void setSkillId(Long skillId) {
+        this.skillId = skillId;
+    }
+
+    public String getSkillTitle() {
+        return skillTitle;
+    }
+
+    public void setSkillTitle(String skillTitle) {
+        this.skillTitle = skillTitle;
+    }
+
+    public String getSkillDiscription() {
+        return skillDiscription;
+    }
+
+    public void setSkillDiscription(String skillDiscription) {
+        this.skillDiscription = skillDiscription;
+    }
+
+    public Long getSkillRating() {
+        return skillRating;
+    }
+
+    public void setSkillRating(Long skillRating) {
+        this.skillRating = skillRating;
+    }
+
+    public UserEntity getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UserEntity userId) {
+        this.userId = userId;
+    }
 }

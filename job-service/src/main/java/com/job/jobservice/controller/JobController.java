@@ -43,6 +43,11 @@ public class JobController {
 	public ResponseEntity<?> closeJob(@RequestHeader("loggedInUser") String userEmail, @RequestParam("jobId") Long jobId) {
 		return ResponseEntity.ok(jobService.closeJob(userEmail,jobId));
 	}
+
+	@PostMapping("/applyJob")
+	public ResponseEntity<?> applyJob(@RequestHeader("loggedInUser") String userEmail, @RequestParam("jobId") Long jobId) {
+		return ResponseEntity.ok(jobService.applyJob(userEmail,jobId));
+	}
 	
 //	@GetMapping("/jobDetailsUser")
 //	public ResponseEntity<?> jobDetailsUser(@RequestHeader("loggedInUser") String userEmail, @RequestParam("jobId") Long jobId) {

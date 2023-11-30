@@ -41,4 +41,44 @@ public class JobSeekerExperienceEntity {
             name = "user_id"
     )
     private UserEntity userId;
+
+    public Long getJobExperienceId() {
+        return jobExperienceId;
+    }
+
+    public String getJobExperienceTitle() {
+        return jobExperienceTitle;
+    }
+
+    public String getJobExperienceDescription() {
+        return jobExperienceDescription;
+    }
+
+    public String getJobExperienceDuration() {
+        return jobExperienceDuration;
+    }
+
+    public UserEntity getUserId() {
+        return userId;
+    }
+
+    public void setJobExperienceId(Long jobExperienceId) {
+        this.jobExperienceId = jobExperienceId;
+    }
+
+    public void setJobExperienceTitle(String jobExperienceTitle) {
+        this.jobExperienceTitle = jobExperienceTitle;
+    }
+
+    public void setJobExperienceDescription(String jobExperienceDescription) {
+        this.jobExperienceDescription = jobExperienceDescription;
+    }
+
+    public void setJobExperienceDuration(String jobExperienceDuration) {
+        this.jobExperienceDuration = jobExperienceDuration;
+    }
+
+    public void setUserId(UserEntity userId) {
+        this.userId = userId;
+    }
 }
