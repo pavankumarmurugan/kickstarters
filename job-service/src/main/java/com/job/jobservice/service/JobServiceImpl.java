@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.job.jobservice.entity.JobApplicationEntity;
+import com.job.jobservice.repository.JobApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ import com.job.jobservice.request.UpdateJobRequest;
 import com.job.jobservice.response.HomepageResponse;
 
 @Service
-public class JobServiceImpl implements JobService{
+public class JobServiceImpl implements JobService {
 
 	@Autowired
 	JobRepository jobRepository;
@@ -28,36 +30,16 @@ public class JobServiceImpl implements JobService{
 	@Autowired
 	UserRepository userRepository;
 
-	//    public List<HomepageResponse> getAllJobs() {
-	//        List<HomepageResponse> homepageResponses = new ArrayList<>();
-	//
-	//            List<Job> jobs = jobRepository.findAllOpenJob();
-	//            for (int i = 0; i < jobs.size(); i++) {
-	//                HomepageResponse homepageResponse = new HomepageResponse();
-	//                homepageResponse.setJobTitle(jobs.get(i).getJobTitle());
-	//                homepageResponse.setJobDesc(jobs.get(i).getJobDesc());
-	//                homepageResponse.setSalary(jobs.get(i).getSalary());
-	//                homepageResponses.add(homepageResponse);
-	//            }
-	//        return homepageResponses;
-	//
-	//    }
-	//
-	//    public Job addJob(Job job) {
-	//        if (job.getJobStatus() == null) {
-	//            job.setJobStatus(true); // 设置默认值
-	//        }
-	//        if (job.getPostTime() == null) {
-	//            job.setPostTime(new Date()); // 设置当前时间
-	//        }
-	//    }
-	//    
+	@Autowired
+	JobApplicationRepository jobApplicationRepository;
+
+
 	public List<HomepageResponse> getAllJobs() {
 
 		List<HomepageResponse> homepageResponseList = new ArrayList<>();
 
 		List<JobEntity> jobList = jobRepository.findByJobStatusTrue();
-		for(JobEntity jobEntity: jobList) {
+		for (JobEntity jobEntity : jobList) {
 			HomepageResponse homepageResponse = new HomepageResponse();
 			homepageResponse.setJobId(jobEntity.getJobId());
 			homepageResponse.setJobTitle(jobEntity.getJobTitle());
@@ -68,7 +50,7 @@ public class JobServiceImpl implements JobService{
 			homepageResponse.setJobPostTime(jobEntity.getJobPostTime());
 			homepageResponse.setJobSalary(jobEntity.getJobSalary());
 			homepageResponse.setJobSkill(jobEntity.getJobSkill());
-			if(Boolean.TRUE.equals(jobEntity.getJobStatus())) {
+			if (Boolean.TRUE.equals(jobEntity.getJobStatus())) {
 				homepageResponse.setJobStatus("Open");
 			} else {
 				homepageResponse.setJobStatus("Closed");
@@ -84,7 +66,7 @@ public class JobServiceImpl implements JobService{
 
 		JobEntity jobEntity = new JobEntity();
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
-		if(userEntity.isEmpty()) {
+		if (userEntity.isEmpty()) {
 			throw new IllegalArgumentException("User is not Valid");
 		}
 		jobEntity.setJobTitle(postJobRequest.getJobTitle());
@@ -110,7 +92,7 @@ public class JobServiceImpl implements JobService{
 
 		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobIdAndJobStatusTrue(updateJobRequest.getJobId());
 
-		if(jobEntityOpt.isEmpty()) {
+		if (jobEntityOpt.isEmpty()) {
 			throw new IllegalArgumentException("Job not found or job is closed");
 		}
 
@@ -118,7 +100,7 @@ public class JobServiceImpl implements JobService{
 
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
 
-		if(userEntity.isEmpty() || !userEmail.equals(jobEntity.getJobPostedBy().getUserEmail())) {
+		if (userEntity.isEmpty() || !userEmail.equals(jobEntity.getJobPostedBy().getUserEmail())) {
 			throw new IllegalArgumentException("Not valid user to update");
 		}
 
@@ -143,7 +125,7 @@ public class JobServiceImpl implements JobService{
 
 		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobIdAndJobStatusTrue(jobId);
 
-		if(jobEntityOpt.isEmpty()) {
+		if (jobEntityOpt.isEmpty()) {
 			throw new IllegalArgumentException("Job not found or job is already closed");
 		}
 
@@ -151,7 +133,7 @@ public class JobServiceImpl implements JobService{
 
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
 
-		if(userEntity.isEmpty() || !userEmail.equals(jobEntity.getJobPostedBy().getUserEmail())) {
+		if (userEntity.isEmpty() || !userEmail.equals(jobEntity.getJobPostedBy().getUserEmail())) {
 			throw new IllegalArgumentException("Not valid user to update");
 		}
 
@@ -172,12 +154,12 @@ public class JobServiceImpl implements JobService{
 
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
 
-		if(userEntity.isEmpty()) {
+		if (userEntity.isEmpty()) {
 			throw new IllegalArgumentException("Not valid user");
 		}
 
 		List<JobEntity> jobList = jobRepository.findByJobPostedBy(userEntity.get());
-		for(JobEntity jobEntity: jobList) {
+		for (JobEntity jobEntity : jobList) {
 			HomepageResponse homepageResponse = new HomepageResponse();
 			homepageResponse.setJobId(jobEntity.getJobId());
 			homepageResponse.setJobTitle(jobEntity.getJobTitle());
@@ -188,7 +170,7 @@ public class JobServiceImpl implements JobService{
 			homepageResponse.setJobPostTime(jobEntity.getJobPostTime());
 			homepageResponse.setJobSalary(jobEntity.getJobSalary());
 			homepageResponse.setJobSkill(jobEntity.getJobSkill());
-			if(Boolean.TRUE.equals(jobEntity.getJobStatus())) {
+			if (Boolean.TRUE.equals(jobEntity.getJobStatus())) {
 				homepageResponse.setJobStatus("Open");
 			} else {
 				homepageResponse.setJobStatus("Closed");
@@ -199,79 +181,46 @@ public class JobServiceImpl implements JobService{
 		}
 		return homepageResponseList;
 	}
-	
-//	public JobDetailsResponse getJobDetailsByUser(String userEmail, Long jobId) {
-//		JobDetailsResponse jobDetailsResponse = new JobDetailsResponse();
-//		
-//		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobId(jobId);
-//
-//		if(jobEntityOpt.isEmpty()) {
-//			throw new IllegalArgumentException("Job not found");
-//		}
-//		
-//		JobEntity jobEntity = jobEntityOpt.get();
-//		
-//		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
-//
-//		if(userEntity.isEmpty() || !userEmail.equals(jobEntity.getJobPostedBy().getUserEmail())) {
-//			throw new IllegalArgumentException("Not valid user to fetch job details");
-//		}
-//		
-//		jobDetailsResponse.setJobId(jobEntity.getJobId());
-//		jobDetailsResponse.setJobTitle(jobEntity.getJobTitle());
-//		jobDetailsResponse.setJobDesc(jobEntity.getJobDesc());
-//		jobDetailsResponse.setJobDuration(jobEntity.getJobDuration());
-//		jobDetailsResponse.setJobLocation(jobEntity.getJobLocation());
-//		jobDetailsResponse.setJobPostedBy(userEmail);
-//		jobDetailsResponse.setJobPostTime(jobEntity.getJobPostTime());
-//		jobDetailsResponse.setJobSalary(jobEntity.getJobSalary());
-//		jobDetailsResponse.setJobSkill(jobEntity.getJobSkill());
-//		if(Boolean.TRUE.equals(jobEntity.getJobStatus())) {
-//			jobDetailsResponse.setJobStatus("Open");
-//		} else {
-//			jobDetailsResponse.setJobStatus("Closed");
-//		}
-//		jobDetailsResponse.setJobUpdateTime(jobEntity.getJobUpdateTime());
-//		jobDetailsResponse.setJobWorkExperience(jobEntity.getJobWorkExperience());
-//
-//		return jobDetailsResponse;
-//	}
 
-//	@Override
-//	public Object getJobDetailsByJobSeeker(String userEmail, Long jobId) {
-//		JobDetailsResponse jobDetailsResponse = new JobDetailsResponse();
-//
-//		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobId(jobId);
-//
-//		if(jobEntityOpt.isEmpty()) {
-//			throw new IllegalArgumentException("Job not found");
-//		}
-//
-//		JobEntity jobEntity = jobEntityOpt.get();
-//
-//		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.JOBSEEKER);
-//
-//		if(userEntity.isEmpty() || !userEmail.equals(userEntity.get().getUserEmail())) {
-//			throw new IllegalArgumentException("Not valid user to fetch job details");
-//		}
-//
-//		jobDetailsResponse.setJobId(jobEntity.getJobId());
-//		jobDetailsResponse.setJobTitle(jobEntity.getJobTitle());
-//		jobDetailsResponse.setJobDesc(jobEntity.getJobDesc());
-//		jobDetailsResponse.setJobDuration(jobEntity.getJobDuration());
-//		jobDetailsResponse.setJobLocation(jobEntity.getJobLocation());
-//		jobDetailsResponse.setJobPostedBy(userEmail);
-//		jobDetailsResponse.setJobPostTime(jobEntity.getJobPostTime());
-//		jobDetailsResponse.setJobSalary(jobEntity.getJobSalary());
-//		jobDetailsResponse.setJobSkill(jobEntity.getJobSkill());
-//		if(Boolean.TRUE.equals(jobEntity.getJobStatus())) {
-//			jobDetailsResponse.setJobStatus("Open");
-//		} else {
-//			jobDetailsResponse.setJobStatus("Closed");
-//		}
-//		jobDetailsResponse.setJobUpdateTime(jobEntity.getJobUpdateTime());
-//		jobDetailsResponse.setJobWorkExperience(jobEntity.getJobWorkExperience());
-//
-//		return jobDetailsResponse;
-//	}
+
+
+	public Map<String, String> applyJob(String userEmail, Long jobId) {
+
+		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobIdAndJobStatusTrue(jobId);
+
+		if(jobEntityOpt.isEmpty()) {
+			throw new IllegalArgumentException("Job not found or job is already closed");
+		}
+
+		JobEntity jobEntity = jobEntityOpt.get();
+
+		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.JOBSEEKER);
+
+		if(userEntity.isEmpty()) {
+			throw new IllegalArgumentException("Not valid user to apply job");
+		}
+
+		Optional<JobApplicationEntity> jobApplicationEntityOpl = jobApplicationRepository.findByJobIdAndJobApplicationBy(jobEntity, userEntity.get());
+
+
+		if(!jobApplicationEntityOpl.isEmpty()) {
+			throw new IllegalArgumentException("User has already applied this job");
+		}
+
+		JobApplicationEntity jobApplicationEntity = new JobApplicationEntity();
+
+		jobApplicationEntity.setJobApplicationBy(userEntity.get());
+		jobApplicationEntity.setJobApplicationStatus(Boolean.TRUE);
+		jobApplicationEntity.setJobApplicationTime(LocalDateTime.now());
+		jobApplicationEntity.setJobApplicationStatusEmployer("In Progress");
+		jobApplicationEntity.setJobId(jobEntity);
+
+		jobApplicationRepository.save(jobApplicationEntity);
+
+		Map<String, String> response = new HashMap<>();
+		response.put("message", "Job applied successfully");
+
+		return response;
+	}
+
 }

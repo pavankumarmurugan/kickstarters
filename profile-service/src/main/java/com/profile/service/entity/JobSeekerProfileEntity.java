@@ -41,9 +41,39 @@ public class JobSeekerProfileEntity {
     )
     private UserEntity userId;
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
+    public Long getJobSeekerId() {
+        return jobSeekerId;
+    }
 
+    public void setJobSeekerId(Long jobSeekerId) {
+        this.jobSeekerId = jobSeekerId;
+    }
 
+    public String getJobSeekerLocation() {
+        return jobSeekerLocation;
+    }
 
+    public void setJobSeekerLocation(String jobSeekerLocation) {
+        this.jobSeekerLocation = jobSeekerLocation;
+    }
 
+    public String getJobSeekerMobileNo() {
+        return jobSeekerMobileNo;
+    }
+
+    public void setJobSeekerMobileNo(String jobSeekerMobileNo) {
+        this.jobSeekerMobileNo = jobSeekerMobileNo;
+    }
+
+    public UserEntity getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UserEntity userId) {
+        this.userId = userId;
+    }
 }

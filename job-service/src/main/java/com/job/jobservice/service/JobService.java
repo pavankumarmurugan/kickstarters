@@ -17,7 +17,9 @@ public interface JobService {
 	Map<String, String> closeJob(String userEmail, Long jobId);
 	
 	public List<HomepageResponse> getAllPostedJobsByUser(String userEmail);
-	
+
+	Map<String, String> applyJob(String userEmail, Long jobId);
+
 //	JobDetailsResponse getJobDetailsByUser(String userEmail, Long jobId);
 
 //	Object getJobDetailsByJobSeeker(String userEmail, Long jobId);
