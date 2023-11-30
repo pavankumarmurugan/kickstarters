@@ -1,13 +1,11 @@
 import { Modal } from "antd";
 import React, { useRef, useState } from "react";
 import Draggable from "react-draggable";
-import "./Profile.css";
 import { ToastContainer } from "react-toastify";
 import { userSpecificToken } from "../GenericCode/GenericCode";
-import { showToastError } from "../GenericToaster/GenericToaster";
-import { emailRegex, numericRegex } from "../GenericRegex/GenericRegex";
+import "./JobAlert.css";
 
-function Profile(props) {
+function JobAlert(props) {
   /**useStates */
   let getToken = userSpecificToken();
   const [disabled, setDisabled] = useState(true);
@@ -19,10 +17,10 @@ function Profile(props) {
   });
 
   const [profileData, setProfileData] = useState({
-    employerName: "",
-    employerEmail: "",
-    employerMobileNo: "",
-    employerLocation: "",
+    Name: "",
+    Skills: "",
+    Keyword: "",
+    Location: "",
   });
 
   /**useStates */
@@ -30,34 +28,34 @@ function Profile(props) {
   /**modal */
   const draggleRef = useRef(null);
   /** modal open function */
-  const handleOk = async (e) => {
-    // props?.okModalFunction(postFormData);
-    const response = await fetch(
-      `http://localhost:8080/api/v1/auth/profile/updateEmployerProfile`,
-      {
-        method: "POST",
-        headers: {
-          "Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-          Authorization: `${"Bearer "}${getToken?.token}`,
-        },
-        body: JSON.stringify(profileData),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        if (data?.length) {
-          // setHomepageJobsData(data);
-          // setOpenProfile(true);
-        } else {
-          showToastError(data?.message);
-        }
-      })
-      .catch((err) => {
-        showToastError(err);
-        console.log(err);
-      });
-  };
+  //   const handleOk = async (e) => {
+  //     // props?.okModalFunction(postFormData);
+  //     const response = await fetch(
+  //       `http://localhost:8080/api/v1/auth/profile/updateEmployerProfile`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Control-Allow-Origin": "*",
+  //           "Content-Type": "application/json",
+  //           Authorization: `${"Bearer "}${getToken?.token}`,
+  //         },
+  //         body: JSON.stringify(profileData),
+  //       }
+  //     )
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         if (data?.length) {
+  //           // setHomepageJobsData(data);
+  //           // setOpenProfile(true);
+  //         } else {
+  //           showToastError(data?.message);
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         showToastError(err);
+  //         console.log(err);
+  //       });
+  //   };
   /** modal close function */
   const handleCancel = (e) => {
     debugger;
@@ -86,25 +84,25 @@ function Profile(props) {
     const value = e.target.value;
 
     if (value !== null && value !== undefined) {
-      if (name === "employerMobileNo") {
-        if (numericRegex.test(value)) {
-          setProfileData((prevState) => ({
-            ...prevState,
-            [name]: value,
-          }));
-        }
-      } else if (name === "employerEmail") {
-        if (emailRegex.test(value))
-          setProfileData((prevState) => ({
-            ...prevState,
-            [name]: value,
-          }));
-      } else {
-        setProfileData((prevState) => ({
-          ...prevState,
-          [name]: value,
-        }));
-      }
+      //   if (name === "employerMobileNo") {
+      //     if (numericRegex.test(value)) {
+      //       setProfileData((prevState) => ({
+      //         ...prevState,
+      //         [name]: value,
+      //       }));
+      //     }
+      //   } else if (name === "employerEmail") {
+      //     if (emailRegex.test(value))
+      //       setProfileData((prevState) => ({
+      //         ...prevState,
+      //         [name]: value,
+      //       }));
+      //   } else {
+      setProfileData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+      //   }
     }
   };
 
@@ -132,12 +130,12 @@ function Profile(props) {
             onFocus={() => {}}
             onBlur={() => {}}
           >
-            {"My Profile"}
+            {"Job Alert"}
           </div>
         }
         style={{ top: 20, maxHeight: "700px" }}
         open={props.isShowModel}
-        onOk={handleOk}
+        // onOk={handleOk}
         width="60%"
         maskClosable={false}
         onCancel={handleCancel}
@@ -145,9 +143,9 @@ function Profile(props) {
           <>
             <input
               type="button"
-              value="Update"
+              value="Alert"
               className="custombtndark"
-              onClick={handleOk}
+              //   onClick={handleOk}
             />
             <input
               type="button"
@@ -168,8 +166,8 @@ function Profile(props) {
           </Draggable>
         )}
       >
-        <div className="postjobs">
-          <h2>Personal Details</h2>
+        <div className="alertjobs-main">
+          {/* <h2>Personal Details</h2> */}
           <div className="title-salary">
             <h3>Name:</h3>
             <input
@@ -182,7 +180,7 @@ function Profile(props) {
               value={profileData.employerName}
               onChange={handleChange}
             />
-            <h3>Email:</h3>
+            <h3>Skills:</h3>
             <input
               style={{ width: "100%" }}
               type="text"
@@ -192,10 +190,9 @@ function Profile(props) {
               name="employerEmail"
               value={profileData.employerEmail}
               onChange={handleChange}
-              disabled={true}
             />
           </div>
-          <h3>Phone Number:</h3>
+          <h3>Keyword:</h3>
           <input
             style={{ width: "100%" }}
             type="text"
@@ -223,4 +220,4 @@ function Profile(props) {
   );
 }
 
-export default Profile;
+export default JobAlert;

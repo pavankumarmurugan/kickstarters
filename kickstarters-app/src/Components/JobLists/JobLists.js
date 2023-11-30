@@ -7,7 +7,7 @@ import Footer from "../Footer/Footer";
 function JobLists() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="joblists-main">
         <div className="joblist-search"></div>
         <div className="joblist-maincard">
