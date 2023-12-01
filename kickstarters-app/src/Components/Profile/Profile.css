@@ -22,3 +22,15 @@
   height: 70vh !important;
   overflow-y: auto;
 }
+
+.experience-section{
+  /* border: 1px solid red; */
+}
+
+ol {
+  padding-left: 17px;
+}
+ul {
+  padding-left: 17px;
+  list-style-type: disc;
+}

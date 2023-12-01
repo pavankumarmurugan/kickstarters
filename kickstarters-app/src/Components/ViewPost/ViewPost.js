@@ -4,6 +4,10 @@ import Draggable from "react-draggable";
 import "./ViewPost.css";
 import { ToastContainer } from "react-toastify";
 import { userSpecificToken } from "../GenericCode/GenericCode";
+import {
+  showToastError,
+  showToastSuccess,
+} from "../GenericToaster/GenericToaster";
 
 function ViewPost(props) {
   /**useStates */
@@ -19,6 +23,7 @@ function ViewPost(props) {
     jobSalary: "",
     jobSkill: "",
     jobWorkExperience: "",
+    jobId: 0,
   });
   const [bounds, setBounds] = useState({
     left: 0,
@@ -72,6 +77,40 @@ function ViewPost(props) {
   }, []);
   /** useEffect */
 
+  /** apply function */
+
+  const handleApply = async () => {
+    debugger;
+    const response = await fetch(
+      `http://localhost:8080/api/v1/job/service/applyJob?jobId=${jobDetails.jobId}`,
+      {
+        method: "POST",
+        headers: {
+          "Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `${"Bearer "}${getToken?.token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.message === "Job applied successfully") {
+          showToastSuccess(data?.message);
+          setTimeout(() => {
+            handleCancel();
+          }, [1000]);
+        } else {
+          showToastError(data?.message);
+        }
+      })
+      .catch((err) => {
+        showToastError(err);
+        console.log(err);
+      });
+  };
+
+  /** apply function */
+
   return (
     <>
       <ToastContainer />
@@ -110,7 +149,7 @@ function ViewPost(props) {
               type="button"
               value="Apply"
               className="custombtndark"
-              //   onClick={handleOk}
+              onClick={handleApply}
             />
             <input
               type="button"

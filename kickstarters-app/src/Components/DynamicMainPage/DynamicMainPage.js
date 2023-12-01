@@ -6,9 +6,11 @@ import {
   showToastError,
   showToastSuccess,
 } from "../GenericToaster/GenericToaster";
+import { useNavigate } from "react-router-dom";
 
 function DynamicMainPage(props) {
   /** usestates */
+  const navigate = useNavigate();
   let getToken = userSpecificToken();
   const [openModal, setOpenModal] = useState(false);
   const [user, setUser] = useState(false);
@@ -65,6 +67,15 @@ function DynamicMainPage(props) {
   }, []);
   /** useEffects */
 
+  const searchButton = () => {
+    const dataToPass = {
+      //dummy data
+      jobId: 123,
+      jobTitle: "Software Engineer",
+    };
+    navigate("/jobs", { state: dataToPass });
+  };
+
   return (
     <div className={props?.cName}>
       {/** advertise job modal */}
@@ -85,7 +96,7 @@ function DynamicMainPage(props) {
           <>
             {/** this section is for users home page */}
             <h1>{props?.title}</h1>
-            <p>{props?.text}</p>
+            {/* <p>{props?.text}</p> */}
             {props?.showbtn && (
               <>
                 <input
@@ -93,7 +104,9 @@ function DynamicMainPage(props) {
                   placeholder="Search"
                   className="search_textfield"
                 />
-                <button className={props?.btnClass}>Search</button>
+                <button className={props?.btnClass} onClick={searchButton}>
+                  Search
+                </button>
               </>
             )}
             {/** this section is for users home page */}

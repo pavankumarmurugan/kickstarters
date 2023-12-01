@@ -22,6 +22,7 @@ export default function Navbar() {
   const [openProfile, setOpenProfile] = useState(false);
   const [userDropdownTitle, setUserDropdownTitle] = useState("");
   const [openJobAlert, setOpenJobAlert] = useState(false);
+  const [profileData, setProfileData] = useState(null);
 
   /** useStates */
 
@@ -62,14 +63,14 @@ export default function Navbar() {
       };
       let url =
         getToken?.userRole === "EMPLOYER"
-          ? "http://localhost:8080/api/v1/auth/profile/eployerProfileDetails"
-          : "";
+          ? "http://localhost:8080/api/v1/auth/profile/employerProfileDetails"
+          : "http://localhost:8080/api/v1/auth/profile/jobSeekerProfileDetails";
       const response = await fetch(url, headerObj)
         .then((response) => response.json())
         .then((data) => {
-          if (data?.length) {
-            // setHomepageJobsData(data);
-            // setOpenProfile(true);
+          if (data) {
+            setProfileData(data);
+            setOpenProfile(true);
           } else {
             showToastError(data?.message);
           }
@@ -78,7 +79,6 @@ export default function Navbar() {
           showToastError(err);
           console.log(err);
         });
-      setOpenProfile(true);
     } else if (e.key === "4") {
       localStorage.setItem("token", {});
       navigate("signup");
@@ -126,7 +126,7 @@ export default function Navbar() {
           closeModal={closeProfileModal}
           // okModalFunction={okModalFunction}
           from="NewPost"
-          data={null}
+          data={profileData}
         />
       )}
       {openJobAlert && (

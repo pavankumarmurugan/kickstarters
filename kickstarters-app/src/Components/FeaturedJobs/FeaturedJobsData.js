@@ -104,7 +104,7 @@ function FeaturedData({ wholeData, data }) {
         />
       )}
       {/** View Post Modal */}
-      <div className="t-card">
+      <div className="t-card" style={{ position: "relative" }}>
         <div className="jobtitle-salary">
           <h4>{data?.jobTitle}</h4>
           <p>€{data?.jobSalary}</p>{" "}
@@ -116,7 +116,9 @@ function FeaturedData({ wholeData, data }) {
 
         {getToken?.userRole === "EMPLOYER" ? (
           data?.jobStatus === "Open" ? (
-            <div>
+            <div
+              style={{ position: "absolute", bottom: "10px", right: "10px" }}
+            >
               <input
                 style={{ float: "right" }}
                 type="button"
@@ -128,12 +130,18 @@ function FeaturedData({ wholeData, data }) {
             </div>
           ) : (
             data?.jobStatus === "Closed" && (
-              <h4 style={{ float: "right" }}>Job Closed</h4>
+              <h4
+                style={{ position: "absolute", bottom: "10px", right: "10px" }}
+              >
+                Job Closed
+              </h4>
             )
           )
         ) : (
           getToken?.userRole === "JOBSEEKER" && (
-            <div>
+            <div
+              style={{ position: "absolute", bottom: "10px", right: "10px" }}
+            >
               <input
                 style={{ float: "right" }}
                 type="button"
