@@ -14,4 +14,6 @@ import com.job.jobservice.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	
 	Optional<UserEntity> findByUserEmailAndUserRole(String userEmail, Role role);
+
+	Optional<UserEntity> findByUserIdAndUserRole(Long userId, Role role);
 }

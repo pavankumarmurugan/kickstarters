@@ -25,4 +25,6 @@ public interface JobRepository extends JpaRepository<JobEntity, Long> {
     List<JobEntity> findByJobPostedBy(UserEntity userEntity);
     
     Optional<JobEntity> findByJobId(Long jobId);
+
+    List<JobEntity> findByJobTitleContainingIgnoreCaseAndJobStatusTrue(String jobTitle);
 }
