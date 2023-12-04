@@ -1,4 +1,4 @@
-.postjobs .textfield{
+.alertjobs-main .textfield{
     height: 3rem !important;
   width: 100% !important;
   padding: 0 1rem !important;
@@ -6,7 +6,7 @@
   border-radius: 0.3rem !important;
   border: 1px solid #2a2a2a !important;
 }
-.postjobs .textArea{
+.alertjobs-main .textArea{
     /* height: 3rem; */
   width: 100% !important;
   padding-top: 13px !important;
@@ -18,19 +18,7 @@
 .title-salary{
   /* display: flex; */
 }
-.postjobs{
-  height: 70vh !important;
+.alertjobs-main{
+  /* height: 70vh !important; */
   overflow-y: auto;
-}
-
-.experience-section{
-  /* border: 1px solid red; */
-}
-
-ol {
-  padding-left: 17px;
-}
-ul {
-  padding-left: 17px;
-  list-style-type: disc;
 }

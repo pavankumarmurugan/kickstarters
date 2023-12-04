@@ -38,6 +38,10 @@ export const registerItems = [
 
 export const profileItems = [
   {
+    label: "Job Alert",
+    key: "5",
+  },
+  {
     label: "Profile",
     key: "3",
   },

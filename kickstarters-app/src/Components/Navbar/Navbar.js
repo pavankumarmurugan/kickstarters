@@ -7,6 +7,8 @@ import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { userSpecificToken } from "../GenericCode/GenericCode";
 import Profile from "../Profile/Profile";
+import { showToastError } from "../GenericToaster/GenericToaster";
+import JobAlert from "../JobAlert/JobAlert";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -19,6 +21,8 @@ export default function Navbar() {
   const [showHideHamburgerIcon, setShowHideHamburgerIcon] = useState(true);
   const [openProfile, setOpenProfile] = useState(false);
   const [userDropdownTitle, setUserDropdownTitle] = useState("");
+  const [openJobAlert, setOpenJobAlert] = useState(false);
+  const [profileData, setProfileData] = useState(null);
 
   /** useStates */
 
@@ -48,13 +52,38 @@ export default function Navbar() {
     }
     navigate("/signup");
   };
-  const handleMenuClick = (e) => {
+  const handleMenuClick = async (e) => {
     debugger;
     if (e.key === "3") {
-      setOpenProfile(true);
+      //profile
+      let headerObj = {
+        headers: {
+          Authorization: `${"Bearer "}${getToken?.token}`,
+        },
+      };
+      let url =
+        getToken?.userRole === "EMPLOYER"
+          ? "http://localhost:8080/api/v1/auth/profile/employerProfileDetails"
+          : "http://localhost:8080/api/v1/auth/profile/jobSeekerProfileDetails";
+      const response = await fetch(url, headerObj)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data) {
+            setProfileData(data);
+            setOpenProfile(true);
+          } else {
+            showToastError(data?.message);
+          }
+        })
+        .catch((err) => {
+          showToastError(err);
+          console.log(err);
+        });
     } else if (e.key === "4") {
       localStorage.setItem("token", {});
       navigate("signup");
+    } else if (e.key === "5") {
+      setOpenJobAlert(true);
     }
   };
 
@@ -84,16 +113,30 @@ export default function Navbar() {
   };
   /** profile modal functions */
 
+  const closeJobAlertModal = () => {
+    setOpenJobAlert(false);
+  };
+
   return (
     <div>
       {/** profile modal */}
-      <Profile
-        isShowModel={openProfile}
-        closeModal={closeProfileModal}
-        // okModalFunction={okModalFunction}
-        from="NewPost"
-        data={null}
-      />
+      {openProfile && (
+        <Profile
+          isShowModel={openProfile}
+          closeModal={closeProfileModal}
+          // okModalFunction={okModalFunction}
+          from="NewPost"
+          data={profileData}
+        />
+      )}
+      {openJobAlert && (
+        <JobAlert
+          isShowModel={openJobAlert}
+          closeModal={closeJobAlertModal}
+          // okModalFunction={okModalFunction}
+          data={null}
+        />
+      )}
       {/** profile modal */}
       <nav className="NavbarItems">
         <h1 className="navbar-logo">KickStarters</h1>

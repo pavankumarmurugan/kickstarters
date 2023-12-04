@@ -410,3 +410,9 @@ form.sign-in-form {
     left: 50%;
   }
 }
+
+@media screen and (max-width: 850px){
+  .custombtndark{
+    margin-top: 10px;
+  }
+}

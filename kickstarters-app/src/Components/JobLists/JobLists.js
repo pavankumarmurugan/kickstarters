@@ -3,8 +3,13 @@ import "./JobLists.css";
 import FeaturedData from "../FeaturedJobs/FeaturedJobsData";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
+import { useLocation } from "react-router-dom";
 
 function JobLists() {
+  const location = useLocation();
+  const { state } = location;
+  debugger;
+  console.log(state, "state");
   return (
     <>
       <Navbar />

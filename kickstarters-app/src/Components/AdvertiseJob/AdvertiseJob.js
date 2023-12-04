@@ -9,6 +9,7 @@ import {
   showToastSuccess,
 } from "../GenericToaster/GenericToaster";
 import { ToastContainer } from "react-toastify";
+import { specialCharacterPattern } from "../GenericRegex/GenericRegex";
 
 function AdvertiseJobsModal(props) {
   let getToken = userSpecificToken();
@@ -70,7 +71,11 @@ function AdvertiseJobsModal(props) {
     debugger;
     const name = e.target.name;
     const value = e.target.value;
-    if (value !== null && value !== undefined) {
+    if (
+      value !== null &&
+      value !== undefined &&
+      !specialCharacterPattern.test(value)
+    ) {
       if (name === "jobSalary") {
         setPostFormData((prevState) => ({
           ...prevState,

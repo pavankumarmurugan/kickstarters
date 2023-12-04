@@ -1,5 +1,6 @@
 package com.job.jobservice.controller;
 
+import com.job.jobservice.request.CandidateStatusRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,14 +15,7 @@ import com.job.jobservice.request.PostJobRequest;
 import com.job.jobservice.request.UpdateJobRequest;
 import com.job.jobservice.service.JobService;
 
-/**
- * ClassName: JobController
- * Description:
- *
- * @Author: Jiaxin Zhang
- * @Creat: 03/11/2023 15:58
- * @Version: 1.8
- */
+
 @RestController
 @RequestMapping("/api/v1/job/service")
 public class JobController {
@@ -43,7 +37,36 @@ public class JobController {
 	public ResponseEntity<?> closeJob(@RequestHeader("loggedInUser") String userEmail, @RequestParam("jobId") Long jobId) {
 		return ResponseEntity.ok(jobService.closeJob(userEmail,jobId));
 	}
-	
+
+	@PostMapping("/applyJob")
+	public ResponseEntity<?> applyJob(@RequestHeader("loggedInUser") String userEmail, @RequestParam("jobId") Long jobId) {
+		return ResponseEntity.ok(jobService.applyJob(userEmail,jobId));
+	}
+
+	@GetMapping("/jobCandidateList")
+	public ResponseEntity<?> jobCandidateList(@RequestHeader("loggedInUser") String userEmail, @RequestParam("jobId") Long jobId) {
+		return ResponseEntity.ok(jobService.jobCandidateList(userEmail,jobId));
+	}
+
+	@PostMapping("/updateCandidateStatus")
+	public ResponseEntity<?> updateCandidateStatus(@RequestHeader("loggedInUser") String userEmail, @RequestBody CandidateStatusRequest candidateStatusRequest) {
+		return ResponseEntity.ok(jobService.updateCandidateStatus(userEmail, candidateStatusRequest));
+	}
+
+	@GetMapping("/jobseekerJobSearch")
+	public ResponseEntity<?> jobseekerJobSearch(@RequestParam("jobTitle") String jobTitle) {
+		return ResponseEntity.ok(jobService.jobseekerJobSearch(jobTitle));
+	}
+
+	@GetMapping("/jobseekerAllAppliedJobs")
+	public ResponseEntity<?> jobseekerAllAppliedJobs(@RequestHeader("loggedInUser") String userEmail) {
+		return ResponseEntity.ok(jobService.jobseekerAllAppliedJobs(userEmail));
+	}
+
+	@PostMapping("/cancelApplication")
+	public ResponseEntity<?> cancelApplication(@RequestHeader("loggedInUser") String userEmail, @RequestParam("jobId") Long jobId) {
+		return ResponseEntity.ok(jobService.cancelApplication(userEmail, jobId));
+	}
 //	@GetMapping("/jobDetailsUser")
 //	public ResponseEntity<?> jobDetailsUser(@RequestHeader("loggedInUser") String userEmail, @RequestParam("jobId") Long jobId) {
 //		return ResponseEntity.ok(jobService.getJobDetailsByUser(userEmail,jobId));

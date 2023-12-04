@@ -1,11 +1,14 @@
 package com.profile.service.request;
 
+import jakarta.validation.constraints.NotNull;
+
 public class UpdateEmplyerProfileRequest {
-	
+
 	private String employerMobileNo;
 
     private String employerLocation;
 
+    @NotNull
     private Long userId;
 
 	public String getEmployerMobileNo() {

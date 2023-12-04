@@ -6,11 +6,14 @@ import {
   showToastError,
   showToastSuccess,
 } from "../GenericToaster/GenericToaster";
+import { useNavigate } from "react-router-dom";
 
 function DynamicMainPage(props) {
   /** usestates */
+  const navigate = useNavigate();
   let getToken = userSpecificToken();
   const [openModal, setOpenModal] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
   const [user, setUser] = useState(false);
   /** usestates */
   /** modal functions */
@@ -65,6 +68,52 @@ function DynamicMainPage(props) {
   }, []);
   /** useEffects */
 
+  const handleChange = (e) => {
+    debugger;
+    const value = e.target.value;
+    if (value !== undefined && value !== null) {
+      const regexForNumAndAlp = /^[a-zA-Z0-9]+$/;
+      if (regexForNumAndAlp.test(value)) {
+        setSearchInput(value);
+      } else if (value === "") {
+        setSearchInput(value);
+      }
+    }
+  };
+
+  const searchButton = async () => {
+    debugger;
+    if (searchInput === "") {
+      return false;
+    }
+    const response = await fetch(
+      `http://localhost:8080/api/v1/job/service/jobseekerJobSearch?jobTitle=${searchInput}`,
+      {
+        headers: {
+          "Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `${"Bearer "}${getToken?.token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data !== null && data !== undefined) {
+          showToastSuccess("Api Called Successfully.");
+          setTimeout(() => {
+            window.location.reload(false);
+          }, [1000]);
+        } else {
+          showToastError(data?.message);
+        }
+      })
+      .catch((err) => {
+        showToastError(err);
+        console.log(err);
+      });
+    // navigate("/jobs", { state: dataToPass });
+  };
+
   return (
     <div className={props?.cName}>
       {/** advertise job modal */}
@@ -85,15 +134,19 @@ function DynamicMainPage(props) {
           <>
             {/** this section is for users home page */}
             <h1>{props?.title}</h1>
-            <p>{props?.text}</p>
+            {/* <p>{props?.text}</p> */}
             {props?.showbtn && (
               <>
                 <input
                   type="text"
                   placeholder="Search"
                   className="search_textfield"
+                  value={searchInput}
+                  onChange={handleChange}
                 />
-                <button className={props?.btnClass}>Search</button>
+                <button className={props?.btnClass} onClick={searchButton}>
+                  Search
+                </button>
               </>
             )}
             {/** this section is for users home page */}
