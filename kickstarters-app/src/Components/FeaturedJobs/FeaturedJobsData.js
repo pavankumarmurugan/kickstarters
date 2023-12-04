@@ -6,11 +6,13 @@ import {
   showToastError,
   showToastSuccess,
 } from "../GenericToaster/GenericToaster";
+import ViewPost from "../ViewPost/ViewPost";
 
 function FeaturedData({ wholeData, data }) {
   let getToken = userSpecificToken();
   const [openModal, setOpenModal] = useState(false);
   const [updateApiData, setUpdateApiData] = useState({});
+  const [viewPost, setViewPost] = useState(false);
   /** detail modal open and functions */
   const closeModalFunction = () => {
     setOpenModal(false);
@@ -60,6 +62,24 @@ function FeaturedData({ wholeData, data }) {
 
   /** update posted job */
 
+  /** View Post for Jobseeker */
+
+  const handleViewPost = (e) => {
+    const filterData = wholeData.filter((x) => x.jobId === Number(e.target.id));
+    setUpdateApiData(filterData[0]);
+    setViewPost(true);
+  };
+
+  /** View Post for Jobseeker */
+
+  /** view post modal */
+
+  const closeViewPostModal = () => {
+    setViewPost(false);
+  };
+
+  /** view post modal */
+
   return (
     <>
       {/** posted job deatils modal */}
@@ -73,41 +93,65 @@ function FeaturedData({ wholeData, data }) {
         />
       )}
       {/** posted job deatils modal */}
-      <div className="t-card">
+      {/** View Post Modal */}
+      {viewPost && (
+        <ViewPost
+          isShowModel={viewPost}
+          closeModal={closeViewPostModal}
+          // okModalFunction={okModalFunction}
+          from="NewPost"
+          data={updateApiData}
+        />
+      )}
+      {/** View Post Modal */}
+      <div className="t-card" style={{ position: "relative" }}>
         <div className="jobtitle-salary">
           <h4>{data?.jobTitle}</h4>
           <p>€{data?.jobSalary}</p>{" "}
           {/** need to change this variable into jobSalary from backend  */}
         </div>
-        <p>{data?.jobDesc}</p>
-        {/* {getToken?.userRole === "JOBSEEKER" ? ( // will work on this for jobseeker
-          <div>
-            <input
-              style={{ float: "right" }}
-              type="button"
-              className="custombtndark"
-              value="Details"
-              id={data?.jobId}
-              onClick={handleDetailPost}
-            />
-          </div>
-        ) : ( */}
-        {getToken?.userRole === "EMPLOYER" && data?.jobStatus === "Open" ? (
-          <div>
-            <input
-              style={{ float: "right" }}
-              type="button"
-              className="custombtndark"
-              value="Update"
-              id={data?.jobId}
-              onClick={handleDetailPost}
-            />
-          </div>
-        ) : getToken?.userRole === "EMPLOYER" &&
-          data?.jobStatus === "Closed" ? (
-          <h4 style={{ float: "right" }}>Job Closed</h4>
+        <div>
+          <p>{`${data?.jobDesc?.slice(0, 150)}...`}</p>
+        </div>
+
+        {getToken?.userRole === "EMPLOYER" ? (
+          data?.jobStatus === "Open" ? (
+            <div
+              style={{ position: "absolute", bottom: "10px", right: "10px" }}
+            >
+              <input
+                style={{ float: "right" }}
+                type="button"
+                className="custombtndark"
+                value="Update"
+                id={data?.jobId}
+                onClick={handleDetailPost}
+              />
+            </div>
+          ) : (
+            data?.jobStatus === "Closed" && (
+              <h4
+                style={{ position: "absolute", bottom: "10px", right: "10px" }}
+              >
+                Job Closed
+              </h4>
+            )
+          )
         ) : (
-          <></>
+          getToken?.userRole === "JOBSEEKER" && (
+            <div
+              style={{ position: "absolute", bottom: "10px", right: "10px" }}
+            >
+              <input
+                style={{ float: "right" }}
+                type="button"
+                className="custombtndark"
+                value="View"
+                id={data?.jobId}
+                onClick={handleViewPost}
+              />
+            </div>
+          )
         )}
       </div>
     </>

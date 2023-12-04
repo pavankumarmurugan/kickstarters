@@ -1,0 +1,32 @@
+.viewPost-Title{
+    color: #01959a;
+}
+
+.header-logos-left{
+    margin-top: 10px;
+    line-height: 1rem;
+    display: flex !important;
+}
+
+.header-logos-right{
+    
+    margin-right: 10px;
+}
+
+.ViewPost-mainBody{
+    margin-top: 20px;
+}
+
+.ViewPost-Deatils{
+    margin-bottom: 10px;
+}
+
+.headings{
+    color: #01959a;
+}
+
+.HowToApply{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
