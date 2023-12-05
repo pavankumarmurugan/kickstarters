@@ -38,6 +38,9 @@
 .joblist-maincard .t-card{
     width: 48.5%;
 }
+.ViewCandidate-main .t-card{
+    min-height: 300px;
+}
 
 
 .jobtitle-salary{

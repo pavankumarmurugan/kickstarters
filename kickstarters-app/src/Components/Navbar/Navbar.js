@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { MenuItems, profileItems, registerItems } from "./ManuItems";
+import {
+  MenuItems,
+  modifiedMenuItems,
+  profileItems,
+  registerItems,
+} from "./ManuItems";
 import "./Navbar.css";
 import { Dropdown, Space } from "antd";
 import { Link } from "react-router-dom";
@@ -21,7 +26,7 @@ export default function Navbar() {
   const [showHideHamburgerIcon, setShowHideHamburgerIcon] = useState(true);
   const [openProfile, setOpenProfile] = useState(false);
   const [userDropdownTitle, setUserDropdownTitle] = useState("");
-  const [openJobAlert, setOpenJobAlert] = useState(false);
+  // const [openJobAlert, setOpenJobAlert] = useState(false);
   const [profileData, setProfileData] = useState(null);
 
   /** useStates */
@@ -82,9 +87,10 @@ export default function Navbar() {
     } else if (e.key === "4") {
       localStorage.setItem("token", {});
       navigate("signup");
-    } else if (e.key === "5") {
-      setOpenJobAlert(true);
     }
+    // else if (e.key === "5") {
+    //   setOpenJobAlert(true);
+    // }
   };
 
   const registerMenuProps = {
@@ -113,9 +119,9 @@ export default function Navbar() {
   };
   /** profile modal functions */
 
-  const closeJobAlertModal = () => {
-    setOpenJobAlert(false);
-  };
+  // const closeJobAlertModal = () => {
+  //   setOpenJobAlert(false);
+  // };
 
   return (
     <div>
@@ -129,14 +135,6 @@ export default function Navbar() {
           data={profileData}
         />
       )}
-      {openJobAlert && (
-        <JobAlert
-          isShowModel={openJobAlert}
-          closeModal={closeJobAlertModal}
-          // okModalFunction={okModalFunction}
-          data={null}
-        />
-      )}
       {/** profile modal */}
       <nav className="NavbarItems">
         <h1 className="navbar-logo">KickStarters</h1>
@@ -146,7 +144,7 @@ export default function Navbar() {
           ></i>
         </div>
         <ul className={showHideHamburgerIcon ? "nav-menu" : "nav-menu active"}>
-          {MenuItems.map((item, index) => {
+          {modifiedMenuItems.map((item, index) => {
             return (
               <li key={index}>
                 <Link to={item.url} className={item.cName}>
