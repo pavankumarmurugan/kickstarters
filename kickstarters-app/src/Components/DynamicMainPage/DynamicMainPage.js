@@ -7,6 +7,7 @@ import {
   showToastSuccess,
 } from "../GenericToaster/GenericToaster";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 function DynamicMainPage(props) {
   /** usestates */
@@ -87,82 +88,77 @@ function DynamicMainPage(props) {
       return false;
     }
     const response = await fetch(
-      `http://localhost:8080/api/v1/job/service/jobseekerJobSearch?jobTitle=${searchInput}`,
-      {
-        headers: {
-          "Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-          Authorization: `${"Bearer "}${getToken?.token}`,
-        },
-      }
+      `http://localhost:8080/api/v1/job/service/jobseekerJobSearch?jobTitle=${searchInput}`
     )
       .then((response) => response.json())
       .then((data) => {
-        if (data !== null && data !== undefined) {
+        if (data !== null && data !== undefined && data.length > 0) {
           showToastSuccess("Api Called Successfully.");
           setTimeout(() => {
-            window.location.reload(false);
+            navigate("/jobs", { state: data });
           }, [1000]);
         } else {
-          showToastError(data?.message);
+          showToastError(`No Jobs available for ${searchInput}.`);
         }
       })
       .catch((err) => {
         showToastError(err);
         console.log(err);
       });
-    // navigate("/jobs", { state: dataToPass });
   };
 
   return (
-    <div className={props?.cName}>
-      {/** advertise job modal */}
-      {openModal && (
-        <AdvertiseJobsModal
-          isShowModel={openModal}
-          closeModal={closeModalFunction}
-          okModalFunction={okModalFunction}
-          from="NewPost"
-          data={null}
-        />
-      )}
-      {/** advertise job modal */}
-      {/** home main screen image and job search field section */}
-      <img src={props?.image} alt="heroImg" />
-      <div className="dynamicMain-text">
-        {!user ? (
-          <>
-            {/** this section is for users home page */}
-            <h1>{props?.title}</h1>
-            {/* <p>{props?.text}</p> */}
-            {props?.showbtn && (
-              <>
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="search_textfield"
-                  value={searchInput}
-                  onChange={handleChange}
-                />
-                <button className={props?.btnClass} onClick={searchButton}>
-                  Search
-                </button>
-              </>
-            )}
-            {/** this section is for users home page */}
-          </>
-        ) : (
-          <>
-            {/** this section is for Recruiter home page */}
-            <button className={props?.btnClass} onClick={openAdvertiseModal}>
-              Advertise job now
-            </button>
-            {/** this section is for Recruiter home page */}
-          </>
+    <>
+      <ToastContainer />
+      <div className={props?.cName}>
+        {/** advertise job modal */}
+        {openModal && (
+          <AdvertiseJobsModal
+            isShowModel={openModal}
+            closeModal={closeModalFunction}
+            okModalFunction={okModalFunction}
+            from="NewPost"
+            data={null}
+          />
         )}
+        {/** advertise job modal */}
         {/** home main screen image and job search field section */}
+        <img src={props?.image} alt="heroImg" />
+        <div className="dynamicMain-text">
+          {!user ? (
+            <>
+              {/** this section is for users home page */}
+              <h1>{props?.title}</h1>
+              {/* <p>{props?.text}</p> */}
+              {props?.showbtn && (
+                <>
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    className="search_textfield"
+                    value={searchInput}
+                    onChange={handleChange}
+                  />
+                  <button className={props?.btnClass} onClick={searchButton}>
+                    Search
+                  </button>
+                </>
+              )}
+              {/** this section is for users home page */}
+            </>
+          ) : (
+            <>
+              {/** this section is for Recruiter home page */}
+              <button className={props?.btnClass} onClick={openAdvertiseModal}>
+                Advertise job now
+              </button>
+              {/** this section is for Recruiter home page */}
+            </>
+          )}
+          {/** home main screen image and job search field section */}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

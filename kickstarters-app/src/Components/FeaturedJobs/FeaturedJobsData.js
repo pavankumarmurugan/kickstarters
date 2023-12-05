@@ -7,12 +7,15 @@ import {
   showToastSuccess,
 } from "../GenericToaster/GenericToaster";
 import ViewPost from "../ViewPost/ViewPost";
+import CandidateList from "../CandidatesList/CandidateList";
 
-function FeaturedData({ wholeData, data }) {
+function FeaturedData({ wholeData, data, comingfrom }) {
   let getToken = userSpecificToken();
   const [openModal, setOpenModal] = useState(false);
   const [updateApiData, setUpdateApiData] = useState({});
   const [viewPost, setViewPost] = useState(false);
+  const [ViewCandidatesList, setViewCandidatesList] = useState(false);
+  const [viewCandidatesListData, setViewCandidatesListData] = useState([]);
   /** detail modal open and functions */
   const closeModalFunction = () => {
     setOpenModal(false);
@@ -23,6 +26,39 @@ function FeaturedData({ wholeData, data }) {
     const filterData = wholeData.filter((x) => x.jobId === Number(e.target.id));
     setUpdateApiData(filterData[0]);
     setOpenModal(true);
+  };
+  const ViewCandidates = async (e) => {
+    debugger;
+    const response = await fetch(
+      `http://localhost:8080/api/v1/job/service/jobCandidateList?jobId=${e?.target?.id}`,
+      {
+        headers: {
+          "Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `${"Bearer "}${getToken?.token}`,
+        },
+        // body: JSON.stringify(postFormData),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data !== null && data !== undefined && data?.length > 0) {
+          data.forEach((item) => {
+            item.candidateDetails.jobId = e.target.id;
+          });
+          showToastSuccess("Api Called Successfully.");
+          setTimeout(() => {
+            setViewCandidatesListData(data);
+            setViewCandidatesList(true);
+          }, [1000]);
+        } else {
+          showToastError("No one applied on this job.");
+        }
+      })
+      .catch((err) => {
+        showToastError(err);
+        console.log(err);
+      });
   };
   /** detail modal open and functions */
 
@@ -77,6 +113,9 @@ function FeaturedData({ wholeData, data }) {
   const closeViewPostModal = () => {
     setViewPost(false);
   };
+  const closeCandidatesListModal = () => {
+    setViewCandidatesList(false);
+  };
 
   /** view post modal */
 
@@ -100,7 +139,17 @@ function FeaturedData({ wholeData, data }) {
           closeModal={closeViewPostModal}
           // okModalFunction={okModalFunction}
           from="NewPost"
+          comingfrom={comingfrom}
           data={updateApiData}
+        />
+      )}
+      {ViewCandidatesList && (
+        <CandidateList
+          isShowModel={ViewCandidatesList}
+          closeModal={closeCandidatesListModal}
+          // okModalFunction={okModalFunction}
+          from="NewPost"
+          data={viewCandidatesListData}
         />
       )}
       {/** View Post Modal */}
@@ -117,16 +166,35 @@ function FeaturedData({ wholeData, data }) {
         {getToken?.userRole === "EMPLOYER" ? (
           data?.jobStatus === "Open" ? (
             <div
-              style={{ position: "absolute", bottom: "10px", right: "10px" }}
+              style={{
+                display: "flex",
+                position: "absolute",
+                bottom: "10px",
+                right: "10px",
+              }}
             >
-              <input
-                style={{ float: "right" }}
-                type="button"
-                className="custombtndark"
-                value="Update"
-                id={data?.jobId}
-                onClick={handleDetailPost}
-              />
+              <div>
+                <input
+                  style={{ float: "right" }}
+                  type="button"
+                  className="custombtndark"
+                  value="View Candidates"
+                  id={data?.jobId}
+                  onClick={ViewCandidates}
+                />
+              </div>
+              <div
+              // style={{ position: "absolute", bottom: "10px", right: "10px" }}
+              >
+                <input
+                  style={{ float: "right" }}
+                  type="button"
+                  className="custombtndark"
+                  value="Update"
+                  id={data?.jobId}
+                  onClick={handleDetailPost}
+                />
+              </div>
             </div>
           ) : (
             data?.jobStatus === "Closed" && (
@@ -137,8 +205,13 @@ function FeaturedData({ wholeData, data }) {
               </h4>
             )
           )
+        ) : getToken?.userRole === "JOBSEEKER" &&
+          data?.jobStatus === "Closed" ? (
+          <h4 style={{ position: "absolute", bottom: "10px", right: "10px" }}>
+            Job Closed
+          </h4>
         ) : (
-          getToken?.userRole === "JOBSEEKER" && (
+          <>
             <div
               style={{ position: "absolute", bottom: "10px", right: "10px" }}
             >
@@ -151,7 +224,7 @@ function FeaturedData({ wholeData, data }) {
                 onClick={handleViewPost}
               />
             </div>
-          )
+          </>
         )}
       </div>
     </>

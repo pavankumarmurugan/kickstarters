@@ -1,3 +1,6 @@
+import { userSpecificToken } from "../GenericCode/GenericCode";
+
+let getToken = userSpecificToken();
 export const MenuItems = [
   {
     title: "Home",
@@ -12,18 +15,19 @@ export const MenuItems = [
     icon: "fas fa-info margin-icons",
   },
   {
-    title: "Services",
-    url: "/services",
+    title: "All Jobs",
+    url: "/allappliedjobs",
     cName: "nav-links",
     icon: "fas fa-briefcase margin-icons",
   },
-  {
-    title: "Contact",
-    url: "/contact",
-    cName: "nav-links",
-    icon: "fas fa-address-book margin-icons",
-  },
 ];
+debugger;
+export const modifiedMenuItems =
+  getToken?.userRole === "EMPLOYER" ||
+  getToken === undefined ||
+  getToken === null
+    ? MenuItems.filter((item) => item.title !== "All Jobs")
+    : MenuItems;
 
 export const registerItems = [
   {
@@ -37,10 +41,10 @@ export const registerItems = [
 ];
 
 export const profileItems = [
-  {
-    label: "Job Alert",
-    key: "5",
-  },
+  // {
+  //   label: "Job Alert",
+  //   key: "5",
+  // },
   {
     label: "Profile",
     key: "3",

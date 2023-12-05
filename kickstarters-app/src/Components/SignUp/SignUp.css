@@ -55,6 +55,11 @@ input {
   background-color: #151516;
   color: #fff;
 }
+.custombtndark:disabled {
+  background-color: #ccc; 
+  color: #999; 
+  cursor: not-allowed;
+}
 
 .errorbtn{
   background-color:red;
