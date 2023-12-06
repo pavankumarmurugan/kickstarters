@@ -13,7 +13,6 @@ function AboutUs() {
         <h1>About Us</h1>
         <div className="first-des">
           <div className="des-text">
-            {/* <h2>About Us</h2> */}
             <p>
               Normal distribution of letters, as opposed to using 'Content here,
               content here', making it look like readable English. Many desktop
@@ -29,7 +28,7 @@ function AboutUs() {
           </div>
         </div>
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 }

@@ -5,13 +5,8 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import { useLocation } from "react-router-dom";
 import { Dropdown, Pagination } from "antd";
-import {
-  showToastError,
-  showToastSuccess,
-} from "../GenericToaster/GenericToaster";
-import { ToastContainer } from "react-toastify";
+import { showToastError } from "../GenericToaster/GenericToaster";
 import { sortingArray } from "../Navbar/ManuItems";
-import { dateConverter } from "../GenericCode/GenericCode";
 
 function JobLists() {
   const location = useLocation();
@@ -30,12 +25,10 @@ function JobLists() {
   const aa = pages.length;
 
   const handleChange = (e) => {
-    debugger;
     setCurrentPage(e);
   };
 
   const onChangeInput = (e) => {
-    debugger;
     const value = e.target.value;
     if (value !== undefined && value !== null) {
       const regexForNumAndAlp = /^[a-zA-Z0-9]+$/;
@@ -48,7 +41,6 @@ function JobLists() {
   };
 
   const searchButton = async () => {
-    debugger;
     if (searchInput === "") {
       return false;
     }
@@ -58,7 +50,6 @@ function JobLists() {
       .then((response) => response.json())
       .then((data) => {
         if (data !== null && data !== undefined && data.length > 0) {
-          // showToastSuccess("Api Called Successfully.");
           setTimeout(() => {
             const compareJobPostTime = (a, b) =>
               new Date(a.jobPostTime) - new Date(b.jobPostTime);
@@ -76,7 +67,6 @@ function JobLists() {
   };
 
   const handleMenuClick = (e) => {
-    debugger;
     if (e.key === "1") {
       console.log(data);
       const compareJobPostTime = (a, b) =>
@@ -109,7 +99,6 @@ function JobLists() {
 
   return (
     <>
-      <ToastContainer />
       <Navbar />
       <div className="joblists-main">
         <div className="joblist-search"></div>

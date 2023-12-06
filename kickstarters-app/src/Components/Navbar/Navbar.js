@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   MenuItems,
   MenuItemsJobSeeker,
-  modifiedMenuItems,
   profileItems,
   registerItems,
 } from "./ManuItems";
@@ -14,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { userSpecificToken } from "../GenericCode/GenericCode";
 import Profile from "../Profile/Profile";
 import { showToastError } from "../GenericToaster/GenericToaster";
-import JobAlert from "../JobAlert/JobAlert";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -27,7 +25,6 @@ export default function Navbar() {
   const [showHideHamburgerIcon, setShowHideHamburgerIcon] = useState(true);
   const [openProfile, setOpenProfile] = useState(false);
   const [userDropdownTitle, setUserDropdownTitle] = useState("");
-  // const [openJobAlert, setOpenJobAlert] = useState(false);
   const [profileData, setProfileData] = useState(null);
   const [allAppliedJobsData, setAllAppliedJobsData] = useState([]);
 
@@ -36,7 +33,6 @@ export default function Navbar() {
   /**useEffects */
 
   useEffect(() => {
-    debugger;
     let userDetails = getToken;
     if (userDetails?.userRole === "JOBSEEKER") {
       setUserDropdownTitle(userDetails.userEmail.charAt(0).toLocaleUpperCase());
@@ -54,16 +50,13 @@ export default function Navbar() {
     navigate("/signup");
   };
   const handleButtonClick = (e) => {
-    debugger;
     if (getToken) {
       return;
     }
     navigate("/signup");
   };
   const handleMenuClick = async (e) => {
-    debugger;
     if (e.key === "3") {
-      //profile
       let headerObj = {
         headers: {
           Authorization: `${"Bearer "}${getToken?.token}`,
@@ -91,9 +84,6 @@ export default function Navbar() {
       localStorage.setItem("token", {});
       navigate("/signup");
     }
-    // else if (e.key === "5") {
-    //   setOpenJobAlert(true);
-    // }
   };
 
   const registerMenuProps = {
@@ -122,16 +112,13 @@ export default function Navbar() {
   };
   /** profile modal functions */
 
-  // const closeJobAlertModal = () => {
-  //   setOpenJobAlert(false);
-  // };
-
   const handleAllJobs = async (event, url) => {
-    debugger;
-    if (allAppliedJobsData?.length > 0) {
-    } else {
-      // showToastError("No Jobs Applied yet.");
-      event.preventDefault();
+    if (url === "/allappliedjobs") {
+      if (allAppliedJobsData?.length > 0) {
+      } else {
+        showToastError("No Jobs Applied yet.");
+        event.preventDefault();
+      }
     }
   };
 
@@ -149,7 +136,6 @@ export default function Navbar() {
       .then((response) => response.json())
       .then((data) => {
         if (data !== undefined && data !== null && data?.length > 0) {
-          // showToastSuccess("Api called Successfully.");
           setAllAppliedJobsData(data);
         }
       })
@@ -170,14 +156,15 @@ export default function Navbar() {
         <Profile
           isShowModel={openProfile}
           closeModal={closeProfileModal}
-          // okModalFunction={okModalFunction}
           from="NewPost"
           data={profileData}
         />
       )}
       {/** profile modal */}
       <nav className="NavbarItems">
-        <h1 className="navbar-logo">KickStarters</h1>
+        <Link to="/" className="logodesign">
+          <h1 className="navbar-logo">KickStarters</h1>
+        </Link>
         <div className="menu-icons" onClick={handleHamburger}>
           <i
             className={showHideHamburgerIcon ? "fas fa-bars" : "fas fa-times"}
@@ -186,8 +173,7 @@ export default function Navbar() {
         <ul className={showHideHamburgerIcon ? "nav-menu" : "nav-menu active"}>
           {getToken?.userRole === "EMPLOYER" ||
           getToken === undefined ||
-          getToken === null ||
-          allAppliedJobsData?.length === 0
+          getToken === null
             ? MenuItems.map((item, index) => {
                 return (
                   <li key={index}>
