@@ -30,6 +30,6 @@ public interface JobRepository extends JpaRepository<JobEntity, Long> {
 
     List<JobEntity> findByJobTitleContainingIgnoreCaseAndJobStatusTrue(String jobTitle);
     
-    @Query("SELECT e FROM JobEntity e WHERE e.jobTitle like :jobTitle AND e.jobPostTime BETWEEN :fromDate AND :toDate")
-    List<JobEntity> searchJobTitleWithFilter(String jobTitle, LocalDateTime fromDate, LocalDateTime toDate);
+    @Query("SELECT e FROM JobEntity e WHERE e.jobTitle like :jobTitle AND e.jobStatus = :status AND e.jobPostTime BETWEEN :fromDate AND :toDate")
+    List<JobEntity> searchJobTitleWithFilter(String jobTitle,Boolean status, LocalDateTime fromDate, LocalDateTime toDate);
 }
