@@ -139,7 +139,7 @@ function ViewPost(props) {
       .then((response) => response.json())
       .then((data) => {
         if (data.message === "Candidate status updated successfully") {
-          showToastSuccess("Api Called Successfully.");
+          // showToastSuccess("Api Called Successfully.");
           setTimeout(() => {
             window.location.reload(false);
           }, [1000]);
@@ -226,7 +226,8 @@ function ViewPost(props) {
               />
             ) : props?.comingfrom === "jobseekerAlJobsApplied" ? (
               <>
-                {props?.data?.jobApplicationStatus === "Applied" ? (
+                {props?.data?.jobApplicationStatus === "Applied" &&
+                jobDetails?.jobApplicationStatusEmployer !== "Rejected" ? (
                   <input
                     type="button"
                     value={
@@ -301,7 +302,11 @@ function ViewPost(props) {
         {props?.from === "NewPost" ? (
           <div className="ViewPost-main">
             <div className="ViewPost-header">
-              <h1 className="viewPost-Title">{jobDetails.jobTitle}</h1>
+              <h1 className="viewPost-Title">
+                {jobDetails.jobTitle}{" "}
+                {props?.comingfrom === "jobseekerAlJobsApplied" &&
+                  `(${jobDetails?.jobApplicationStatusEmployer})`}
+              </h1>
               <div className="header-logos-left">
                 <div className="header-logos-right">
                   <svg
@@ -368,14 +373,16 @@ function ViewPost(props) {
                 <h2 className="headings">Job Duration</h2>
                 <p>{jobDetails?.jobDuration}</p>
               </div>
-              <div className="ViewPost-Deatils">
-                <p className="HowToApply">
-                  <b>
-                    If you are interested in this position please apply by
-                    clicking on the apply button below.
-                  </b>
-                </p>
-              </div>
+              {props?.comingfrom !== "jobseekerAlJobsApplied" && (
+                <div className="ViewPost-Deatils">
+                  <p className="HowToApply">
+                    <b>
+                      If you are interested in this position please apply by
+                      clicking on the apply button below.
+                    </b>
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         ) : (

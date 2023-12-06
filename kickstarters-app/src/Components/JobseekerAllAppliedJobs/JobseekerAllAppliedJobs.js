@@ -41,7 +41,7 @@ function JobseekerAllAppliedJobs() {
       .then((response) => response.json())
       .then((data) => {
         if (data !== undefined && data !== null && data?.length > 0) {
-          showToastSuccess("Api called Successfully.");
+          // showToastSuccess("Api called Successfully.");
           setData(data);
         } else {
           showToastError(data?.message);
