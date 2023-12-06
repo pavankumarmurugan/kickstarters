@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.job.jobservice.request.CandidateStatusRequest;
+import com.job.jobservice.request.JobSearchRequest;
 import com.job.jobservice.request.PostJobRequest;
 import com.job.jobservice.request.UpdateJobRequest;
 import com.job.jobservice.response.HomepageResponse;
@@ -27,7 +28,7 @@ public interface JobService {
 
 	Map<String, String> updateCandidateStatus(String userEmail, CandidateStatusRequest candidateStatusRequest);
 
-	List<HomepageResponse> jobseekerJobSearch(String jobTitle);
+	List<HomepageResponse> jobseekerJobSearch(JobSearchRequest jobSearchRequest);
 
 	List<JobSeekerAppliedJobResponse> jobseekerAllAppliedJobs(String userEmail);
 
