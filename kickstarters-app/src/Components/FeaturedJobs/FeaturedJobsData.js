@@ -47,7 +47,7 @@ function FeaturedData({ wholeData, data, comingfrom }) {
           data.forEach((item) => {
             item.candidateDetails.jobId = e.target.id;
           });
-          showToastSuccess("Api Called Successfully.");
+          // showToastSuccess("Api Called Successfully.");
           setTimeout(() => {
             setViewCandidatesListData(data);
             setViewCandidatesList(true);
