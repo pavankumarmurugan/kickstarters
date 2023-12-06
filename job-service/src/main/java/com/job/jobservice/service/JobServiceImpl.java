@@ -373,27 +373,44 @@ public class JobServiceImpl implements JobService {
 
 	@Override
 	public List<HomepageResponse> jobseekerJobSearch(JobSearchRequest jobSearchRequest) {
-
+		
 		List<HomepageResponse> homepageResponseList = new ArrayList<>();
 		
-		
 		List<JobEntity> jobList;
-		if(jobSearchRequest.getFromMonth() == 0 && jobSearchRequest.getFromYear() == 0 && jobSearchRequest.getToMonth() == 0
-				&& jobSearchRequest.getToYear() == 0) {
+		
+		if(jobSearchRequest.getFromRange() == null && jobSearchRequest.getToRange() == null) {
 			jobList = jobRepository.findByJobTitleContainingIgnoreCaseAndJobStatusTrue(jobSearchRequest.getJobTitle());
-		} else if(jobSearchRequest.getFromMonth() != 0 && jobSearchRequest.getFromYear() != 0 && jobSearchRequest.getToMonth() != 0
-				&& jobSearchRequest.getToYear() != 0) {
-			LocalDateTime fromDate = LocalDateTime.of(jobSearchRequest.getFromYear(), jobSearchRequest.getFromMonth(), 1, 0, 0);
+		} else if(jobSearchRequest.getFromRange() != null && jobSearchRequest.getToRange() != null){
+			String[] fromMonthAndYearArray = jobSearchRequest.getFromRange().split("/");
+			String[] toMonthAndYearArray = jobSearchRequest.getFromRange().split("/");
+			
+			int fromMonth = 0;
+			int fromYear = 0;
+			
+			int toMonth = 0;
+			int toYear = 0;
+			try {
+				fromMonth = Integer.parseInt(fromMonthAndYearArray[0]);
+				fromYear = Integer.parseInt(fromMonthAndYearArray[1]);
+				
+				toMonth = Integer.parseInt(toMonthAndYearArray[0]);
+				toYear = Integer.parseInt(toMonthAndYearArray[1]);
+			} catch(Exception e) {
+				throw new IllegalArgumentException("Filter dates are invalid");
+			}
+			
+			LocalDateTime fromDate = LocalDateTime.of(fromYear, fromMonth, 1, 0, 0);
 			LocalDateTime toDate;
-			if(jobSearchRequest.getToMonth() == 12) {
-				toDate = LocalDateTime.of(jobSearchRequest.getToYear(), jobSearchRequest.getToMonth(), 31, 23, 59).minusSeconds(1);
+			if(toMonth == 12) {
+				toDate = LocalDateTime.of(toYear, toMonth, 31, 23, 59).minusSeconds(1);
 			} else {
-				toDate = LocalDateTime.of(jobSearchRequest.getToYear(), jobSearchRequest.getToMonth() + 1, 1, 0, 0).minusSeconds(1);
+				toDate = LocalDateTime.of(toYear, toMonth + 1, 1, 0, 0).minusSeconds(1);
 			}
 			if(fromDate.isAfter(toDate)) {
 				throw new IllegalArgumentException("Filter dates are invalid");
 			}
 			jobList = jobRepository.searchJobTitleWithFilter("%" + jobSearchRequest.getJobTitle() + "%",Boolean.TRUE ,fromDate,toDate);
+			
 		} else {
 			throw new IllegalArgumentException("Filter dates are invalid");
 		}
