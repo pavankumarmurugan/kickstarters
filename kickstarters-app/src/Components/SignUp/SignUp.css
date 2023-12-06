@@ -138,10 +138,10 @@ form.sign-in-form {
   font-size: 1rem;
 }
 
-.social-media {
+/* .social-media {
   display: flex;
   justify-content: center;
-}
+} */
 
 .social-icon {
   height: 46px;

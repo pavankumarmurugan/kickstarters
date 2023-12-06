@@ -54,7 +54,7 @@ public class JobController {
 		return ResponseEntity.ok(jobService.updateCandidateStatus(userEmail, candidateStatusRequest));
 	}
 
-	@GetMapping("/jobseekerJobSearch")
+	@PostMapping("/jobseekerJobSearch")
 	public ResponseEntity<?> jobseekerJobSearch(@RequestBody JobSearchRequest jobSearchRequest) {
 		return ResponseEntity.ok(jobService.jobseekerJobSearch(jobSearchRequest));
 	}

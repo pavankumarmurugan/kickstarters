@@ -111,11 +111,20 @@ function DynamicMainPage(props) {
     }
     const obj = {
       jobTitle: searchInput,
-      fromDate: dateConverter(datesValues.fromDate.$d),
-      toDate: dateConverter(datesValues.toDate.$d),
+      fromRange: dateConverter(datesValues.fromDate.$d),
+      toRange: dateConverter(datesValues.toDate.$d),
     };
     const response = await fetch(
-      `http://localhost:8080/api/v1/job/service/jobseekerJobSearch?jobTitle=${searchInput}`
+      "http://localhost:8080/api/v1/job/service/jobseekerJobSearch",
+      {
+        method: "POST",
+        headers: {
+          "Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `${"Bearer "}${getToken?.token}`,
+        },
+        body: JSON.stringify(obj),
+      }
     )
       .then((response) => response.json())
       .then((data) => {
