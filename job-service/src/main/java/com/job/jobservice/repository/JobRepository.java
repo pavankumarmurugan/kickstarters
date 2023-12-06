@@ -15,9 +15,6 @@ import com.job.jobservice.entity.UserEntity;
 @Repository
 public interface JobRepository extends JpaRepository<JobEntity, Long> {
 
-
-//    @Query("SELECT j FROM Job j WHERE j.jobStatus = true")
-//    List<Job> findAllOpenJob();
     
     
     List<JobEntity> findByJobStatusTrue();

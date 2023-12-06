@@ -249,7 +249,7 @@ public class JobServiceImpl implements JobService {
 			throw new IllegalArgumentException("Not valid user to get the details");
 		}
 
-		List<JobApplicationEntity> jobApplicationEntityList = jobApplicationRepository.findByJobId(jobEntity);
+		List<JobApplicationEntity> jobApplicationEntityList = jobApplicationRepository.findByJobIdAndJobApplicationStatusIsTrue(jobEntity);
 
 		if(jobApplicationEntityList.isEmpty()) {
 			return jobCandidateResponseList;
