@@ -4,13 +4,9 @@ public class JobSearchRequest {
 	
 	private String jobTitle;
 	
-	private int fromMonth = 0;
+	private String fromRange;
 	
-	private int fromYear = 0;
-	
-	private int toMonth = 0;
-	
-	private int toYear = 0;
+	private String toRange;
 
 	public String getJobTitle() {
 		return jobTitle;
@@ -20,36 +16,20 @@ public class JobSearchRequest {
 		this.jobTitle = jobTitle;
 	}
 
-	public int getFromMonth() {
-		return fromMonth;
+	public String getFromRange() {
+		return fromRange;
 	}
 
-	public void setFromMonth(int fromMonth) {
-		this.fromMonth = fromMonth;
+	public void setFromRange(String fromRange) {
+		this.fromRange = fromRange;
 	}
 
-	public int getFromYear() {
-		return fromYear;
+	public String getToRange() {
+		return toRange;
 	}
 
-	public void setFromYear(int fromYear) {
-		this.fromYear = fromYear;
-	}
-
-	public int getToMonth() {
-		return toMonth;
-	}
-
-	public void setToMonth(int toMonth) {
-		this.toMonth = toMonth;
-	}
-
-	public int getToYear() {
-		return toYear;
-	}
-
-	public void setToYear(int toYear) {
-		this.toYear = toYear;
+	public void setToRange(String toRange) {
+		this.toRange = toRange;
 	}
 
 }
