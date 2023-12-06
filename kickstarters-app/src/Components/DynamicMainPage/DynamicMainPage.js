@@ -129,7 +129,7 @@ function DynamicMainPage(props) {
       .then((response) => response.json())
       .then((data) => {
         if (data !== null && data !== undefined && data.length > 0) {
-          showToastSuccess("Api Called Successfully.");
+          // showToastSuccess("Api Called Successfully.");
           const compareJobPostTime = (a, b) =>
             new Date(a.jobPostTime) - new Date(b.jobPostTime);
           const sortedJobData = data.slice().sort(compareJobPostTime);

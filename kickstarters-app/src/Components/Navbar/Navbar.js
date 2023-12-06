@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   MenuItems,
+  MenuItemsJobSeeker,
   modifiedMenuItems,
   profileItems,
   registerItems,
@@ -28,6 +29,7 @@ export default function Navbar() {
   const [userDropdownTitle, setUserDropdownTitle] = useState("");
   // const [openJobAlert, setOpenJobAlert] = useState(false);
   const [profileData, setProfileData] = useState(null);
+  const [allAppliedJobsData, setAllAppliedJobsData] = useState([]);
 
   /** useStates */
 
@@ -124,6 +126,43 @@ export default function Navbar() {
   //   setOpenJobAlert(false);
   // };
 
+  const handleAllJobs = async (event, url) => {
+    debugger;
+    if (allAppliedJobsData?.length > 0) {
+    } else {
+      // showToastError("No Jobs Applied yet.");
+      event.preventDefault();
+    }
+  };
+
+  const callAllJobsAppliedFunction = async () => {
+    const response = await fetch(
+      "http://localhost:8080/api/v1/job/service/jobseekerAllAppliedJobs",
+      {
+        headers: {
+          "Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `${"Bearer "}${getToken?.token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data !== undefined && data !== null && data?.length > 0) {
+          // showToastSuccess("Api called Successfully.");
+          setAllAppliedJobsData(data);
+        }
+      })
+      .catch((err) => {
+        showToastError(err);
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    callAllJobsAppliedFunction();
+  }, []);
+
   return (
     <div>
       {/** profile modal */}
@@ -145,16 +184,34 @@ export default function Navbar() {
           ></i>
         </div>
         <ul className={showHideHamburgerIcon ? "nav-menu" : "nav-menu active"}>
-          {modifiedMenuItems.map((item, index) => {
-            return (
-              <li key={index}>
-                <Link to={item.url} className={item.cName}>
-                  <i className={item.icon}></i>
-                  {item.title}
-                </Link>
-              </li>
-            );
-          })}
+          {getToken?.userRole === "EMPLOYER" ||
+          getToken === undefined ||
+          getToken === null ||
+          allAppliedJobsData?.length === 0
+            ? MenuItems.map((item, index) => {
+                return (
+                  <li key={index}>
+                    <Link to={item.url} className={item.cName}>
+                      <i className={item.icon}></i>
+                      {item.title}
+                    </Link>
+                  </li>
+                );
+              })
+            : MenuItemsJobSeeker.map((item, index) => {
+                return (
+                  <li key={index}>
+                    <Link
+                      to={item.url}
+                      className={item.cName}
+                      onClick={(event) => handleAllJobs(event, item.url)}
+                    >
+                      <i className={item.icon}></i>
+                      {item.title}
+                    </Link>
+                  </li>
+                );
+              })}
           {userDropdownTitle !== "Register" ? (
             <Dropdown.Button
               menu={profileMenuProps}

@@ -58,7 +58,7 @@ function JobLists() {
       .then((response) => response.json())
       .then((data) => {
         if (data !== null && data !== undefined && data.length > 0) {
-          showToastSuccess("Api Called Successfully.");
+          // showToastSuccess("Api Called Successfully.");
           setTimeout(() => {
             const compareJobPostTime = (a, b) =>
               new Date(a.jobPostTime) - new Date(b.jobPostTime);

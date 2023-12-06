@@ -322,7 +322,7 @@ function Profile(props) {
           <>
             <input
               type="button"
-              value="Add Exp"
+              value="Add Experience"
               className="custombtndark"
               onClick={addExp}
               hidden={getToken?.userRole === "EMPLOYER"}

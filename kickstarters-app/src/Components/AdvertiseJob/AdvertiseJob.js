@@ -111,7 +111,7 @@ function AdvertiseJobsModal(props) {
       .then((response) => response.json())
       .then((data) => {
         if (data !== null && data !== undefined) {
-          showToastSuccess("Api Called Successfully.");
+          // showToastSuccess("Api Called Successfully.");
           setTimeout(() => {
             window.location.reload(false);
           }, [1000]);
