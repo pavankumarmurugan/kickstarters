@@ -10,6 +10,7 @@ import java.util.Optional;
 import com.job.jobservice.entity.*;
 import com.job.jobservice.repository.*;
 import com.job.jobservice.request.CandidateStatusRequest;
+import com.job.jobservice.request.JobSearchRequest;
 import com.job.jobservice.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -371,11 +372,32 @@ public class JobServiceImpl implements JobService {
 	}
 
 	@Override
-	public List<HomepageResponse> jobseekerJobSearch(String jobTitle) {
+	public List<HomepageResponse> jobseekerJobSearch(JobSearchRequest jobSearchRequest) {
 
 		List<HomepageResponse> homepageResponseList = new ArrayList<>();
-
-		List<JobEntity> jobList = jobRepository.findByJobTitleContainingIgnoreCaseAndJobStatusTrue(jobTitle);
+		
+		
+		List<JobEntity> jobList;
+		if(jobSearchRequest.getFromMonth() == 0 && jobSearchRequest.getFromYear() == 0 && jobSearchRequest.getToMonth() == 0
+				&& jobSearchRequest.getToYear() == 0) {
+			jobList = jobRepository.findByJobTitleContainingIgnoreCaseAndJobStatusTrue(jobSearchRequest.getJobTitle());
+		} else if(jobSearchRequest.getFromMonth() != 0 && jobSearchRequest.getFromYear() != 0 && jobSearchRequest.getToMonth() != 0
+				&& jobSearchRequest.getToYear() != 0) {
+			LocalDateTime fromDate = LocalDateTime.of(jobSearchRequest.getFromYear(), jobSearchRequest.getFromMonth(), 1, 0, 0);
+			LocalDateTime toDate;
+			if(jobSearchRequest.getToMonth() == 12) {
+				toDate = LocalDateTime.of(jobSearchRequest.getToYear(), jobSearchRequest.getToMonth(), 31, 23, 59).minusSeconds(1);
+			} else {
+				toDate = LocalDateTime.of(jobSearchRequest.getToYear(), jobSearchRequest.getToMonth() + 1, 1, 0, 0).minusSeconds(1);
+			}
+			if(fromDate.isAfter(toDate)) {
+				throw new IllegalArgumentException("Filter dates are invalid");
+			}
+			jobList = jobRepository.searchJobTitleWithFilter("%" + jobSearchRequest.getJobTitle() + "%",Boolean.TRUE ,fromDate,toDate);
+		} else {
+			throw new IllegalArgumentException("Filter dates are invalid");
+		}
+		
 		for (JobEntity jobEntity : jobList) {
 			HomepageResponse homepageResponse = new HomepageResponse();
 			homepageResponse.setJobId(jobEntity.getJobId());
