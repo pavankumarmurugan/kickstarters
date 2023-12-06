@@ -382,7 +382,7 @@ public class JobServiceImpl implements JobService {
 			jobList = jobRepository.findByJobTitleContainingIgnoreCaseAndJobStatusTrue(jobSearchRequest.getJobTitle());
 		} else if(jobSearchRequest.getFromRange() != null && jobSearchRequest.getToRange() != null){
 			String[] fromMonthAndYearArray = jobSearchRequest.getFromRange().split("/");
-			String[] toMonthAndYearArray = jobSearchRequest.getFromRange().split("/");
+			String[] toMonthAndYearArray = jobSearchRequest.getToRange().split("/");
 			
 			int fromMonth = 0;
 			int fromYear = 0;

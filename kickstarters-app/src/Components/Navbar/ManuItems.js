@@ -54,3 +54,14 @@ export const profileItems = [
     key: "4",
   },
 ];
+
+export const sortingArray = [
+  {
+    label: "Ascending",
+    key: "1",
+  },
+  {
+    label: "Descending",
+    key: "2",
+  },
+];

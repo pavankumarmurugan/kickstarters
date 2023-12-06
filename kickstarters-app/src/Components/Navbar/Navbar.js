@@ -52,6 +52,7 @@ export default function Navbar() {
     navigate("/signup");
   };
   const handleButtonClick = (e) => {
+    debugger;
     if (getToken) {
       return;
     }
@@ -86,7 +87,7 @@ export default function Navbar() {
         });
     } else if (e.key === "4") {
       localStorage.setItem("token", {});
-      navigate("signup");
+      navigate("/signup");
     }
     // else if (e.key === "5") {
     //   setOpenJobAlert(true);

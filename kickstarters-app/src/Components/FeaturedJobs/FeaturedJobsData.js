@@ -8,6 +8,7 @@ import {
 } from "../GenericToaster/GenericToaster";
 import ViewPost from "../ViewPost/ViewPost";
 import CandidateList from "../CandidatesList/CandidateList";
+import { ToastContainer } from "react-toastify";
 
 function FeaturedData({ wholeData, data, comingfrom }) {
   let getToken = userSpecificToken();
@@ -121,6 +122,7 @@ function FeaturedData({ wholeData, data, comingfrom }) {
 
   return (
     <>
+      <ToastContainer />
       {/** posted job deatils modal */}
       {openModal && (
         <AdvertiseJobsModal
