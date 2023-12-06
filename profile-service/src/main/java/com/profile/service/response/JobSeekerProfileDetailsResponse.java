@@ -1,9 +1,5 @@
 package com.profile.service.response;
 
-import com.profile.service.entity.JobSeekerExperienceEntity;
-import com.profile.service.entity.JobSeekerSkillEntity;
-import com.profile.service.request.UpdateJobSeekerExperienceRequest;
-import com.profile.service.request.UpdateJobSeekerSkillRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

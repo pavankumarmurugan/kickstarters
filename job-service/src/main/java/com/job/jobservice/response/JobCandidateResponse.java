@@ -7,6 +7,7 @@ public class JobCandidateResponse {
 
     private String candidateStatus;
 
+
     public JobSeekerProfileDetailsResponse getCandidateDetails() {
         return candidateDetails;
     }
