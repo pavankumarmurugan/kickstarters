@@ -34,10 +34,5 @@ public class HomePageController {
 		return ResponseEntity.ok(jobService.getAllPostedJobsByUser(username));
 	}
 
-//	@PostMapping("/addjobs")
-//	public Job addJob(@RequestBody Job job) {
-//		// 调用服务层的添加方法
-//		return jobService.addJob(job);
-//	}
 
 }
