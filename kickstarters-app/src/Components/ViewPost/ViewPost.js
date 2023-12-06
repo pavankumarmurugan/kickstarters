@@ -81,6 +81,10 @@ function ViewPost(props) {
 
   const handleApply = async () => {
     debugger;
+    if (getToken === undefined) {
+      showToastError("You need to login first.");
+      return false;
+    }
     const response = await fetch(
       `http://localhost:8080/api/v1/job/service/applyJob?jobId=${jobDetails.jobId}`,
       {

@@ -4,12 +4,14 @@ import FeaturedData from "../FeaturedJobs/FeaturedJobsData";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import { useLocation } from "react-router-dom";
-import { Pagination } from "antd";
+import { Dropdown, Pagination } from "antd";
 import {
   showToastError,
   showToastSuccess,
 } from "../GenericToaster/GenericToaster";
 import { ToastContainer } from "react-toastify";
+import { sortingArray } from "../Navbar/ManuItems";
+import { dateConverter } from "../GenericCode/GenericCode";
 
 function JobLists() {
   const location = useLocation();
@@ -19,6 +21,7 @@ function JobLists() {
   const [postsPerPage, setPostsPerPage] = useState(6);
   const [currentPosts, setCurrentPosts] = useState([]);
   const [searchInput, setSearchInput] = useState("");
+  const [sortingOrder, setSortingOrder] = useState("A");
 
   let pages = [];
   for (let i = 1; i <= Math.ceil(data?.length / postsPerPage); i++) {
@@ -57,8 +60,10 @@ function JobLists() {
         if (data !== null && data !== undefined && data.length > 0) {
           showToastSuccess("Api Called Successfully.");
           setTimeout(() => {
-            // state = data;
-            setData(data);
+            const compareJobPostTime = (a, b) =>
+              new Date(a.jobPostTime) - new Date(b.jobPostTime);
+            const sortedJobData = data.slice().sort(compareJobPostTime);
+            setData(sortedJobData);
           }, [1000]);
         } else {
           showToastError(`No Jobs available for ${searchInput}.`);
@@ -68,6 +73,31 @@ function JobLists() {
         showToastError(err);
         console.log(err);
       });
+  };
+
+  const handleMenuClick = (e) => {
+    debugger;
+    if (e.key === "1") {
+      console.log(data);
+      const compareJobPostTime = (a, b) =>
+        new Date(a.jobPostTime) - new Date(b.jobPostTime);
+      const sortedJobData = data.slice().sort(compareJobPostTime);
+      setSortingOrder("A");
+      setData(sortedJobData);
+    } else if (e.key === "2") {
+      const compareJobPostTime = (a, b) =>
+        new Date(b.jobPostTime) - new Date(a.jobPostTime);
+      const sortedJobData = data.slice().sort(compareJobPostTime);
+      setSortingOrder("D");
+      setData(sortedJobData);
+    }
+  };
+
+  const handleButtonClick = () => {};
+
+  const profileMenuProps = {
+    items: sortingArray,
+    onClick: handleMenuClick,
   };
 
   useEffect(() => {
@@ -94,6 +124,14 @@ function JobLists() {
             Search
           </button>
           <h1>Searched jobs</h1>
+          <Dropdown.Button
+            menu={profileMenuProps}
+            placement="bottom"
+            onClick={handleButtonClick}
+            icon={sortingOrder}
+          >
+            Sort Posted Job Date
+          </Dropdown.Button>
           <div className="cards">
             {data?.map((item, index) => (
               <FeaturedData wholeData={data} key={index} data={item} />
