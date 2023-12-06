@@ -17,7 +17,9 @@ export const userSpecificToken = () => {
 };
 
 export const dateConverter = (date) => {
-  const getDate = new Date(date.$d);
+  debugger;
+
+  const getDate = new Date(date);
   const getMonth = new Date(getDate).getMonth() + 1;
   const getYear = new Date(getDate).getFullYear();
   const actualDate = `${getMonth}/${getYear}`;

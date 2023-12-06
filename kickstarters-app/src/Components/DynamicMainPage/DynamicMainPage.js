@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./DynamicMainPage.css";
 import AdvertiseJobsModal from "../AdvertiseJob/AdvertiseJob";
-import { userSpecificToken } from "../GenericCode/GenericCode";
+import { dateConverter, userSpecificToken } from "../GenericCode/GenericCode";
 import {
   showToastError,
   showToastSuccess,
@@ -109,6 +109,11 @@ function DynamicMainPage(props) {
       showToastError("Input field can not be empty.");
       return false;
     }
+    const obj = {
+      jobTitle: searchInput,
+      fromDate: dateConverter(datesValues.fromDate.$d),
+      toDate: dateConverter(datesValues.toDate.$d),
+    };
     const response = await fetch(
       `http://localhost:8080/api/v1/job/service/jobseekerJobSearch?jobTitle=${searchInput}`
     )
