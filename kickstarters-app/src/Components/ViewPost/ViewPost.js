@@ -287,11 +287,19 @@ function ViewPost(props) {
         {props?.from === "NewPost" ? (
           <div className="ViewPost-main">
             <div className="ViewPost-header">
-              <h1 className="viewPost-Title">
-                {jobDetails.jobTitle}{" "}
+              <h1
+                className={`${
+                  jobDetails?.jobApplicationStatusEmployer === "In Progress"
+                    ? "orangeClass"
+                    : jobDetails?.jobApplicationStatusEmployer === "Accepted"
+                    ? "greencolor"
+                    : "redcolor"
+                }`}
+              >
                 {props?.comingfrom === "jobseekerAlJobsApplied" &&
-                  `(${jobDetails?.jobApplicationStatusEmployer})`}
+                  `${jobDetails?.jobApplicationStatusEmployer}`}
               </h1>
+              <h1 className="viewPost-Title">{jobDetails.jobTitle} </h1>
               <div className="header-logos-left">
                 <div className="header-logos-right">
                   <svg

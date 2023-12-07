@@ -35,9 +35,9 @@ export default function Navbar() {
   useEffect(() => {
     let userDetails = getToken;
     if (userDetails?.userRole === "JOBSEEKER") {
-      setUserDropdownTitle(userDetails.userEmail.charAt(0).toLocaleUpperCase());
+      setUserDropdownTitle(userDetails.userFirstName);
     } else if (userDetails?.userRole === "EMPLOYER") {
-      setUserDropdownTitle(userDetails.userEmail.charAt(0).toLocaleUpperCase());
+      setUserDropdownTitle(userDetails.userFirstName);
     } else {
       setUserDropdownTitle("Register");
     }
