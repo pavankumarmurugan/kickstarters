@@ -58,11 +58,6 @@ function GenericModals(props) {
         open={props.isShowModel}
         onOk={handleOk}
         onCancel={handleCancel}
-        // footer={[
-        //   <Button key="ok" type="primary" onClick={handleOk}>
-        //     OK
-        //   </Button>,
-        // ]}
         footer={[
           props?.btn === "1" ? (
             <input

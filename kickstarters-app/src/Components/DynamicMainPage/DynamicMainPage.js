@@ -7,7 +7,6 @@ import {
   showToastSuccess,
 } from "../GenericToaster/GenericToaster";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import { DatePicker } from "antd";
 
 function DynamicMainPage(props) {
@@ -30,7 +29,6 @@ function DynamicMainPage(props) {
     setOpenModal(false);
   };
   const okModalFunction = async (postjobData) => {
-    debugger;
     const response = await fetch(
       "http://localhost:8080/api/v1/job/service/postJob",
       {
@@ -64,7 +62,6 @@ function DynamicMainPage(props) {
 
   /** useEffects */
   useEffect(() => {
-    debugger;
     let userDetails = userSpecificToken();
     if (userDetails?.userRole === "EMPLOYER") {
       setUser(true);
@@ -75,7 +72,6 @@ function DynamicMainPage(props) {
   /** useEffects */
 
   const handleChange = (e) => {
-    debugger;
     const value = e.target.value;
     if (value !== undefined && value !== null) {
       const regexForNumAndAlp = /^[a-zA-Z0-9]+$/;
@@ -88,7 +84,6 @@ function DynamicMainPage(props) {
   };
 
   const searchButton = async () => {
-    debugger;
     if (
       datesValues.fromDate !== "" &&
       datesValues.fromDate !== null &&
@@ -129,7 +124,6 @@ function DynamicMainPage(props) {
       .then((response) => response.json())
       .then((data) => {
         if (data !== null && data !== undefined && data.length > 0) {
-          // showToastSuccess("Api Called Successfully.");
           const compareJobPostTime = (a, b) =>
             new Date(a.jobPostTime) - new Date(b.jobPostTime);
           const sortedJobData = data.slice().sort(compareJobPostTime);
@@ -148,7 +142,6 @@ function DynamicMainPage(props) {
 
   return (
     <>
-      <ToastContainer />
       <div className={props?.cName}>
         {/** advertise job modal */}
         {openModal && (
@@ -168,7 +161,6 @@ function DynamicMainPage(props) {
             <>
               {/** this section is for users home page */}
               <h1>{props?.title}</h1>
-              {/* <p>{props?.text}</p> */}
               {props?.showbtn && (
                 <>
                   <div>

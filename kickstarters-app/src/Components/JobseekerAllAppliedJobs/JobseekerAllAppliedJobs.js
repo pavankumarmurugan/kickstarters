@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
-import { Pagination } from "antd";
 import Footer from "../Footer/Footer";
 import { userSpecificToken } from "../GenericCode/GenericCode";
-import {
-  showToastError,
-  showToastSuccess,
-} from "../GenericToaster/GenericToaster";
+import { showToastError } from "../GenericToaster/GenericToaster";
 import FeaturedData from "../FeaturedJobs/FeaturedJobsData";
 
 function JobseekerAllAppliedJobs() {
@@ -22,12 +18,10 @@ function JobseekerAllAppliedJobs() {
   const aa = pages.length;
 
   const handleChange = (e) => {
-    debugger;
     setCurrentPage(e);
   };
 
   const getAllAppliedJobs = async () => {
-    debugger;
     const response = await fetch(
       "http://localhost:8080/api/v1/job/service/jobseekerAllAppliedJobs",
       {
@@ -41,7 +35,6 @@ function JobseekerAllAppliedJobs() {
       .then((response) => response.json())
       .then((data) => {
         if (data !== undefined && data !== null && data?.length > 0) {
-          // showToastSuccess("Api called Successfully.");
           setData(data);
         } else {
           showToastError(data?.message);
@@ -73,13 +66,7 @@ function JobseekerAllAppliedJobs() {
                 comingfrom="jobseekerAlJobsApplied"
               />
             ))}
-            <div className="pagination-main">
-              {/* <Pagination
-                current={currentPage}
-                total={aa * 8}
-                onChange={handleChange}
-              /> */}
-            </div>
+            <div className="pagination-main"></div>
           </div>
         </div>
         <Footer />

@@ -8,7 +8,6 @@ import {
 } from "../GenericToaster/GenericToaster";
 import ViewPost from "../ViewPost/ViewPost";
 import CandidateList from "../CandidatesList/CandidateList";
-import { ToastContainer } from "react-toastify";
 
 function FeaturedData({ wholeData, data, comingfrom }) {
   let getToken = userSpecificToken();
@@ -22,14 +21,11 @@ function FeaturedData({ wholeData, data, comingfrom }) {
     setOpenModal(false);
   };
   const handleDetailPost = async (e) => {
-    debugger;
-    console.log(wholeData);
     const filterData = wholeData.filter((x) => x.jobId === Number(e.target.id));
     setUpdateApiData(filterData[0]);
     setOpenModal(true);
   };
   const ViewCandidates = async (e) => {
-    debugger;
     const response = await fetch(
       `http://localhost:8080/api/v1/job/service/jobCandidateList?jobId=${e?.target?.id}`,
       {
@@ -38,7 +34,6 @@ function FeaturedData({ wholeData, data, comingfrom }) {
           "Content-Type": "application/json",
           Authorization: `${"Bearer "}${getToken?.token}`,
         },
-        // body: JSON.stringify(postFormData),
       }
     )
       .then((response) => response.json())
@@ -47,7 +42,6 @@ function FeaturedData({ wholeData, data, comingfrom }) {
           data.forEach((item) => {
             item.candidateDetails.jobId = e.target.id;
           });
-          // showToastSuccess("Api Called Successfully.");
           setTimeout(() => {
             setViewCandidatesListData(data);
             setViewCandidatesList(true);
@@ -66,7 +60,6 @@ function FeaturedData({ wholeData, data, comingfrom }) {
   /** update posted job */
 
   const okModalFunction = async (postjobData) => {
-    debugger;
     const response = await fetch(
       "http://localhost:8080/api/v1/job/service/updateJob",
       {
@@ -122,7 +115,6 @@ function FeaturedData({ wholeData, data, comingfrom }) {
 
   return (
     <>
-      <ToastContainer />
       {/** posted job deatils modal */}
       {openModal && (
         <AdvertiseJobsModal
@@ -139,7 +131,6 @@ function FeaturedData({ wholeData, data, comingfrom }) {
         <ViewPost
           isShowModel={viewPost}
           closeModal={closeViewPostModal}
-          // okModalFunction={okModalFunction}
           from="NewPost"
           comingfrom={comingfrom}
           data={updateApiData}
@@ -149,7 +140,6 @@ function FeaturedData({ wholeData, data, comingfrom }) {
         <CandidateList
           isShowModel={ViewCandidatesList}
           closeModal={closeCandidatesListModal}
-          // okModalFunction={okModalFunction}
           from="NewPost"
           data={viewCandidatesListData}
         />
@@ -159,7 +149,6 @@ function FeaturedData({ wholeData, data, comingfrom }) {
         <div className="jobtitle-salary">
           <h4>{data?.jobTitle}</h4>
           <p>€{data?.jobSalary}</p>{" "}
-          {/** need to change this variable into jobSalary from backend  */}
         </div>
         <div>
           <p>{`${data?.jobDesc?.slice(0, 150)}...`}</p>
@@ -185,9 +174,7 @@ function FeaturedData({ wholeData, data, comingfrom }) {
                   onClick={ViewCandidates}
                 />
               </div>
-              <div
-              // style={{ position: "absolute", bottom: "10px", right: "10px" }}
-              >
+              <div>
                 <input
                   style={{ float: "right" }}
                   type="button"

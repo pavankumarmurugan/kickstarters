@@ -2,7 +2,6 @@ import { Modal } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import "./ViewPost.css";
-import { ToastContainer } from "react-toastify";
 import { userSpecificToken } from "../GenericCode/GenericCode";
 import {
   showToastError,
@@ -32,13 +31,6 @@ function ViewPost(props) {
     right: 0,
   });
 
-  const [profileData, setProfileData] = useState({
-    employerName: "",
-    employerEmail: "",
-    employerMobileNo: "",
-    employerLocation: "",
-  });
-
   /**useStates */
 
   /**modal */
@@ -47,7 +39,6 @@ function ViewPost(props) {
 
   /** modal close function */
   const handleCancel = (e) => {
-    debugger;
     props?.closeModal();
   };
   const onStart = (_event, uiData) => {
@@ -67,7 +58,6 @@ function ViewPost(props) {
 
   /** useEffect */
   useEffect(() => {
-    debugger;
     setJobDetails(props?.data);
     const givenDateTime = new Date(props?.data.jobPostTime);
     const currentDate = new Date();
@@ -80,7 +70,6 @@ function ViewPost(props) {
   /** apply function */
 
   const handleApply = async () => {
-    debugger;
     if (getToken === undefined) {
       showToastError("You need to login first.");
       return false;
@@ -116,8 +105,6 @@ function ViewPost(props) {
   /** apply function */
 
   const handleApprove = async (e) => {
-    debugger;
-
     const obj = {
       jobId: props?.data?.candidateDetails?.jobId,
       jobSeekerId: props?.data?.candidateDetails?.userId,
@@ -139,7 +126,6 @@ function ViewPost(props) {
       .then((response) => response.json())
       .then((data) => {
         if (data.message === "Candidate status updated successfully") {
-          // showToastSuccess("Api Called Successfully.");
           setTimeout(() => {
             window.location.reload(false);
           }, [1000]);
@@ -184,7 +170,6 @@ function ViewPost(props) {
 
   return (
     <>
-      <ToastContainer />
       <Modal
         title={
           <div
@@ -210,7 +195,6 @@ function ViewPost(props) {
         }
         style={{ top: 20, maxHeight: "700px" }}
         open={props.isShowModel}
-        // onOk={handleOk}
         width="60%"
         maskClosable={false}
         onCancel={handleCancel}
@@ -474,14 +458,6 @@ function ViewPost(props) {
                       <p>
                         {index + 1}. {item.skillTitle}
                       </p>
-                      {/* <ul>
-                        <p>
-                          <b>Description:</b> {item.jobExperienceDescription}
-                        </p>
-                        <p>
-                          <b>Duration:</b> {item.jobExperienceDuration}
-                        </p>
-                      </ul> */}
                     </li>
                   )
                 )}

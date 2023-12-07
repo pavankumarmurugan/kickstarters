@@ -2,14 +2,9 @@ import React, { useEffect, useState } from "react";
 import DynamicMainPage from "../DynamicMainPage/DynamicMainPage";
 import AboutUs from "../AboutUs/AboutUs";
 import FeaturedJobs from "../FeaturedJobs/FeaturedJobs";
-import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
-import { async } from "q";
 import { userSpecificToken } from "../GenericCode/GenericCode";
-import {
-  showToastError,
-  showToastSuccess,
-} from "../GenericToaster/GenericToaster";
+import { showToastError } from "../GenericToaster/GenericToaster";
 
 function HomePage() {
   let getToken = userSpecificToken();
@@ -18,7 +13,6 @@ function HomePage() {
 
   /** home data api */
   useEffect(() => {
-    debugger;
     if (
       getToken?.userRole === "JOBSEEKER" ||
       getToken?.userRole === undefined
@@ -31,7 +25,6 @@ function HomePage() {
   }, []);
 
   const callHomeApi = async () => {
-    debugger;
     let url = "";
     let headerObj = {};
     if (
@@ -77,7 +70,6 @@ function HomePage() {
         <FeaturedJobs data={homepageJobsData} heading={featuredjobsHeading} />
       )}
       <AboutUs />
-      <Footer />
     </div>
   );
 }

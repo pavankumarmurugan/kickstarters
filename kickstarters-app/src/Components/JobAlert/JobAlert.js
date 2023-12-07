@@ -1,7 +1,6 @@
 import { Modal } from "antd";
 import React, { useRef, useState } from "react";
 import Draggable from "react-draggable";
-import { ToastContainer } from "react-toastify";
 import { userSpecificToken } from "../GenericCode/GenericCode";
 import "./JobAlert.css";
 
@@ -28,37 +27,9 @@ function JobAlert(props) {
   /**modal */
   const draggleRef = useRef(null);
   /** modal open function */
-  //   const handleOk = async (e) => {
-  //     // props?.okModalFunction(postFormData);
-  //     const response = await fetch(
-  //       `http://localhost:8080/api/v1/auth/profile/updateEmployerProfile`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Control-Allow-Origin": "*",
-  //           "Content-Type": "application/json",
-  //           Authorization: `${"Bearer "}${getToken?.token}`,
-  //         },
-  //         body: JSON.stringify(profileData),
-  //       }
-  //     )
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         if (data?.length) {
-  //           // setHomepageJobsData(data);
-  //           // setOpenProfile(true);
-  //         } else {
-  //           showToastError(data?.message);
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         showToastError(err);
-  //         console.log(err);
-  //       });
-  //   };
+
   /** modal close function */
   const handleCancel = (e) => {
-    debugger;
     props?.closeModal();
   };
   const onStart = (_event, uiData) => {
@@ -79,37 +50,20 @@ function JobAlert(props) {
   /** fields handlechange */
 
   const handleChange = (e) => {
-    debugger;
     const name = e.target.name;
     const value = e.target.value;
 
     if (value !== null && value !== undefined) {
-      //   if (name === "employerMobileNo") {
-      //     if (numericRegex.test(value)) {
-      //       setProfileData((prevState) => ({
-      //         ...prevState,
-      //         [name]: value,
-      //       }));
-      //     }
-      //   } else if (name === "employerEmail") {
-      //     if (emailRegex.test(value))
-      //       setProfileData((prevState) => ({
-      //         ...prevState,
-      //         [name]: value,
-      //       }));
-      //   } else {
       setProfileData((prevState) => ({
         ...prevState,
         [name]: value,
       }));
-      //   }
     }
   };
 
   /** fields handlechange */
   return (
     <>
-      <ToastContainer />
       <Modal
         title={
           <div

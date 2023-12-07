@@ -2,22 +2,12 @@ import { Modal, Pagination } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 // import "./ViewPost.css";
-import { ToastContainer } from "react-toastify";
 import { userSpecificToken } from "../GenericCode/GenericCode";
-import {
-  showToastError,
-  showToastSuccess,
-} from "../GenericToaster/GenericToaster";
 import ViewPost from "../ViewPost/ViewPost";
 
 function CandidateList(props) {
   /**useStates */
-  debugger;
-  console.log(props, "sad");
   const candidateDetails = props?.data;
-  let getToken = userSpecificToken();
-  const [daysPassed, setDaysPassed] = useState(0);
-  // const [candidateDetails, setCandidateDetails] = useState([]);
   const [disabled, setDisabled] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(9);
@@ -38,7 +28,6 @@ function CandidateList(props) {
 
   /** modal close function */
   const handleCancel = (e) => {
-    debugger;
     props?.closeModal();
   };
   const onStart = (_event, uiData) => {
@@ -68,12 +57,10 @@ function CandidateList(props) {
   const aa = pages.length;
 
   const handleChange = (e) => {
-    debugger;
     setCurrentPage(e);
   };
 
   const viewCandidate = (e) => {
-    debugger;
     const filterData = props?.data?.filter(
       (x) => x.candidateDetails.userId === Number(e.target.id)
     );
@@ -86,12 +73,10 @@ function CandidateList(props) {
 
   return (
     <>
-      <ToastContainer />
       {viewPost && (
         <ViewPost
           isShowModel={viewPost}
           closeModal={closeViewPostModal}
-          // okModalFunction={okModalFunction}
           from="CandidateList"
           data={viewCanData}
         />
@@ -121,7 +106,6 @@ function CandidateList(props) {
         }
         style={{ top: 20, maxHeight: "700px" }}
         open={props.isShowModel}
-        // onOk={handleOk}
         width="60%"
         maskClosable={false}
         onCancel={handleCancel}
@@ -154,16 +138,11 @@ function CandidateList(props) {
             <div className="t-card" style={{ position: "relative" }}>
               <div className="jobtitle-salary">
                 <h4>{`${item?.candidateDetails?.userFirstName} ${item?.candidateDetails?.userLastName}`}</h4>
-
-                {/** need to change this variable into jobSalary from backend  */}
               </div>
               <div>
                 <h4>Skills</h4>
                 {item?.candidateDetails?.jobSeekerSkillList?.map(
                   (item, index) => (
-                    // <ol>
-                    //   <li key={index}>{item.skillTitle}</li>
-                    // </ol>
                     <li key={index}>
                       <p>
                         {index + 1}. {item.skillTitle}
@@ -186,9 +165,7 @@ function CandidateList(props) {
                   right: "10px",
                 }}
               >
-                <div
-                // style={{ position: "absolute", bottom: "10px", right: "10px" }}
-                >
+                <div>
                   <input
                     style={{ float: "right" }}
                     type="button"
