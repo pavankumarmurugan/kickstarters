@@ -57,11 +57,11 @@ List the technologies and frameworks used in your project, including versions. F
 ├── /service-registry
 ├── README.md
 
-gateway-service -- Spring Boot - API Gateway for the microservices architecture
-job-service -- Spring Boot - Service contains the all the API's related to jobs post, update, close, fetch details
-kickstarters-app -- React - UI Component for the web application
-profile-service -- Spring Boot - Service contains the all the API's related to register user, login, authentication
-service-registry -- Spring Boot - Service registory for the microservices architecture
+- gateway-service -- Spring Boot - API Gateway for the microservices architecture
+- job-service -- Spring Boot - Service contains the all the API's related to jobs post, update, close, fetch details
+- kickstarters-app -- React - UI Component for the web application
+- profile-service -- Spring Boot - Service contains the all the API's related to register user, login, authentication
+- service-registry -- Spring Boot - Service registory for the microservices architecture
 
 ## Prerequisites
 
@@ -76,42 +76,42 @@ service-registry -- Spring Boot - Service registory for the microservices archit
 ## Configuration
 
 - Database
-Create a new schema by executing the below query
-CREATE DATABASE kickstarters;
+  - Create a new schema by executing the below query
+  - CREATE DATABASE kickstarters;
 
 - Backend
-Open the following files and make the changes:
+  - Open the following files and make the changes:
 
-/kickstarters/profile-service/src/main/resources/application.yml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:{port}/kickstarters
-    username: {username}
-    password: {password}
+    - /kickstarters/profile-service/src/main/resources/application.yml
+        spring:
+          datasource:
+          url: jdbc:mysql://localhost:{port}/kickstarters
+          username: {username}
+          password: {password}
 
-/kickstarters/job-service/src/main/resources/application.yml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:{port}/kickstarters
-    username: {username}
-    password: {password}
+    - /kickstarters/job-service/src/main/resources/application.yml
+        spring:
+          datasource:
+            url: jdbc:mysql://localhost:{port}/kickstarters
+            username: {username}
+            password: {password}
 
 ## Running the Application
 
 - Frontend
-Import the project into VS Code
-Use the following command to start the service in local:
-npm install
-npm start
+  - Import the project into VS Code
+  - Use the following command to start the service in local:
+    - npm install
+    - npm start
 
 - Backend
-Import the projects into Eclipse
-Use the IDE to start the services. (Note: use this order to start ne by one)
-service-registry
-gateway-service
-profile-service
-job-service
+  - Import the projects into Eclipse
+  - Use the IDE to start the services. (Note: use this order to start ne by one)
+    - service-registry
+    - gateway-service
+    - profile-service
+    - job-service
 
 - Web Page
-Once the services started successfully.
-Use a web browser (Chrome) and type the url http://localhost:3000 and enter
+  - Once the services started successfully.
+  - Use a web browser (Chrome) and type the url http://localhost:3000 and enter
