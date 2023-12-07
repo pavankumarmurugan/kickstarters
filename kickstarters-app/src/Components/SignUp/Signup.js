@@ -447,7 +447,7 @@ function Signup() {
                     <FormControlLabel
                       value="JOBSEEKER"
                       control={<Radio />}
-                      label="Employee"
+                      label="Jobseeker"
                     />
                     <FormControlLabel
                       value="EMPLOYER"

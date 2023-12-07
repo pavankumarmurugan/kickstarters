@@ -113,6 +113,7 @@ export default function Navbar() {
   /** profile modal functions */
 
   const handleAllJobs = async (event, url) => {
+    debugger;
     if (url === "/allappliedjobs") {
       if (allAppliedJobsData?.length > 0) {
       } else {
@@ -123,6 +124,7 @@ export default function Navbar() {
   };
 
   const callAllJobsAppliedFunction = async () => {
+    debugger;
     const response = await fetch(
       "http://localhost:8080/api/v1/job/service/jobseekerAllAppliedJobs",
       {
@@ -146,6 +148,7 @@ export default function Navbar() {
   };
 
   useEffect(() => {
+    debugger;
     callAllJobsAppliedFunction();
   }, []);
 

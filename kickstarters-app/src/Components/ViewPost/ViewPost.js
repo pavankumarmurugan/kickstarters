@@ -91,6 +91,7 @@ function ViewPost(props) {
           showToastSuccess(data?.message);
           setTimeout(() => {
             handleCancel();
+            window.location.reload(false);
           }, [1000]);
         } else {
           showToastError(data?.message);
