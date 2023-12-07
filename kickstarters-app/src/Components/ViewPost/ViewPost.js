@@ -58,6 +58,7 @@ function ViewPost(props) {
 
   /** useEffect */
   useEffect(() => {
+    debugger;
     setJobDetails(props?.data);
     const givenDateTime = new Date(props?.data.jobPostTime);
     const currentDate = new Date();
@@ -287,18 +288,20 @@ function ViewPost(props) {
         {props?.from === "NewPost" ? (
           <div className="ViewPost-main">
             <div className="ViewPost-header">
-              <h1
-                className={`${
-                  jobDetails?.jobApplicationStatusEmployer === "In Progress"
-                    ? "orangeClass"
-                    : jobDetails?.jobApplicationStatusEmployer === "Accepted"
-                    ? "greencolor"
-                    : "redcolor"
-                }`}
-              >
-                {props?.comingfrom === "jobseekerAlJobsApplied" &&
-                  `${jobDetails?.jobApplicationStatusEmployer}`}
-              </h1>
+              {jobDetails?.jobApplicationStatus !== "Cancelled" && (
+                <h1
+                  className={`${
+                    jobDetails?.jobApplicationStatusEmployer === "In Progress"
+                      ? "orangeClass"
+                      : jobDetails?.jobApplicationStatusEmployer === "Accepted"
+                      ? "greencolor"
+                      : "redcolor"
+                  }`}
+                >
+                  {props?.comingfrom === "jobseekerAlJobsApplied" &&
+                    `${jobDetails?.jobApplicationStatusEmployer}`}
+                </h1>
+              )}
               <h1 className="viewPost-Title">{jobDetails.jobTitle} </h1>
               <div className="header-logos-left">
                 <div className="header-logos-right">
