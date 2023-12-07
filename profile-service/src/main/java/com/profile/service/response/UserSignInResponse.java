@@ -18,6 +18,16 @@ public class UserSignInResponse {
 	private String userRole;
 	
 	private String userEmail;
+	
+	private String userFirstName;
+
+	public String getUserFirstName() {
+		return userFirstName;
+	}
+
+	public void setUserFirstName(String userFirstName) {
+		this.userFirstName = userFirstName;
+	}
 
 	public String getMessage() {
 		return message;
