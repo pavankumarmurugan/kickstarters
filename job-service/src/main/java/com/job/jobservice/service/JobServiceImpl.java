@@ -7,19 +7,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.job.jobservice.entity.*;
-import com.job.jobservice.repository.*;
-import com.job.jobservice.request.CandidateStatusRequest;
-import com.job.jobservice.request.JobSearchRequest;
-import com.job.jobservice.response.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.job.jobservice.entity.JobApplicationEntity;
+import com.job.jobservice.entity.JobEntity;
+import com.job.jobservice.entity.JobSeekerExperienceEntity;
+import com.job.jobservice.entity.JobSeekerProfileEntity;
+import com.job.jobservice.entity.JobSeekerSkillEntity;
+import com.job.jobservice.entity.Role;
+import com.job.jobservice.entity.UserEntity;
+import com.job.jobservice.repository.JobApplicationRepository;
+import com.job.jobservice.repository.JobRepository;
+import com.job.jobservice.repository.JobSeekerExperienceRepository;
+import com.job.jobservice.repository.JobSeekerProfileDetailsRepository;
+import com.job.jobservice.repository.JobSeekerSkillRepository;
+import com.job.jobservice.repository.UserRepository;
+import com.job.jobservice.request.CandidateStatusRequest;
+import com.job.jobservice.request.JobSearchRequest;
 import com.job.jobservice.request.PostJobRequest;
 import com.job.jobservice.request.UpdateJobRequest;
+import com.job.jobservice.response.HomepageResponse;
+import com.job.jobservice.response.JobCandidateResponse;
+import com.job.jobservice.response.JobSeekerAppliedJobResponse;
+import com.job.jobservice.response.JobSeekerExperienceResponse;
+import com.job.jobservice.response.JobSeekerProfileDetailsResponse;
+import com.job.jobservice.response.JobSeekerSkillResponse;
 
 @Service
 public class JobServiceImpl implements JobService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(JobServiceImpl.class);
 
 	@Autowired
 	JobRepository jobRepository;
@@ -42,6 +62,8 @@ public class JobServiceImpl implements JobService {
 
 
 	public List<HomepageResponse> getAllJobs() {
+		
+		logger.info("Inside getAllJobs");
 
 		List<HomepageResponse> homepageResponseList = new ArrayList<>();
 
@@ -66,14 +88,20 @@ public class JobServiceImpl implements JobService {
 			homepageResponse.setJobWorkExperience(jobEntity.getJobWorkExperience());
 			homepageResponseList.add(homepageResponse);
 		}
+		
+		logger.info("End of getAllJobs");
+		
 		return homepageResponseList;
 	}
 
 	public Map<String, String> postJob(String userEmail, PostJobRequest postJobRequest) {
+		
+		logger.info("Inside postJob");
 
 		JobEntity jobEntity = new JobEntity();
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
 		if (userEntity.isEmpty()) {
+			logger.debug("User is not Valid " + userEmail);
 			throw new IllegalArgumentException("User is not Valid");
 		}
 		jobEntity.setJobTitle(postJobRequest.getJobTitle());
@@ -91,15 +119,20 @@ public class JobServiceImpl implements JobService {
 
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "Job posted successfully");
+		
+		logger.info("End of postJob");
 
 		return response;
 	}
 
 	public Map<String, String> updateJob(String userEmail, UpdateJobRequest updateJobRequest) {
+		
+		logger.info("Inside updateJob");
 
 		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobIdAndJobStatusTrue(updateJobRequest.getJobId());
 
 		if (jobEntityOpt.isEmpty()) {
+			logger.debug("Job not found or job is closed " + updateJobRequest.getJobId());
 			throw new IllegalArgumentException("Job not found or job is closed");
 		}
 
@@ -108,6 +141,7 @@ public class JobServiceImpl implements JobService {
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
 
 		if (userEntity.isEmpty() || !userEmail.equals(jobEntity.getJobPostedBy().getUserEmail())) {
+			logger.debug("Not valid user to update " + userEmail);
 			throw new IllegalArgumentException("Not valid user to update");
 		}
 
@@ -124,15 +158,20 @@ public class JobServiceImpl implements JobService {
 
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "Job updated successfully");
+		
+		logger.info("End of updateJob");
 
 		return response;
 	}
 
 	public Map<String, String> closeJob(String userEmail, Long jobId) {
+		
+		logger.info("Inside closeJob");
 
 		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobIdAndJobStatusTrue(jobId);
 
 		if (jobEntityOpt.isEmpty()) {
+			logger.debug("Job not found or job is already closed " + jobId);
 			throw new IllegalArgumentException("Job not found or job is already closed");
 		}
 
@@ -141,6 +180,7 @@ public class JobServiceImpl implements JobService {
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
 
 		if (userEntity.isEmpty() || !userEmail.equals(jobEntity.getJobPostedBy().getUserEmail())) {
+			logger.debug("Not valid user to update " + userEmail);
 			throw new IllegalArgumentException("Not valid user to update");
 		}
 
@@ -151,17 +191,22 @@ public class JobServiceImpl implements JobService {
 
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "Job closed successfully");
+		
+		logger.info("End of closeJob");
 
 		return response;
 	}
 
 	public List<HomepageResponse> getAllPostedJobsByUser(String userEmail) {
+		
+		logger.info("Inside getAllPostedJobsByUser");
 
 		List<HomepageResponse> homepageResponseList = new ArrayList<>();
 
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
 
 		if (userEntity.isEmpty()) {
+			logger.debug("Not valid user " + userEmail);
 			throw new IllegalArgumentException("Not valid user");
 		}
 
@@ -186,16 +231,21 @@ public class JobServiceImpl implements JobService {
 			homepageResponse.setJobWorkExperience(jobEntity.getJobWorkExperience());
 			homepageResponseList.add(homepageResponse);
 		}
+		
+		logger.info("End of getAllPostedJobsByUser");
 		return homepageResponseList;
 	}
 
 
 
 	public Map<String, String> applyJob(String userEmail, Long jobId) {
+		
+		logger.info("Inside applyJob");
 
 		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobIdAndJobStatusTrue(jobId);
 
 		if(jobEntityOpt.isEmpty()) {
+			logger.debug("Job not found or job is already closed " + jobId);
 			throw new IllegalArgumentException("Job not found or job is already closed");
 		}
 
@@ -204,6 +254,7 @@ public class JobServiceImpl implements JobService {
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.JOBSEEKER);
 
 		if(userEntity.isEmpty()) {
+			logger.debug("Not valid user to apply job " + userEmail);
 			throw new IllegalArgumentException("Not valid user to apply job");
 		}
 
@@ -211,6 +262,7 @@ public class JobServiceImpl implements JobService {
 
 
 		if(!jobApplicationEntityOpl.isEmpty()) {
+			logger.debug("User has already applied this job " + userEmail + " " + jobEntity.getJobId());
 			throw new IllegalArgumentException("User has already applied this job");
 		}
 
@@ -226,18 +278,23 @@ public class JobServiceImpl implements JobService {
 
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "Job applied successfully");
+		
+		logger.info("End of applyJob");
 
 		return response;
 	}
 
 	@Override
 	public List<JobCandidateResponse> jobCandidateList(String userEmail, Long jobId) {
+		
+		logger.info("Inside jobCandidateList");
 
 		List<JobCandidateResponse> jobCandidateResponseList = new ArrayList<>();
 
 		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobIdAndJobStatusTrue(jobId);
 
 		if(jobEntityOpt.isEmpty()) {
+			logger.debug("Job not found or job is already closed " + jobId);
 			throw new IllegalArgumentException("Job not found or job is already closed");
 		}
 
@@ -246,6 +303,7 @@ public class JobServiceImpl implements JobService {
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
 
 		if (!userEntity.isPresent() || !userEmail.equals(jobEntity.getJobPostedBy().getUserEmail())) {
+			logger.debug("Not valid user to get the details " + userEmail);
 			throw new IllegalArgumentException("Not valid user to get the details");
 		}
 
@@ -324,16 +382,21 @@ public class JobServiceImpl implements JobService {
 				}
 			}
 		}
+		
+		logger.info("End of jobCandidateList");
 
 		return jobCandidateResponseList;
 	}
 
 	@Override
 	public Map<String, String> updateCandidateStatus(String userEmail, CandidateStatusRequest candidateStatusRequest) {
+		
+		logger.info("Inside updateCandidateStatus");
 
 		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobIdAndJobStatusTrue(candidateStatusRequest.getJobId());
 
 		if(!jobEntityOpt.isPresent()) {
+			logger.debug("Job not found or job is already closed " + candidateStatusRequest.getJobId());
 			throw new IllegalArgumentException("Job not found or job is already closed");
 		}
 
@@ -342,12 +405,14 @@ public class JobServiceImpl implements JobService {
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.EMPLOYER);
 
 		if (!userEntity.isPresent() || !userEmail.equals(jobEntity.getJobPostedBy().getUserEmail())) {
+			logger.debug("Not valid user to update the details " + userEmail);
 			throw new IllegalArgumentException("Not valid user to update the details");
 		}
 
 		Optional<UserEntity> jobSeekerEntity = userRepository.findByUserIdAndUserRole(candidateStatusRequest.getJobSeekerId(), Role.JOBSEEKER);
 
 		if(!jobSeekerEntity.isPresent()) {
+			logger.debug("Not valid jobseeker " + userEmail);
 			throw new IllegalArgumentException("Not valid jobseeker");
 		}
 
@@ -355,6 +420,7 @@ public class JobServiceImpl implements JobService {
 				jobApplicationRepository.findByJobIdAndJobApplicationBy(jobEntity, jobSeekerEntity.get());
 
 		if(!jobApplicationEntityOpl.isPresent()) {
+			logger.debug("Not valid jobseeker for this job " + userEmail);
 			throw new IllegalArgumentException("Not valid jobseeker for this job");
 		}
 
@@ -367,12 +433,16 @@ public class JobServiceImpl implements JobService {
 
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "Candidate status updated successfully");
+		
+		logger.info("End of updateCandidateStatus");
 
 		return response;
 	}
 
 	@Override
 	public List<HomepageResponse> jobseekerJobSearch(JobSearchRequest jobSearchRequest) {
+		
+		logger.info("Inside jobseekerJobSearch");
 		
 		List<HomepageResponse> homepageResponseList = new ArrayList<>();
 		
@@ -407,11 +477,13 @@ public class JobServiceImpl implements JobService {
 				toDate = LocalDateTime.of(toYear, toMonth + 1, 1, 0, 0).minusSeconds(1);
 			}
 			if(fromDate.isAfter(toDate)) {
+				logger.debug("Filter dates are invalid ");
 				throw new IllegalArgumentException("Filter dates are invalid");
 			}
 			jobList = jobRepository.searchJobTitleWithFilter("%" + jobSearchRequest.getJobTitle() + "%",Boolean.TRUE ,fromDate,toDate);
 			
 		} else {
+			logger.debug("Filter dates are invalid ");
 			throw new IllegalArgumentException("Filter dates are invalid");
 		}
 		
@@ -435,16 +507,23 @@ public class JobServiceImpl implements JobService {
 			homepageResponse.setJobWorkExperience(jobEntity.getJobWorkExperience());
 			homepageResponseList.add(homepageResponse);
 		}
+		
+		logger.info("End of jobseekerJobSearch");
+		
 		return homepageResponseList;
 	}
 
 	@Override
 	public List<JobSeekerAppliedJobResponse> jobseekerAllAppliedJobs(String userEmail) {
+		
+		logger.info("Inside jobseekerAllAppliedJobs");
+		
 		List<JobSeekerAppliedJobResponse> jobSeekerAppliedJobResponseList = new ArrayList<>();
 
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.JOBSEEKER);
 
 		if (!userEntity.isPresent()) {
+			logger.debug("Not valid user to get details " + userEmail);
 			throw new IllegalArgumentException("Not valid user to get details");
 		}
 
@@ -482,15 +561,21 @@ public class JobServiceImpl implements JobService {
 			jobSeekerAppliedJobResponse.setJobApplicationUpdateTime(jobApplicationEntity.getJobApplicationUpdateTime());
 			jobSeekerAppliedJobResponseList.add(jobSeekerAppliedJobResponse);
 		}
+		
+		logger.info("End of jobseekerAllAppliedJobs");
+		
 		return jobSeekerAppliedJobResponseList;
 	}
 
 	@Override
 	public Map<String, String> cancelApplication(String userEmail, Long jobId) {
+		
+		logger.info("Inside cancelApplication");
 
 		Optional<JobEntity> jobEntityOpt = jobRepository.findByJobIdAndJobStatusTrue(jobId);
 
 		if(jobEntityOpt.isEmpty()) {
+			logger.debug("Job not found or job is already closed " + jobId);
 			throw new IllegalArgumentException("Job not found or job is already closed");
 		}
 
@@ -499,6 +584,7 @@ public class JobServiceImpl implements JobService {
 		Optional<UserEntity> userEntity = userRepository.findByUserEmailAndUserRole(userEmail, Role.JOBSEEKER);
 
 		if(userEntity.isEmpty()) {
+			logger.debug("Not valid user to cancel job " + userEmail);
 			throw new IllegalArgumentException("Not valid user to cancel job");
 		}
 
@@ -506,6 +592,7 @@ public class JobServiceImpl implements JobService {
 
 
 		if(jobApplicationEntityOpl.isEmpty()) {
+			logger.debug("User has not applied to the job " + userEmail + " " + jobEntity.getJobId());
 			throw new IllegalArgumentException("User has not applied to the job");
 		}
 
@@ -518,6 +605,8 @@ public class JobServiceImpl implements JobService {
 
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "Application Cancelled successfully");
+		
+		logger.info("End of cancelApplication");
 
 		return response;
 	}
