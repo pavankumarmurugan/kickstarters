@@ -105,6 +105,7 @@ public class UserServiceImpl implements UserService {
 		userSignInResponse.setMessage("Login Successfull!!");
 		userSignInResponse.setUserRole(user.getUserRole().toString());
 		userSignInResponse.setUserEmail(user.getUserEmail());
+		userSignInResponse.setUserFirstName(user.getUserFirstName());
 		return userSignInResponse;
 	}
 	

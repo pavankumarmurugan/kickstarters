@@ -15,3 +15,15 @@ export const userSpecificToken = () => {
     console.log(error);
   }
 };
+
+export const dateConverter = (date) => {
+  if (date !== null && date !== undefined) {
+    const getDate = new Date(date);
+    const getMonth = new Date(getDate).getMonth() + 1;
+    const getYear = new Date(getDate).getFullYear();
+    const actualDate = `${getMonth}/${getYear}`;
+    return actualDate;
+  } else {
+    return null;
+  }
+};

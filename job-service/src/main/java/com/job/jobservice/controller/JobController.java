@@ -1,6 +1,5 @@
 package com.job.jobservice.controller;
 
-import com.job.jobservice.request.CandidateStatusRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.job.jobservice.request.CandidateStatusRequest;
+import com.job.jobservice.request.JobSearchRequest;
 import com.job.jobservice.request.PostJobRequest;
 import com.job.jobservice.request.UpdateJobRequest;
 import com.job.jobservice.service.JobService;
@@ -53,9 +54,9 @@ public class JobController {
 		return ResponseEntity.ok(jobService.updateCandidateStatus(userEmail, candidateStatusRequest));
 	}
 
-	@GetMapping("/jobseekerJobSearch")
-	public ResponseEntity<?> jobseekerJobSearch(@RequestParam("jobTitle") String jobTitle) {
-		return ResponseEntity.ok(jobService.jobseekerJobSearch(jobTitle));
+	@PostMapping("/jobseekerJobSearch")
+	public ResponseEntity<?> jobseekerJobSearch(@RequestBody JobSearchRequest jobSearchRequest) {
+		return ResponseEntity.ok(jobService.jobseekerJobSearch(jobSearchRequest));
 	}
 
 	@GetMapping("/jobseekerAllAppliedJobs")

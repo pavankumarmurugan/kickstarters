@@ -6,6 +6,7 @@ import JobLists from "./Components/JobLists/JobLists";
 import Navbar from "./Components/Navbar/Navbar";
 import Footer from "./Components/Footer/Footer";
 import AboutUs from "./Components/AboutUs/AboutUs";
+import JobseekerAllAppliedJobs from "./Components/JobseekerAllAppliedJobs/JobseekerAllAppliedJobs";
 
 function App() {
   const pathname = window.location.pathname;
@@ -19,6 +20,7 @@ function App() {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/jobs" element={<JobLists />} />
+          <Route path="/allappliedjobs" element={<JobseekerAllAppliedJobs />} />
         </Routes>
         {/* {pathname !== "/signup" && <Footer />} */}
       </Fragment>

@@ -21,7 +21,6 @@ function FeaturedJobs(props) {
   const aa = pages.length;
 
   const handleChange = (e) => {
-    debugger;
     setCurrentPage(e);
   };
 

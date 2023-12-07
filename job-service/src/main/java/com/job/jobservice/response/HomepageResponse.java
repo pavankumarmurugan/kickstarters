@@ -6,14 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * ClassName: HomepageResponse
- * Description:
- *
- * @Author: Jiaxin Zhang
- * @Creat: 03/11/2023 11:10
- * @Version: 1.8
- */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

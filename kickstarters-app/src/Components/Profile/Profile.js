@@ -2,7 +2,6 @@ import { Modal } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import "./Profile.css";
-import { ToastContainer } from "react-toastify";
 import { userSpecificToken } from "../GenericCode/GenericCode";
 import {
   showToastError,
@@ -100,7 +99,6 @@ function Profile(props) {
   };
   /** modal close function */
   const handleCancel = (e) => {
-    debugger;
     props?.closeModal();
   };
   const onStart = (_event, uiData) => {
@@ -121,7 +119,6 @@ function Profile(props) {
   /** fields handlechange */
 
   const handleChange = (e) => {
-    debugger;
     const name = e.target.name;
     const value = e.target.value;
 
@@ -143,7 +140,6 @@ function Profile(props) {
   };
 
   const handleChangeForEmployee = (e) => {
-    debugger;
     const name = e.target.name;
     const value = e.target.value;
 
@@ -165,7 +161,6 @@ function Profile(props) {
   };
 
   const handleBlurForEmployee = (e) => {
-    debugger;
     const name = e.target.name;
     const value = e.target.value;
     if (value !== undefined && value !== null) {
@@ -177,7 +172,6 @@ function Profile(props) {
   };
 
   const handleChangeForSkills = (e) => {
-    debugger;
     const name = e.target.name;
     const value = e.target.value;
 
@@ -190,7 +184,6 @@ function Profile(props) {
   };
 
   const handleBlurForSkills = (e) => {
-    debugger;
     const name = e.target.name;
     const value = e.target.value;
     if (value !== undefined && value !== null) {
@@ -202,7 +195,6 @@ function Profile(props) {
   };
 
   const addSkills = (e) => {
-    debugger;
     const hasEmpty = hasEmptyValues(skillListObj);
     if (hasEmpty) {
       return false;
@@ -241,7 +233,6 @@ function Profile(props) {
   }
 
   const addExp = () => {
-    debugger;
     const hasEmpty = hasEmptyValues(experienceListObj);
     if (hasEmpty) {
       return false;
@@ -281,14 +272,12 @@ function Profile(props) {
 
   /** useEffect */
   useEffect(() => {
-    debugger;
     if (props?.data) setProfileData(props?.data);
   }, []);
   /** useEffect */
 
   return (
     <>
-      <ToastContainer />
       <Modal
         title={
           <div
@@ -322,7 +311,7 @@ function Profile(props) {
           <>
             <input
               type="button"
-              value="Add Exp"
+              value="Add Experience"
               className="custombtndark"
               onClick={addExp}
               hidden={getToken?.userRole === "EMPLOYER"}

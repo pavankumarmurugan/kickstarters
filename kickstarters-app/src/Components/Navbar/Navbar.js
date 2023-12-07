@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { MenuItems, profileItems, registerItems } from "./ManuItems";
+import {
+  MenuItems,
+  MenuItemsJobSeeker,
+  profileItems,
+  registerItems,
+} from "./ManuItems";
 import "./Navbar.css";
 import { Dropdown, Space } from "antd";
 import { Link } from "react-router-dom";
@@ -8,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { userSpecificToken } from "../GenericCode/GenericCode";
 import Profile from "../Profile/Profile";
 import { showToastError } from "../GenericToaster/GenericToaster";
-import JobAlert from "../JobAlert/JobAlert";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -21,20 +25,19 @@ export default function Navbar() {
   const [showHideHamburgerIcon, setShowHideHamburgerIcon] = useState(true);
   const [openProfile, setOpenProfile] = useState(false);
   const [userDropdownTitle, setUserDropdownTitle] = useState("");
-  const [openJobAlert, setOpenJobAlert] = useState(false);
   const [profileData, setProfileData] = useState(null);
+  const [allAppliedJobsData, setAllAppliedJobsData] = useState([]);
 
   /** useStates */
 
   /**useEffects */
 
   useEffect(() => {
-    debugger;
     let userDetails = getToken;
     if (userDetails?.userRole === "JOBSEEKER") {
-      setUserDropdownTitle(userDetails.userEmail.charAt(0).toLocaleUpperCase());
+      setUserDropdownTitle(userDetails.userFirstName);
     } else if (userDetails?.userRole === "EMPLOYER") {
-      setUserDropdownTitle(userDetails.userEmail.charAt(0).toLocaleUpperCase());
+      setUserDropdownTitle(userDetails.userFirstName);
     } else {
       setUserDropdownTitle("Register");
     }
@@ -53,9 +56,7 @@ export default function Navbar() {
     navigate("/signup");
   };
   const handleMenuClick = async (e) => {
-    debugger;
     if (e.key === "3") {
-      //profile
       let headerObj = {
         headers: {
           Authorization: `${"Bearer "}${getToken?.token}`,
@@ -81,9 +82,7 @@ export default function Navbar() {
         });
     } else if (e.key === "4") {
       localStorage.setItem("token", {});
-      navigate("signup");
-    } else if (e.key === "5") {
-      setOpenJobAlert(true);
+      navigate("/signup");
     }
   };
 
@@ -113,9 +112,45 @@ export default function Navbar() {
   };
   /** profile modal functions */
 
-  const closeJobAlertModal = () => {
-    setOpenJobAlert(false);
+  const handleAllJobs = async (event, url) => {
+    debugger;
+    if (url === "/allappliedjobs") {
+      if (allAppliedJobsData?.length > 0) {
+      } else {
+        showToastError("No Jobs Applied yet.");
+        event.preventDefault();
+      }
+    }
   };
+
+  const callAllJobsAppliedFunction = async () => {
+    debugger;
+    const response = await fetch(
+      "http://localhost:8080/api/v1/job/service/jobseekerAllAppliedJobs",
+      {
+        headers: {
+          "Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          Authorization: `${"Bearer "}${getToken?.token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data !== undefined && data !== null && data?.length > 0) {
+          setAllAppliedJobsData(data);
+        }
+      })
+      .catch((err) => {
+        showToastError(err);
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    debugger;
+    callAllJobsAppliedFunction();
+  }, []);
 
   return (
     <div>
@@ -124,38 +159,48 @@ export default function Navbar() {
         <Profile
           isShowModel={openProfile}
           closeModal={closeProfileModal}
-          // okModalFunction={okModalFunction}
           from="NewPost"
           data={profileData}
         />
       )}
-      {openJobAlert && (
-        <JobAlert
-          isShowModel={openJobAlert}
-          closeModal={closeJobAlertModal}
-          // okModalFunction={okModalFunction}
-          data={null}
-        />
-      )}
       {/** profile modal */}
       <nav className="NavbarItems">
-        <h1 className="navbar-logo">KickStarters</h1>
+        <Link to="/" className="logodesign">
+          <h1 className="navbar-logo">KickStarters</h1>
+        </Link>
         <div className="menu-icons" onClick={handleHamburger}>
           <i
             className={showHideHamburgerIcon ? "fas fa-bars" : "fas fa-times"}
           ></i>
         </div>
         <ul className={showHideHamburgerIcon ? "nav-menu" : "nav-menu active"}>
-          {MenuItems.map((item, index) => {
-            return (
-              <li key={index}>
-                <Link to={item.url} className={item.cName}>
-                  <i className={item.icon}></i>
-                  {item.title}
-                </Link>
-              </li>
-            );
-          })}
+          {getToken?.userRole === "EMPLOYER" ||
+          getToken === undefined ||
+          getToken === null
+            ? MenuItems.map((item, index) => {
+                return (
+                  <li key={index}>
+                    <Link to={item.url} className={item.cName}>
+                      <i className={item.icon}></i>
+                      {item.title}
+                    </Link>
+                  </li>
+                );
+              })
+            : MenuItemsJobSeeker.map((item, index) => {
+                return (
+                  <li key={index}>
+                    <Link
+                      to={item.url}
+                      className={item.cName}
+                      onClick={(event) => handleAllJobs(event, item.url)}
+                    >
+                      <i className={item.icon}></i>
+                      {item.title}
+                    </Link>
+                  </li>
+                );
+              })}
           {userDropdownTitle !== "Register" ? (
             <Dropdown.Button
               menu={profileMenuProps}

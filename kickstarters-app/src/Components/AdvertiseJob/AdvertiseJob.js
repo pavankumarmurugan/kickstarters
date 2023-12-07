@@ -4,11 +4,7 @@ import Draggable from "react-draggable";
 import "./AdvertiseJob.css";
 import { InputAdornment } from "@mui/material";
 import { userSpecificToken } from "../GenericCode/GenericCode";
-import {
-  showToastError,
-  showToastSuccess,
-} from "../GenericToaster/GenericToaster";
-import { ToastContainer } from "react-toastify";
+import { showToastError } from "../GenericToaster/GenericToaster";
 import { specialCharacterPattern } from "../GenericRegex/GenericRegex";
 
 function AdvertiseJobsModal(props) {
@@ -59,7 +55,6 @@ function AdvertiseJobsModal(props) {
 
   useEffect(() => {
     /** this is for update posted job */
-    debugger;
     if (props?.data !== null) {
       setPostFormData(props?.data);
     }
@@ -68,7 +63,6 @@ function AdvertiseJobsModal(props) {
   /** useEffect */
 
   const handleChange = (e) => {
-    debugger;
     const name = e.target.name;
     const value = e.target.value;
     if (
@@ -95,7 +89,6 @@ function AdvertiseJobsModal(props) {
   /** close job function */
 
   const handleCloseJob = async () => {
-    debugger;
     const response = await fetch(
       `http://localhost:8080/api/v1/job/service/closeJob?jobId=${postFormData?.jobId}`,
       {
@@ -111,7 +104,6 @@ function AdvertiseJobsModal(props) {
       .then((response) => response.json())
       .then((data) => {
         if (data !== null && data !== undefined) {
-          showToastSuccess("Api Called Successfully.");
           setTimeout(() => {
             window.location.reload(false);
           }, [1000]);
@@ -129,7 +121,6 @@ function AdvertiseJobsModal(props) {
 
   return (
     <>
-      <ToastContainer />
       <Modal
         title={
           <div
