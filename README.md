@@ -17,11 +17,9 @@ Are you ready to take the next step in your career or make a fresh start in the 
 
 Easy Job Discovery: Browse through a wide range of job listings across various industries and locations, making it simple to find positions that align with your skills and interests.
 
-Customized Job Search: Utilize our advanced search filters to narrow down your job search based on factors such as location, job type, salary, and more, ensuring you find the perfect match.
+Customized Job Search: Utilize our advanced search filters to narrow down your job search based on factors such as job posted dates ensuring you find the recent jobs.
 
-Effortless Application: Apply to jobs with just a few clicks, uploading your resume and cover letter, or using our built-in resume builder to create a professional profile.
-
-Job Alerts: Stay updated with the latest job openings through email notifications and save your favorite jobs for later reference.
+Effortless Application: Apply to jobs with just a few clicks by our built-in user interface to create a professional profile.
 
 For Employers
 Are you looking to build a skilled and diverse workforce for your company? Kickstarters empowers employers to streamline their hiring process and connect with qualified candidates effortlessly:
@@ -31,8 +29,6 @@ Job Posting: Easily create and manage job listings, including detailed descripti
 Candidate Management: Organize and track job applications with our intuitive dashboard, helping you efficiently review and communicate with potential hires.
 
 Access to Top Talent: Tap into a pool of talented job seekers who are actively looking for new opportunities.
-
-Branding and Visibility: Showcase your company culture and brand with a company profile, attracting candidates who align with your values.
 
 Diverse Hiring: Promote diversity and inclusion by connecting with a wide range of candidates from different backgrounds.
 
@@ -77,24 +73,24 @@ List the technologies and frameworks used in your project, including versions. F
 
 - Database
   - Create a new schema by executing the below query
-  - CREATE DATABASE kickstarters;
+    - CREATE DATABASE kickstarters;
 
 - Backend
   - Open the following files and make the changes:
 
     - /kickstarters/profile-service/src/main/resources/application.yml
-        spring:
-          datasource:
-          url: jdbc:mysql://localhost:{port}/kickstarters
-          username: {username}
-          password: {password}
+        - spring:
+          - datasource:
+            - url: jdbc:mysql://localhost:{port}/kickstarters
+            - username: {username}
+            - password: {password}
 
     - /kickstarters/job-service/src/main/resources/application.yml
-        spring:
-          datasource:
-            url: jdbc:mysql://localhost:{port}/kickstarters
-            username: {username}
-            password: {password}
+        - spring:
+          - datasource:
+            - url: jdbc:mysql://localhost:{port}/kickstarters
+            - username: {username}
+            - password: {password}
 
 ## Running the Application
 
@@ -106,7 +102,7 @@ List the technologies and frameworks used in your project, including versions. F
 
 - Backend
   - Import the projects into Eclipse
-  - Use the IDE to start the services. (Note: use this order to start ne by one)
+  - Use the IDE to start the services. (Note: use this order to start one by one)
     - service-registry
     - gateway-service
     - profile-service
