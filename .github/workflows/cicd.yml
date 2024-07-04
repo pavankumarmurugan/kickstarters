@@ -30,18 +30,22 @@ jobs:
       - name: Login to docker hub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       - name: Build docker image
+        working-directory: ./service-registry
         run: docker build -t kickstarters/service-registry .
       - name: Publish image to docker hub
         run: docker push kickstarters/service-registry:latest
       - name: Build docker image
+        working-directory: ./gateway-service
         run: docker build -t kickstarters/gateway-service .
       - name: Publish image to docker hub
         run: docker push kickstarters/gateway-service:latest
       - name: Build docker image
+        working-directory: ./profile-service
         run: docker build -t kickstarters/profile-service .
       - name: Publish image to docker hub
         run: docker push kickstarters/profile-service:latest
       - name: Build docker image
+        working-directory: ./job-service
         run: docker build -t kickstarters/job-service .
       - name: Publish image to docker hub
         run: docker push kickstarters/job-service:latest
