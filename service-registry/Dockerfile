@@ -5,7 +5,7 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
 # Copy the executable jar file into the container
-COPY service-registry/target/service-registry.jar service-registry.jar
+COPY ./target/service-registry.jar service-registry.jar
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
