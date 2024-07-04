@@ -33,6 +33,7 @@ jobs:
         working-directory: ./service-registry
         run: |
           docker build -t kickstarters/service-registry .
+          docker images
           docker tag service-registry kickstarters/service-registry:latest
       - name: Publish image to docker hub
         run: docker push kickstarters/service-registry:latest
