@@ -55,6 +55,14 @@ jobs:
     needs: build
     runs-on: [aws-ec2]
     steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
       - name: Pull Image from docker hub
         run: docker pull d23124670/service-registry:latest
       - name: Delete old container
