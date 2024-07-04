@@ -36,7 +36,9 @@ jobs:
           docker images
           docker tag kickstarters/service-registry:latest kickstarters/service-registry:latest
       - name: Publish image to docker hub
-        run: docker push kickstarters/service-registry:latest
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} docker.io
+          docker push kickstarters/service-registry:latest
       # - name: Build docker image
       #   working-directory: ./gateway-service
       #   run: |
