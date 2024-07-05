@@ -31,7 +31,7 @@ function HomePage() {
       getToken?.userRole === "JOBSEEKER" ||
       getToken?.userRole === undefined
     ) {
-      url = "http://localhost:8080/api/v1/job/service/allJobsForHomepage";
+      url = "http://52.207.213.128:8080/api/v1/job/service/allJobsForHomepage";
       headerObj = {};
     } else {
       headerObj = {
