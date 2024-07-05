@@ -65,25 +65,33 @@ jobs:
       - name: Delete old container
         run: docker rm -f service-registry-container
       - name: Run docker container
-        run: docker run -d -p 8761:8761 --name service-registry-container d23124670/service-registry:latest
+        run: docker run -d -p 8761:8080 --name service-registry-container d23124670/service-registry:latest
+      - name: Wait for Service 1 to start
+        run: sleep 60
       - name: Pull Image from docker hub
         run: docker pull d23124670/gateway-service:latest
       - name: Delete old container
         run: docker rm -f gateway-service-container
       - name: Run docker container
         run: docker run -d -p 8080:8080 --name gateway-service-container d23124670/gateway-service:latest
+      - name: Wait for Service 1 to start
+        run: sleep 60
       - name: Pull Image from docker hub
         run: docker pull d23124670/profile-service:latest
       - name: Delete old container
         run: docker rm -f profile-service-container
       - name: Run docker container
-        run: docker run -d -p 8082:8082 --name profile-service-container d23124670/profile-service:latest
+        run: docker run -d -p 8082:8080 --name profile-service-container d23124670/profile-service:latest
+      - name: Wait for Service 1 to start
+        run: sleep 60
       - name: Pull Image from docker hub
         run: docker pull d23124670/job-service:latest
       - name: Delete old container
         run: docker rm -f job-service-container
       - name: Run docker container
-        run: docker run -d -p 8081:8081 --name job-service-container d23124670/job-service:latest
+        run: docker run -d -p 8081:8080 --name job-service-container d23124670/job-service:latest
+      - name: Wait for Service 1 to start
+        run: sleep 60
       - name: Pull image from docker hub
         run: docker pull d23124670/kickstarters-app:latest
       - name: Delete Old Container
