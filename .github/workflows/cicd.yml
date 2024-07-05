@@ -49,6 +49,11 @@ jobs:
         run: docker build -t d23124670/job-service .
       - name: Publish image to docker hub
         run: docker push d23124670/job-service:latest
+      - name: Build Docker Image
+        working-directory: ./kickstarters-app
+        run: docker build -t d23124670/kickstarters-app .
+      - name: Publish image to docker hub
+        run: docker push d23124670/kickstarters-app:latest
 
 
   deploy:
@@ -79,3 +84,9 @@ jobs:
         run: docker rm -f job-service-container
       - name: Run docker container
         run: docker run -d -p 8081:8080 --name job-service-container d23124670/job-service:latest
+      - name: Pull image from docker hub
+        run: docker pull d23124670/kickstarters-app:latest
+      - name: Delete Old Container
+        run: docker rm -f reactContainer
+      - name: Run docker container
+        run: docker run -d -p 3000:80 --name reactContainer d23124670/kickstarters-app:latest
