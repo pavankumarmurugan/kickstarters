@@ -65,7 +65,7 @@ jobs:
       - name: Delete old container
         run: docker rm -f service-registry-container
       - name: Run docker container
-        run: docker run -d -p 8761:8080 --name service-registry-container d23124670/service-registry:latest
+        run: docker run -d -p 8761:80 --name service-registry-container d23124670/service-registry:latest
       # - name: Wait for Service 1 to start
       #   run: sleep 60
       # - name: Pull Image from docker hub
