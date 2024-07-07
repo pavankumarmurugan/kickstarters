@@ -16,10 +16,10 @@ spring:
         format_sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
-  application:
-    name: JOB-SERVICE
-
-eureka:
-  client:
-    service-url:
-      defaultZone : http://18.208.147.23:8761/eureka/
+#  application:
+#    name: JOB-SERVICE
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone : http://18.208.147.23:8761/eureka/
