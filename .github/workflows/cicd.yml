@@ -15,86 +15,86 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Build Project
-        working-directory: ./service-registry
-        run: mvn clean install -DskipTests
-      - name: Build Project
-        working-directory: ./gateway-service
-        run: mvn clean install -DskipTests
+      # - name: Build Project
+      #   working-directory: ./service-registry
+      #   run: mvn clean install -DskipTests
+      # - name: Build Project
+      #   working-directory: ./gateway-service
+      #   run: mvn clean install -DskipTests
       - name: Build Project
         working-directory: ./profile-service
         run: mvn clean install -DskipTests
-      # - name: Build Project
-      #   working-directory: ./job-service
-      #   run: mvn clean install -DskipTests
+      - name: Build Project
+        working-directory: ./job-service
+        run: mvn clean install -DskipTests
       - name: Login to docker hub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-      - name: Build docker image
-        working-directory: ./service-registry
-        run: docker build -t d23124670/service-registry .
-      - name: Publish image to docker hub
-        run: docker push d23124670/service-registry:latest
-      - name: Build docker image
-        working-directory: ./gateway-service
-        run: docker build -t d23124670/gateway-service .
-      - name: Publish image to docker hub
-        run: docker push d23124670/gateway-service:latest
+      # - name: Build docker image
+      #   working-directory: ./service-registry
+      #   run: docker build -t d23124670/service-registry .
+      # - name: Publish image to docker hub
+      #   run: docker push d23124670/service-registry:latest
+      # - name: Build docker image
+      #   working-directory: ./gateway-service
+      #   run: docker build -t d23124670/gateway-service .
+      # - name: Publish image to docker hub
+      #   run: docker push d23124670/gateway-service:latest
       - name: Build docker image
         working-directory: ./profile-service
         run: docker build -t d23124670/profile-service .
       - name: Publish image to docker hub
         run: docker push d23124670/profile-service:latest
-      # - name: Build docker image
-      #   working-directory: ./job-service
-      #   run: docker build -t d23124670/job-service .
-      # - name: Publish image to docker hub
-      #   run: docker push d23124670/job-service:latest
-      # - name: Build Docker Image
-      #   working-directory: ./kickstarters-app
-      #   run: docker build -t d23124670/kickstarters-app .
-      # - name: Publish image to docker hub
-      #   run: docker push d23124670/kickstarters-app:latest
+      - name: Build docker image
+        working-directory: ./job-service
+        run: docker build -t d23124670/job-service .
+      - name: Publish image to docker hub
+        run: docker push d23124670/job-service:latest
+      - name: Build Docker Image
+        working-directory: ./kickstarters-app
+        run: docker build -t d23124670/kickstarters-app .
+      - name: Publish image to docker hub
+        run: docker push d23124670/kickstarters-app:latest
 
 
   deploy:
     needs: build
     runs-on: [aws-ec2]
     steps:
-      - name: Pull Image from docker hub
-        run: docker pull d23124670/service-registry:latest
-      - name: Delete old container
-        run: docker rm -f service-registry-container
-      - name: Run docker container
-        run: docker run -d -p 8761:8080 --name service-registry-container d23124670/service-registry:latest
-      - name: Sleep 30
-        run: sleep 30
-      - name: Pull Image from docker hub
-        run: docker pull d23124670/gateway-service:latest
-      - name: Delete old container
-        run: docker rm -f gateway-service-container
-      - name: Run docker container
-        run: docker run -d -p 8080:8080 --name gateway-service-container d23124670/gateway-service:latest
-      - name: Sleep 30
-        run: sleep 30
+      # - name: Pull Image from docker hub
+      #   run: docker pull d23124670/service-registry:latest
+      # - name: Delete old container
+      #   run: docker rm -f service-registry-container
+      # - name: Run docker container
+      #   run: docker run -d -p 8761:8080 --name service-registry-container d23124670/service-registry:latest
+      # - name: Sleep 30
+      #   run: sleep 30
+      # - name: Pull Image from docker hub
+      #   run: docker pull d23124670/gateway-service:latest
+      # - name: Delete old container
+      #   run: docker rm -f gateway-service-container
+      # - name: Run docker container
+      #   run: docker run -d -p 8080:8080 --name gateway-service-container d23124670/gateway-service:latest
+      # - name: Sleep 30
+      #   run: sleep 30
       - name: Pull Image from docker hub
         run: docker pull d23124670/profile-service:latest
       - name: Delete old container
         run: docker rm -f profile-service-container
       - name: Run docker container
         run: docker run -d -p 8082:8080 --name profile-service-container d23124670/profile-service:latest
-      # - name: Wait for Service 1 to start
-      #   run: sleep 60
-      # - name: Pull Image from docker hub
-      #   run: docker pull d23124670/job-service:latest
-      # - name: Delete old container
-      #   run: docker rm -f job-service-container
-      # - name: Run docker container
-      #   run: docker run -d -p 8081:8080 --name job-service-container d23124670/job-service:latest
-      # - name: Wait for Service 1 to start
-      #   run: sleep 60
-      # - name: Pull image from docker hub
-      #   run: docker pull d23124670/kickstarters-app:latest
-      # - name: Delete Old Container
-      #   run: docker rm -f reactContainer
-      # - name: Run docker container
-      #   run: docker run -d -p 3000:80 --name reactContainer d23124670/kickstarters-app:latest
+      - name: Wait for Service 1 to start
+        run: sleep 30
+      - name: Pull Image from docker hub
+        run: docker pull d23124670/job-service:latest
+      - name: Delete old container
+        run: docker rm -f job-service-container
+      - name: Run docker container
+        run: docker run -d -p 8081:8080 --name job-service-container d23124670/job-service:latest
+      - name: Wait for Service 1 to start
+        run: sleep 30
+      - name: Pull image from docker hub
+        run: docker pull d23124670/kickstarters-app:latest
+      - name: Delete Old Container
+        run: docker rm -f reactContainer
+      - name: Run docker container
+        run: docker run -d -p 3000:80 --name reactContainer d23124670/kickstarters-app:latest
